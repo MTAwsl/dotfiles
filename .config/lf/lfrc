@@ -1,7 +1,7 @@
 set previewer ~/.config/lf/previewer
 
 # Basic Settings
-set hidden true
+set hidden false
 set ignorecase true
 set icons true
 set sixel true
@@ -120,5 +120,5 @@ map gD cd ~/Downloads
 map gd cd ~/OneDrive
 
 # Source files
-source '/Users/socular/.local/lf-scrollingpreview/lfrc-scrollingpreview'
-source '/Users/socular/.local/lf-shellcd/lfrc-shellcd'
+source '~/.local/lf-scrollingpreview/lfrc-scrollingpreview'
+source '~/.local/lf-shellcd/lfrc-shellcd'
