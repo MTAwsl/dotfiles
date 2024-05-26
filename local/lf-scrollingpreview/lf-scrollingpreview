@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+
+cleanup() {
+	rm -rf "$LF_SCROLLINGPREVIEW_TEMPDIR"
+}
+trap cleanup INT HUP TERM
+
+# Set up temporary directory.
+export LF_SCROLLINGPREVIEW_TEMPDIR="$(mktemp -d -t lf-scrollingpreview-XXXXXX)"
+
+# Initialize scrolling offset (page number or line offset)
+echo "1" >"$LF_SCROLLINGPREVIEW_TEMPDIR/offset"
+
+# Add this script's directory to PATH so that the lf config will find
+# lf-scrollingpreview-previewer. Start lf.
+export PATH="$PATH:${ZSH_ARGZERO:A:h}"
+# /opt/homebrew/bin/lf --config "${ZSH_ARGZERO:A:h}/lfrc-scrollingpreview" "${1:-"${ZSH_ARGZERO:A:h}/examples/curl.man"}"
+
+/opt/homebrew/bin/lf "$@"
+
+cleanup
