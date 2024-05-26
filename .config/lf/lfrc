@@ -50,7 +50,7 @@ cmd trash ${{
 
 cmd open &{{
 	case $(file --mime-type -Lb $f) in
-		text/*) lf -remote "send $id \$nvim \$fx";;
+		text/*) lf -remote "send $id \$lvim \$fx";;
 		*) xdg-open "$f"
 	esac
 }}
@@ -120,5 +120,4 @@ map gD cd ~/Downloads
 map gd cd ~/OneDrive
 
 # Source files
-source '~/.local/lf-scrollingpreview/lfrc-scrollingpreview'
 source '~/.local/lf-shellcd/lfrc-shellcd'
