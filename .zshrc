@@ -1,3 +1,5 @@
+. /etc/profile
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -16,9 +18,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Hide terminal context
-prompt_context(){}
+ZSH_TMUX_AUTOSTART=false
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -80,109 +80,78 @@ prompt_context(){}
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z zsh-autosuggestions zsh-syntax-highlighting tmux)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting tmux)
 
-# [[ -z "${VSCODE}" ]] && ZSH_TMUX_AUTOSTART=true
 source $ZSH/oh-my-zsh.sh
 
-bindkey '^I'   complete-word       # tab          | complete
-bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty bracketed-paste accept-line push-line-or-edit)
+bindkey '^I' complete-word
+bindkey '^[[Z' autosuggest-accept
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer_empty bracketed-paste accept-line push-line-or-edit)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=true
 
-alias pr='export all_proxy=socks5://localhost:7890;export http_proxy=http://localhost:7890; export https_proxy=http://localhost:7890'
-alias nopr='unset all_proxy http_proxy https_proxy'
-alias py='python3.12'
-alias python='ipython'
-alias python3='python3.12'
-alias pip='python3 -m pip'
-alias aria2p='aria2p -p 16800 -s wUr8g4USF7Sx'
-alias vim='lvim'
-alias lab-connect='sudo openvpn --daemon --config ~/oscp-lab.ovpn'
-alias lab-disconnect='sudo killall openvpn'
-alias home-forward='tmux new-window -n Home-SSH ssh BhP-Laptop -L localhost:2222:localhost:22 -L localhost:5900:localhost:5900'
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# iTerm2 Shell integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=NO
-
-# Enable Python virtual environment
-source ~/.virtualenvs/global/bin/activate
-
-# Use lf-shellcd
-source ~/.local/lf-shellcd/lf-shellcd
-
-export PATH="$PATH:/opt/pypy3.9-v7.3.11-macos_arm64/bin"
-export PATH="~/.local/bin:$PATH"
-export PATH="/Library/TeX/texbin:$PATH"
-export PATH="~/.local/lf-kitty:$PATH"
-export PATH="~/.local/lf-scrollingpreview:$PATH"
-export PATH="~/.local/lf-ueberzug:$PATH"
-export PATH="~/.local/lf-yt:$PATH"
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export PATH="/opt/MonkeyDev/bin:$PATH"
-export JAVA_HOME="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
-export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
-export CPATH="$(brew --prefix)/include:$CPATH"
-
-export LANG=en_US.UTF-8
-
-export MonkeyDevPath=/opt/MonkeyDev
-export MonkeyDevDeviceIP=
+autoload compinit && compinit
 
 export VISUAL=lvim
 export EDITOR=lvim
 
-# Disable built-in command r
-disable r
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.npm-global/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
+export PATH=$HOME/go/bin:$PATH
+export PATH=/home/socular/.local/share/gem/ruby/3.0.0/bin:$PATH
 
-# Automatically start ssh-agent by Joseph M. Reagle
-SSH_ENV="$HOME/.ssh/environment"
+export GEM_HOME=/home/socular/.local/share/gem
 
-function start_agent {
-    #echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    #echo succeeded
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-    /usr/bin/ssh-add --apple-use-keychain 2>&- 1>&- 0<&- || {
-        echo "An error occured when adding private keys using ssh-add"
-    };
-}
+# make pip happy
+source /home/socular/.venv/global/bin/activate
 
-# Source SSH settings, if applicable
+# User configuration
 
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-     start_agent;
-fi
+# export MANPATH="/usr/local/man:$MANPATH"
 
-function ed-submit {
-  git status > /dev/null
-  if [[ $? -ne 0 ]]; then
-    # git will handle stderr msg
-    return
-  fi
-  git add -A
-  commit_msg=$(curl -s https://whatthecommit.com/index.txt 2>&-)
-  if [[ $? -ne 0 ]]; then
-    commit_msg="bluhbluhbluh"
-  fi
-  
-  git commit -m"$commit_msg"
-  if [[ $? -ne 0 ]]; then
-    # git will handle stderr msg
-    return
-  fi
-  git push
-}
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+alias py=python
+alias python=ipython
+alias vim=lvim
+alias lab-connect="sudo openvpn --daemon --config /home/socular/oscp-lab.ovpn"
+alias lab-disconnect="sudo killall openvpn"
+alias sudo='sudo ' # To make sudo alias work
+alias useproxy='export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890;export ftp_proxy=http://127.0.0.1:7890;export socks_proxy=socks5://127.0.0.1:7890; export all_proxy=socks5://127.0.0.1:7890'
+alias noproxy='unset http_proxy https_proxy ftp_proxy socks_proxy all_proxy'
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# SSH Agent Socket
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+PATH="/home/socular/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/socular/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/socular/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/socular/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/socular/perl5"; export PERL_MM_OPT;
+
+# Set ASAN Options
+export ASAN_OPTIONS="abort_on_error=1"
