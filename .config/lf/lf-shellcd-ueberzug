@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cleanup() {
-	lf-ueberzug-cleaner
+	~/.config/lf/lf-ueberzug-cleaner
 	kill "$UEBERZUGPID"
 	pkill -f "tail -f $LF_UEBERZUG_TEMPDIR/fifo"
 	rm -rf "$LF_UEBERZUG_TEMPDIR"
