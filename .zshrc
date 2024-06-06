@@ -141,6 +141,9 @@ alias sudo='sudo ' # To make sudo alias work
 alias useproxy='export http_proxy=http://127.0.0.1:7890;export https_proxy=http://127.0.0.1:7890;export ftp_proxy=http://127.0.0.1:7890;export socks_proxy=socks5://127.0.0.1:7890; export all_proxy=socks5://127.0.0.1:7890'
 alias noproxy='unset http_proxy https_proxy ftp_proxy socks_proxy all_proxy'
 
+# Enable lf-shellcd
+source ~/.local/lf-shellcd/lf-shellcd
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
