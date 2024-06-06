@@ -113,16 +113,16 @@ export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=NO
 # Enable Python virtual environment
 source ~/.virtualenvs/global/bin/activate
 
-# Use lf-shellcd & lf-scrollingpreview & lf-kitty
+# Use lf-shellcd
 source ~/.local/lf-shellcd/lf-shellcd
 
 export PATH="$PATH:/opt/pypy3.9-v7.3.11-macos_arm64/bin"
-export PATH="/Users/socular/.local/bin:$PATH"
+export PATH="~/.local/bin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
-export PATH="/Users/socular/.local/lf-kitty:$PATH"
-export PATH="/Users/socular/.local/lf-scrollingpreview:$PATH"
-export PATH="/Users/socular/.local/lf-ueberzug:$PATH"
-export PATH="/Users/socular/.local/lf-yt:$PATH"
+export PATH="~/.local/lf-kitty:$PATH"
+export PATH="~/.local/lf-scrollingpreview:$PATH"
+export PATH="~/.local/lf-ueberzug:$PATH"
+export PATH="~/.local/lf-yt:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/opt/MonkeyDev/bin:$PATH"
@@ -131,7 +131,6 @@ export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
 export CPATH="$(brew --prefix)/include:$CPATH"
 
 export LANG=en_US.UTF-8
-export EDITOR='lvim'
 
 export MonkeyDevPath=/opt/MonkeyDev
 export MonkeyDevDeviceIP=
