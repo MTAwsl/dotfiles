@@ -1,0 +1,16 @@
+#!/bin/bash
+
+lfcd() {
+    export LF_SHELLCD_TEMPDIR="$(mktemp -d -t lf-shellcd-XXXXXX)"
+
+    /opt/homebrew/bin/lf -last-dir-path "$LF_SHELLCD_TEMPDIR/lastdir" "$@"
+
+    if [ -e "$LF_SHELLCD_TEMPDIR/changecwd" ] && \
+        dir="$(cat "$LF_SHELLCD_TEMPDIR/lastdir")" 2>/dev/null; then
+        cd "$dir"
+    fi
+
+    rm -rf "$LF_SHELLCD_TEMPDIR"
+    unset LF_SHELLCD_TEMPDIR
+}
+alias lf=lfcd

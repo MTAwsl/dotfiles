@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo -E ruby ~/repos/dnscat2/server/dnscat2.rb "$@"
