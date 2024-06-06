@@ -1,4 +1,5 @@
-set previewer ~/.config/lf/previewer
+set previewer ~/.config/lf/lf-ueberzug-previewer
+set cleaner ~/.config/lf/lf-ueberzug-cleaner
 
 # Basic Settings
 set hidden false
@@ -39,7 +40,7 @@ cmd trash ${{
   while [ "$files" ]; do
     file=${files%%;*}
 
-    trashy put "$(basename "$file")"
+    trash put "$(basename "$file")"
     if [ "$files" = "$file" ]; then
       files=''
     else
@@ -120,4 +121,4 @@ map gD cd ~/Downloads
 map gd cd ~/OneDrive
 
 # Source files
-source '~/.local/lf-shellcd/lfrc-shellcd'
+source '~/.config/lf/lfrc-shellcd'
