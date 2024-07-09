@@ -1,0 +1,5 @@
+script import sys;sys.path.append("/opt/homebrew/Frameworks/Python.framework/Versions/Current/lib/python3.12/lib-dynload")
+script import sys;sys.path.append("/opt/homebrew/Frameworks/Python.framework/Versions/Current/lib/python3.12")
+script import sys;sys.path.append("/opt/homebrew/lib/python3.12/site-packages/")
+script import sys;sys.path.append("/Users/socular/.virtualenvs/global/lib/python3.12/site-packages/")
+command script import /opt/homebrew/lib/python3.12/site-packages/voltron/entry.py
