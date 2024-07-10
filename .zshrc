@@ -117,12 +117,12 @@ source ~/.virtualenvs/global/bin/activate
 source ~/.local/lf-shellcd/lf-shellcd
 
 export PATH="$PATH:/opt/pypy3.9-v7.3.11-macos_arm64/bin"
-export PATH="~/.local/bin:$PATH"
+export PATH="/Users/socular/.local/bin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
-export PATH="~/.local/lf-kitty:$PATH"
-export PATH="~/.local/lf-scrollingpreview:$PATH"
-export PATH="~/.local/lf-ueberzug:$PATH"
-export PATH="~/.local/lf-yt:$PATH"
+export PATH="/Users/socular/.local/lf-kitty:$PATH"
+export PATH="/Users/socular/.local/lf-scrollingpreview:$PATH"
+export PATH="/Users/socular/.local/lf-ueberzug:$PATH"
+export PATH="/Users/socular/.local/lf-yt:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/opt/MonkeyDev/bin:$PATH"
