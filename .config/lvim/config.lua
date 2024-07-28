@@ -112,7 +112,7 @@ lvim.builtin.which_key.mappings['m'] = {
     t = { "<Cmd>MarkdownPreviewToggle<CR>", "MarkdownPreviewToggle" }
 }
 
-lvim.builtin.which_key.mappings['bc'] = { "<Cmd>bd<CR>", "Close Buffer" }
+lvim.builtin.which_key.mappings['bq'] = { "<Cmd>BufferKill<CR>", "Close Buffer" }
 
 local dap, dapui = require("dap"), require("dapui")
 
