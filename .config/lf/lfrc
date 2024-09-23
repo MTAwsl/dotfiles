@@ -1,5 +1,4 @@
-set previewer ~/.config/lf/lf-ueberzug-previewer
-set cleaner ~/.config/lf/lf-ueberzug-cleaner
+set previewer ~/.config/lf/previewer
 
 # Basic Settings
 set hidden false
@@ -52,6 +51,8 @@ cmd trash ${{
 cmd open &{{
 	case $(file --mime-type -Lb $f) in
 		text/*) lf -remote "send $id \$lvim \$fx";;
+    application/*json) lf -remote "send $id \$lvim \$fx";;
+    application/*php) lf -remote "send $id \$lvim \$fx";;
 		*) xdg-open "$f"
 	esac
 }}
@@ -121,4 +122,4 @@ map gD cd ~/Downloads
 map gd cd ~/OneDrive
 
 # Source files
-source '~/.config/lf/lfrc-shellcd'
+source '~/.local/lf-shellcd/lfrc-shellcd'
