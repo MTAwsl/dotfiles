@@ -120,4 +120,4 @@ map gD cd ~/Downloads
 map gd cd ~/OneDrive
 
 # Source files
-source '~/.local/lf-shellcd/lfrc-shellcd'
+source '~/.config/lf-shellcd/lfrc-shellcd'

@@ -93,14 +93,12 @@ ZSH_AUTOSUGGEST_USE_ASYNC=true
 
 alias pr='export all_proxy=socks5://localhost:7890;export http_proxy=http://localhost:7890; export https_proxy=http://localhost:7890'
 alias nopr='unset all_proxy http_proxy https_proxy'
-alias py='python3.12'
+alias py='python3.13'
 alias python='ipython'
-alias python3='python3.12'
+alias python3='python3.13'
 alias pip='python3 -m pip'
 alias aria2p='aria2p -p 16800 -s wUr8g4USF7Sx'
 alias vim='lvim'
-alias lab-connect='sudo openvpn --daemon --config ~/oscp-lab.ovpn'
-alias lab-disconnect='sudo killall openvpn'
 alias home-forward='tmux new-window -n Home-SSH ssh BhP-Laptop -L localhost:2222:localhost:22 -L localhost:5900:localhost:5900'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -114,15 +112,11 @@ export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=NO
 source ~/.virtualenvs/global/bin/activate
 
 # Use lf-shellcd
-source ~/.local/lf-shellcd/lf-shellcd
+source ~/.config/lf-shellcd/lf-shellcd
 
 export PATH="$PATH:/opt/pypy3.9-v7.3.11-macos_arm64/bin"
 export PATH="/Users/socular/.local/bin:$PATH"
 export PATH="/Library/TeX/texbin:$PATH"
-export PATH="/Users/socular/.local/lf-kitty:$PATH"
-export PATH="/Users/socular/.local/lf-scrollingpreview:$PATH"
-export PATH="/Users/socular/.local/lf-ueberzug:$PATH"
-export PATH="/Users/socular/.local/lf-yt:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export PATH="/opt/MonkeyDev/bin:$PATH"
