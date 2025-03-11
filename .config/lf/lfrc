@@ -49,8 +49,8 @@ cmd trash ${{
 }}
 
 cmd open &{{
-	case $(file --mime-type -Lb $f) in
-		text/*) lf -remote "send $id \$lvim \$fx";;
+	case $(file --mime-type -Lb "$f") in
+		text/*) lf -remote "send $id \$lvim \"\$fx\"";;
 		*) open "$f"
 	esac
 }}
