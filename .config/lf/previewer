@@ -2,7 +2,7 @@
 
 image() {
   geometry="$(($2-2))x$(($3-2))"
-	chafa -f sixel -s "$geometry" --animate false --polite on --relative on "$1"
+  chafa -f sixel -s "$geometry" --animate false --polite on --relative on "$1"
 }
 
 batorcat() {
