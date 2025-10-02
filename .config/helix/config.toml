@@ -2,7 +2,7 @@ theme = "monokai"
 
 [editor]
 cursorline = true
-clipboard-provider = "pasteboard"
+true-color = true
 
 [editor.soft-wrap]
 enable = true

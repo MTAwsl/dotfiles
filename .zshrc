@@ -6,19 +6,16 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
+# Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Hide terminal context
-prompt_context(){}
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -80,13 +77,45 @@ prompt_context(){}
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z zsh-autosuggestions zsh-syntax-highlighting tmux)
+plugins=(git z zsh-autosuggestions zsh-syntax-highlighting)
 
-# [[ -z "${VSCODE}" ]] && ZSH_TMUX_AUTOSTART=true
 source $ZSH/oh-my-zsh.sh
 
-bindkey '^I'   complete-word       # tab          | complete
-bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch $(uname -m)"
+
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export VISUAL=bat
+export EDITOR=helix
+export TERM='xterm-256color'
+
+alias hx=helix
+bindkey '^[[Z' forward-word
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(buffer-empty bracketed-paste accept-line push-line-or-edit)
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_USE_ASYNC=true
@@ -99,84 +128,25 @@ alias python3='python3.13'
 alias pip='python3 -m pip'
 alias aria2p='aria2p -p 16800 -s wUr8g4USF7Sx'
 alias vim='lvim'
-alias home-forward='tmux new-window -n Home-SSH ssh BhP-Laptop -L localhost:2222:localhost:22 -L localhost:5900:localhost:5900'
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# iTerm2 Shell integration
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=NO
+function yy() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
 
 # Enable Python virtual environment
 source ~/.virtualenvs/global/bin/activate
 
-# Use lf-shellcd
-source ~/.config/lf-shellcd/lf-shellcd
+export GALLIUM_DRIVER=d3d12
+export LIBVA_DRIVER_NAME=d3d12
+export QT_SCALE_FACTOR=2
+export GDK_SCALE=2
 
-export PATH="$PATH:/opt/pypy3.9-v7.3.11-macos_arm64/bin"
-export PATH="/Users/socular/.local/bin:$PATH"
-export PATH="/Library/TeX/texbin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export PATH="/opt/MonkeyDev/bin:$PATH"
-export JAVA_HOME="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
-export LIBRARY_PATH="$LIBRARY_PATH:$(brew --prefix)/lib"
-export CPATH="$(brew --prefix)/include:$CPATH"
+eval "$(/usr/sbin/wsl2-ssh-agent)"
 
-export LANG=en_US.UTF-8
-
-export MonkeyDevPath=/opt/MonkeyDev
-export MonkeyDevDeviceIP=
-
-export VISUAL=lvim
-export EDITOR=lvim
-
-# Disable built-in command r
-disable r
-
-# Automatically start ssh-agent by Joseph M. Reagle
-SSH_ENV="$HOME/.ssh/environment"
-
-function start_agent {
-    #echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    #echo succeeded
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-    /usr/bin/ssh-add --apple-use-keychain 2>&- 1>&- 0<&- || {
-        echo "An error occured when adding private keys using ssh-add"
-    };
-}
-
-# Source SSH settings, if applicable
-
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-     start_agent;
-fi
-
-function ed-submit {
-  git status > /dev/null
-  if [[ $? -ne 0 ]]; then
-    # git will handle stderr msg
-    return
-  fi
-  git add -A
-  commit_msg=$(curl -s https://whatthecommit.com/index.txt 2>&-)
-  if [[ $? -ne 0 ]]; then
-    commit_msg="bluhbluhbluh"
-  fi
-  
-  git commit -m"$commit_msg"
-  if [[ $? -ne 0 ]]; then
-    # git will handle stderr msg
-    return
-  fi
-  git push
-}
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
