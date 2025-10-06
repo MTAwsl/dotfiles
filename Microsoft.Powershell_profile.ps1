@@ -15,8 +15,8 @@ function yy {
     Remove-Item -Path $tmpFile -Force -ErrorAction SilentlyContinue
 }
 
-function pip {
-    python3 -m pip @Args
+function aria2p {
+    aria2p.exe -p 6800 -s wUr8g4USF7Sx @Args
 }
 
 Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
@@ -26,7 +26,10 @@ Set-Alias -Name python -Value ipython
 Set-Alias -Name python3 -Value python3.13
 Set-Alias -Name neofetch -Value winfetch # Hehe.
 Set-Alias -Name file -Value "C:\Program Files\Git\usr\bin\file.exe"
+Set-Alias -Name sudo -Value gsudo
+Set-Alias -Name which -Value where.exe
 
+$env:Path += ";C:\Users\$env:USERNAME\.bin"
 $env:Path += ";C:\Users\$env:USERNAME\AppData\Roaming\Python\Python313\Scripts"
 $env:YAZI_FILE_ONE = "C:\Program Files\Git\usr\bin\file.exe"
 
