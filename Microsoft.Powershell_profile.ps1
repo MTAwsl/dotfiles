@@ -1,5 +1,6 @@
 $env:VISUAL="bat"
 $env:EDITOR="hx"
+$env:YAZI_FILE_ONE="C:\Program Files\Git\usr\bin\file.exe"
 
 function yy {
     $tmpFile = (New-TemporaryFile).FullName
@@ -19,6 +20,11 @@ function aria2p {
     aria2p.exe -p 6800 -s wUr8g4USF7Sx @Args
 }
 
+function pandoc {
+    $templateroot = "C:\Users\$env:USERNAME\pandoc-themes\"
+    pandoc.exe --css "$templateroot\github.css" @Args
+}
+
 Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
 
 Set-Alias -Name py -Value python3.13
@@ -28,10 +34,6 @@ Set-Alias -Name neofetch -Value winfetch # Hehe.
 Set-Alias -Name file -Value "C:\Program Files\Git\usr\bin\file.exe"
 Set-Alias -Name sudo -Value gsudo
 Set-Alias -Name which -Value where.exe
-
-$env:Path += ";C:\Users\$env:USERNAME\.bin"
-$env:Path += ";C:\Users\$env:USERNAME\AppData\Roaming\Python\Python313\Scripts"
-$env:YAZI_FILE_ONE = "C:\Program Files\Git\usr\bin\file.exe"
 
 Set-PSReadLineKeyHandler -Chord "Shift+Tab" -Function ForwardWord
 oh-my-posh init pwsh --config "C:\Users\$env:USERNAME\pwsh-themes\atomic.omp.json" | Invoke-Expression
