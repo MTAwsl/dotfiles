@@ -88,7 +88,8 @@
           ];
 
           spawn-at-startup = [
-            # { sh = ''${pkgs.regreet}/bin/regreet; niri msg action quit --skip-confirmation''; }
+            { sh = "wl-paste --type text --watch cliphist store"; }
+            { sh = "wl-paste --type image --watch cliphist store"; }
             # { sh = "app2unit -- firefox-devedition"; }
             # { sh = ''app2unit -- ghostty -e zsh -l -c "zellij a -c defaulted"''; }
             # { sh = "app2unit -- vesktop"; }
