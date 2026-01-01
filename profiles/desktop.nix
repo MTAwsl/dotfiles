@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.desktop =
+  flake.modules.nixos.profile-desktop =
     { ... }:
     {
       imports = with self.modules.nixos; [

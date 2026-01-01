@@ -12,6 +12,12 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    uniclip = {
+      # url = "github:quackduck/uniclip";
+      url = "github:yurinek0/uniclip"; # https://github.com/quackduck/uniclip/pull/39
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.nixos.qemu-guest =
+  flake.modules.nixos.profile-qemu-guest =
     { ... }:
     {
       services.spice-autorandr.enable = true;

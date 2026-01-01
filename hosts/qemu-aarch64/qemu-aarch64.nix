@@ -1,22 +1,34 @@
 { self, ... }:
 {
   flake.modules.nixos.host-qemu-aarch64 =
-    { lib, ... }:
+    { lib, pkgs, ... }:
     {
-      imports = with self.modules.nixos; [
-        home-manager
-        qemu-guest
-        basic-shell
-        desktop
-        sshd
-        user-yuri
-        user-yuri-desktop
-      ];
+      imports =
+        (with self.modules.nixos; [
+          # Home Manager
+          home-manager
+
+          # Services
+          sshd
+        ])
+        # Import host profiles.
+        ++ (with self.lib.withPrefix "profile" self.modules.nixos; [
+          base
+          desktop
+          qemu-guest
+        ])
+        # Import user profiles.
+        ++ (with self.lib.withUserProfile "yuri"; [
+          base
+          desktop
+          qemu-guest
+        ]);
 
       system.stateVersion = "26.05";
       environment.sessionVariables = {
         LIBGL_ALWAYS_SOFTWARE = "1";
       };
+      programs.niri.package = pkgs.niri; # niri-flake only contains x86_64 builds for now. Use nixpkgs instead.
 
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;

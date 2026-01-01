@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.user-yuri =
+  flake.modules.nixos.user-yuri-base =
     {
       pkgs,
       lib,
