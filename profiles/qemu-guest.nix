@@ -1,8 +1,12 @@
-{ ... }:
+{ self, ... }:
 {
   flake.modules.nixos.profile-qemu-guest =
     { ... }:
     {
+      imports = with self.modules.nixos; [
+        qemu-share-fs
+      ];
+
       services.spice-autorandr.enable = true;
       services.spice-vdagentd.enable = true;
 

@@ -163,6 +163,7 @@
           spawn-at-startup = [
             { sh = "wl-paste --type text --watch cliphist store &"; }
             { sh = "wl-paste --type image --watch cliphist store &"; }
+            { sh = "kdeconnect-indicator &"; }
             # { sh = "app2unit -- firefox-devedition"; }
             # { sh = ''app2unit -- ghostty -e zsh -l -c "zellij a -c defaulted"''; }
             # { sh = "app2unit -- vesktop"; }
@@ -429,6 +430,8 @@
           };
         };
       };
+
+      services.kdeconnect.enable = true;
 
       xdg.configFile."uwsm/env-niri".text = ''
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"

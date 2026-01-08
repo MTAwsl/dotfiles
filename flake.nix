@@ -42,12 +42,48 @@
         moduleWithSystem,
         ...
       }:
+      let
+        mkHost = hostname: system: {
+          flake.nixosConfigurations."${hostname}" = withSystem system (
+            { pkgs, system, ... }:
+            inputs.nixpkgs.lib.nixosSystem {
+              inherit pkgs system;
+              modules = [
+                inputs.self.modules.nixos.nix
+                inputs.self.modules.nixos."host-${hostname}"
+              ];
+            }
+          );
+        };
+      in
       {
         systems = [
           "aarch64-linux"
         ];
 
+        perSystem =
+          {
+            system,
+            inputs',
+            ...
+          }:
+          {
+            _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = [
+                # Add overlays here.
+                (final: prev: {
+                  uniclip = inputs'.uniclip.packages.uniclip;
+                })
+              ];
+              config = {
+                allowUnfree = true;
+              };
+            };
+          };
+
         imports = [
+          # Import necessary modules.
           ./nix.nix
           inputs.flake-parts.flakeModules.modules
           (import-tree ./lib)
@@ -55,6 +91,9 @@
           (import-tree ./profiles)
           (import-tree ./hosts)
           (import-tree ./users)
+
+          # Make hosts here.
+          (mkHost "qemu-aarch64" "aarch64-linux")
         ];
       }
     );
