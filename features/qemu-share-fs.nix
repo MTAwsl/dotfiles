@@ -32,12 +32,11 @@
     };
 
   flake.lib.mkQemuShareBindFS =
-    pkgs: username: uid:
+    pkgs: username:
     let
       # Use ls -na to get host directory's UID and GID in guest.
       host_uid = builtins.toString 501;
       host_gid = builtins.toString 20;
-      guest_uid = builtins.toString uid;
       mount_point =
         if lib.strings.hasInfix "/" username then username else "/home/${username}/qemu-share";
     in
@@ -48,7 +47,9 @@
         device = "/mnt/share";
         fsType = "fuse.bindfs";
         options = [
-          "map=${host_uid}/${guest_uid}:@${host_gid}/@${guest_uid}"
+          "map=${host_uid}/${username}:@${host_gid}/@users"
+          "map-passwd=/etc/passwd"
+          "map-group=/etc/group"
           "x-systemd.requires=/mnt/share"
           "_netdev"
           "nofail"

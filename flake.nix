@@ -13,8 +13,7 @@
     };
 
     uniclip = {
-      # url = "github:quackduck/uniclip";
-      url = "github:yurinek0/uniclip"; # https://github.com/quackduck/uniclip/pull/39
+      url = "github:yurinek0/uniclip-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -74,6 +73,17 @@
                 # Add overlays here.
                 (final: prev: {
                   uniclip = inputs'.uniclip.packages.uniclip;
+
+                  # FIX: Remove this after wl-clipboard released a new update. (Current date: 08/01/2026)
+                  wl-clipboard = prev.wl-clipboard.overrideAttrs (old: {
+                    version = "25.11.25.0"; # YY.MM.DD.rev
+                    src = prev.fetchFromGitHub {
+                      owner = "bugaevc";
+                      repo = "wl-clipboard";
+                      rev = "e8082035dafe0241739d7f7d16f7ecfd2ce06172";
+                      hash = "sha256-sR/P+urw3LwAxwjckJP3tFeUfg5Axni+Z+F3mcEqznw=";
+                    };
+                  });
                 })
               ];
               config = {

@@ -10,7 +10,7 @@
     }:
     {
       imports = with self.modules.nixos; [
-        (self.lib.mkQemuShareBindFS pkgs "yuri" 1000)
+        (self.lib.mkQemuShareBindFS pkgs "yuri")
       ];
 
       home-manager.users.yuri = {
@@ -22,9 +22,9 @@
         programs.niri.settings = {
           spawn-at-startup = [
             { sh = "spice-vdagent"; }
-            # {
-            #   sh = "while true; do timeout 2m uniclip ${self.meta.qemu-host.ip}:${self.meta.qemu-host.uniclip-port}; if [[ $? -ne 124 ]]; then sleep 5; fi; done";
-            # }
+            {
+              sh = "app2unit -s s -t service -d \"Uniclip-rs clipboard sharing\" -p Restart=always -p RestartSec=5 -- uniclip-rs -p ${self.meta.qemu-host.ip}:${self.meta.qemu-host.uniclip-port}";
+            }
           ];
         };
       };

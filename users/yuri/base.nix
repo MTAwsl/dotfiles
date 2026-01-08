@@ -23,17 +23,13 @@
           git
           yazi
           helix
+          devtools
         ];
 
         home = {
           username = "yuri";
           homeDirectory = "/home/yuri";
           stateVersion = "26.05";
-          packages = with pkgs; [
-            nodejs
-            nodePackages."typescript"
-            astro-language-server
-          ];
         };
 
         programs = {

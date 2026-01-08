@@ -431,7 +431,8 @@
         };
       };
 
-      services.kdeconnect.enable = true;
+      # KDE Connect is an overkill for clipboard sharing.
+      services.kdeconnect.enable = false;
 
       xdg.configFile."uwsm/env-niri".text = ''
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"

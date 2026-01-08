@@ -162,16 +162,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1767253922,
-        "narHash": "sha256-lJWYO73qPPSv4YHLyWFkBVeZx/xZf4zrh1VDi3gFcyQ=",
+        "lastModified": 1767855914,
+        "narHash": "sha256-3tkNz+GPsEVBMC0NTWGC1HEhDxq0MivDJijyBn2Yeug=",
         "owner": "yurinek0",
-        "repo": "uniclip",
-        "rev": "e70a3315bdc5fd1027188f80eb9a19a9ce65b738",
+        "repo": "uniclip-rs",
+        "rev": "7edc48b7782d6067f0b798ff2d4114ed3e39220f",
         "type": "github"
       },
       "original": {
         "owner": "yurinek0",
-        "repo": "uniclip",
+        "repo": "uniclip-rs",
         "type": "github"
       }
     },
