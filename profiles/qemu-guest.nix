@@ -11,7 +11,7 @@
       services.spice-vdagentd.enable = true;
 
       # If using webdavd, enable this.
-      services.spice-webdavd.enable = true;
+      services.spice-webdavd.enable = false;
 
       services.qemuGuest.enable = true;
     };
