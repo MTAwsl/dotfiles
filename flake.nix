@@ -12,6 +12,10 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    import-tree = {
+      url = "github:vic/import-tree";
+    };
+
     uniclip = {
       url = "github:yurinek0/uniclip-rs";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,8 +26,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    import-tree = {
-      url = "github:vic/import-tree";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.0.0";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     mac-style-plymouth = {
@@ -92,7 +97,7 @@
                 })
 
                 # Plymouth theme
-                inputs.mac-style-plymouth.overlays.default;
+                inputs.mac-style-plymouth.overlays.default
               ];
               config = {
                 allowUnfree = true;
