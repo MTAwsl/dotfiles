@@ -25,6 +25,11 @@
     import-tree = {
       url = "github:vic/import-tree";
     };
+
+    mac-style-plymouth = {
+      url = "github:SergioRibera/s4rchiso-plymouth-theme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -85,6 +90,9 @@
                     };
                   });
                 })
+
+                # Plymouth theme
+                inputs.mac-style-plymouth.overlays.default;
               ];
               config = {
                 allowUnfree = true;
@@ -104,6 +112,7 @@
 
           # Make hosts here.
           (mkHost "qemu-aarch64" "aarch64-linux")
+          (mkHost "lemonade" "x86_64-linux")
         ];
       }
     );

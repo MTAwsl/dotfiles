@@ -5,5 +5,6 @@
     fullname = "Sayuri Nekomiya";
     email = "bbh@awsl.rip";
     uid = config.user.users.yuri.uid;
+    pam_origin = "MiniSoda";
   };
 }

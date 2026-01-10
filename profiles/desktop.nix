@@ -6,6 +6,7 @@
       imports = with self.modules.nixos; [
         niri
         dms-shell
+        plymouth
       ];
     };
 }
