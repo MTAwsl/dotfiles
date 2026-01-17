@@ -22,6 +22,9 @@
 
         pwvucontrol
         udiskie
+
+        # icons
+        papirus-icon-theme
       ];
 
       environment.variables.NIXOS_OZONE_WL = "1";
@@ -37,7 +40,8 @@
         waylandCompositors.niri = {
           prettyName = "Niri";
           comment = "A scrollable-tiling Wayland compositor";
-          binPath = "/run/current-system/sw/bin/niri-session";
+          binPath = "/run/current-system/sw/bin/niri";
+          extraArgs = [ "--session" ];
         };
       };
 

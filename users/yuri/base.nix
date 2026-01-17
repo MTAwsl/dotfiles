@@ -12,9 +12,12 @@
         isNormalUser = true;
         uid = 1000;
         description = "Sayuri Nekomiya";
+        shell = pkgs.zsh;
         extraGroups = [
           "networkmanager"
           "wheel"
+          "input"
+          "plugdev"
         ];
       };
 
@@ -23,6 +26,9 @@
           git
           yazi
           helix
+          zsh
+          starship
+          clitools
           devtools
         ];
 
@@ -30,6 +36,12 @@
           username = "yuri";
           homeDirectory = "/home/yuri";
           stateVersion = "26.05";
+        };
+
+        # User Avatar
+        # I recommend to set it up otherwise DMS may becomes laggy.
+        home.file.".face" = {
+          source = ./face.png;
         };
 
         programs = {

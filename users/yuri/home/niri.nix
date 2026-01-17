@@ -1,4 +1,4 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.homeManager.yuri-niri =
     {
@@ -8,27 +8,37 @@
       ...
     }:
     {
+      home.packages = with pkgs; [
+        seahorse
+      ];
+
       programs = {
+
+        # Update after refactor: https://github.com/sodiboo/niri-flake/pull/1548
+        # Waiting for https://github.com/sodiboo/niri-flake/issues/1446 is closed
+        # niri.config = with inputs.niri.lib.kdl; [
+        #   (node "recent-windows" "highlight" [
+        #     (leaf "corner-radius" 12)
+        #     (leaf "active-color" "#124a73")
+        #     (leaf "urgent-color" "#ffb4ab")
+        #   ])
+        # ];
+
         niri.settings = {
           # nvidia fix, remove once either
           # https://github.com/YaLTeR/niri/issues/2030
           # https://github.com/YaLTeR/niri/issues/2477
           # is closed
-          debug.wait-for-frame-completion-before-queueing = [ ];
+          # debug.wait-for-frame-completion-before-queueing = [ ];
 
-          # Update after refactor: https://github.com/sodiboo/niri-flake/pull/1548
-
-          # Waiting for https://github.com/sodiboo/niri-flake/issues/1446 is closed
-          # before integrating below config:
-          # '''kdl
-          # recent-windows {
-          #     highlight {
-          #         corner-radius 12
-          #         active-color   "#124a73"
-          #         urgent-color   "#ffb4ab"
-          #     }
-          # }
-          # '''
+          outputs."DP-1" = {
+            scale = 1.0;
+            mode = {
+              width = 3440;
+              height = 1440;
+              refresh = 100.000;
+            };
+          };
 
           hotkey-overlay.skip-at-startup = true;
           prefer-no-csd = true;
@@ -72,8 +82,8 @@
             XDG_CURRENT_DESKTOP = "niri";
             QT_QPA_PLATFORM = "wayland";
             ELECTRON_OZONE_PLATFORM_HINT = "auto";
-            QT_QPA_PLATFORMTHEME = "gtk3";
-            QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
+            QT_QPA_PLATFORMTHEME = "qt5ct";
+            QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
           };
 
           layer-rules = [
@@ -137,7 +147,7 @@
                 }
               ];
               open-on-workspace = "2";
-              default-column-width.proportion = 1.;
+              default-column-width.proportion = 0.3;
             }
             {
               matches = [
@@ -161,10 +171,12 @@
           ];
 
           spawn-at-startup = [
-            { sh = "wl-paste --type text --watch cliphist store &"; }
-            { sh = "wl-paste --type image --watch cliphist store &"; }
+            { sh = "app2unit -C -s s -- dms run"; }
+            { sh = "niri msg action focus-workspace 3"; }
+            # { sh = "wl-paste --type text --watch cliphist store &"; }
+            # { sh = "wl-paste --type image --watch cliphist store &"; }
+            # { sh = "app2unit -s app-graphical.slice -- firefox-devedition"; }
             # { sh = "kdeconnect-indicator &"; }
-            # { sh = "app2unit -- firefox-devedition"; }
             # { sh = ''app2unit -- ghostty -e zsh -l -c "zellij a -c defaulted"''; }
             # { sh = "app2unit -- vesktop"; }
           ];
@@ -218,7 +230,11 @@
               {
                 "Mod+Shift+Slash".action = show-hotkey-overlay;
 
-                "Mod+T".action = spawn-sh "app2unit -- ghostty";
+                "Mod+T" = {
+                  hotkey-overlay.title = "Launch Ghostty";
+                  action = spawn-sh "app2unit -- ghostty";
+                };
+
                 "Mod+Space" = {
                   hotkey-overlay.title = "Application Launcher";
                   action = spawn-sh "dms ipc call spotlight toggle";
@@ -226,13 +242,20 @@
 
                 "Mod+Alt+L" = {
                   hotkey-overlay.title = "Lock Screen";
-                  action = spawn "dms" "ipc" "call" "lock" "lock";
+                  action = spawn "hyprlock";
                 };
 
-                "Mod+Alt+S" = {
-                  action = spawn-sh "pkill orca || exec orca";
-                  allow-when-locked = true;
+                "Mod+Shift+S" = {
+                  hotkey-overlay.title = "Screenshot";
+                  action = spawn-sh "output=$(niri msg --json focused-output | jq -r .name); grim -o $output - | satty --fullscreen --filename -";
                 };
+
+                # Uncomment to use orca
+                # "Mod+Alt+S" = {
+                #   hotkey-overlay.title = "Relaunch orca";
+                #   action = spawn-sh "pkill orca || exec orca";
+                #   allow-when-locked = true;
+                # };
 
                 "XF86AudioRaiseVolume" = {
                   action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01+";
@@ -275,12 +298,12 @@
                 "Mod+BracketLeft".action = consume-or-expel-window-left;
                 "Mod+BracketRight".action = consume-or-expel-window-right;
 
-                # "Mod+Comma".action = consume-window-into-column;
-                "Mod+Comma" = {
+                "Mod+Ctrl+Slash" = {
                   hotkey-overlay.title = "Settings";
                   action = spawn "dms" "ipc" "call" "settings" "focusOrToggle";
                 };
 
+                "Mod+Comma".action = consume-window-into-column;
                 "Mod+Period".action = expel-window-from-column;
 
                 "Mod+R".action = switch-preset-column-width;
@@ -324,9 +347,20 @@
 
                 "Mod+W".action = toggle-column-tabbed-display;
 
-                "Print".action.screenshot = [ ];
-                "Ctrl+Print".action.screenshot-screen = [ ];
-                "Alt+Print".action.screenshot-window = [ ];
+                "Print" = {
+                  hotkey-overlay.title = "Screenshot (Native)";
+                  action.screenshot = [ ];
+                };
+
+                "Ctrl+Print" = {
+                  hotkey-overlay.title = "Screenshot Screen (Native)";
+                  action.screenshot-screen = [ ];
+                };
+
+                "Alt+Print" = {
+                  hotkey-overlay.title = "Screenshot Window (Native)";
+                  action.screenshot-window = [ ];
+                };
 
                 "XF86Launch1".action.screenshot = [ ];
                 "Ctrl+XF86Launch1".action.screenshot-screen = [ ];
@@ -396,8 +430,8 @@
               (binds {
                 suffixes."Page_Down" = "workspace-down";
                 suffixes."Page_Up" = "workspace-up";
-                suffixes."U" = "workspace-down";
-                suffixes."I" = "workspace-up";
+                suffixes."I" = "workspace-down";
+                suffixes."U" = "workspace-up";
                 prefixes."Mod" = "focus";
                 prefixes."Mod+Ctrl" = "move-column-to";
                 prefixes."Mod+Shift" = "move";
@@ -434,7 +468,10 @@
       # KDE Connect is an overkill for clipboard sharing.
       services.kdeconnect.enable = false;
 
-      xdg.configFile."uwsm/env-niri".text = ''
+      # Enable cliphist
+      services.cliphist.enable = true;
+
+      xdg.configFile."uwsm/env".text = ''
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"
         export APP2UNIT_TYPE="scope"
       '';

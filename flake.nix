@@ -26,6 +26,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    pkgs-by-name-for-flake-parts = {
+      url = "github:drupol/pkgs-by-name-for-flake-parts";
+    };
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,6 +42,35 @@
 
     mac-style-plymouth = {
       url = "github:SergioRibera/s4rchiso-plymouth-theme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    infuse = {
+      url = "git+https://codeberg.org/amjoseph/infuse.nix";
+      flake = false;
+    };
+
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel";
+    };
+
+    # binaryninja = {
+    #   url = "github:jchv/nix-binary-ninja";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    pwndbg = {
+      url = "github:pwndbg/pwndbg";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-yazi-plugins = {
+      url = "github:lordkekz/nix-yazi-plugins";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -72,17 +110,22 @@
 
         perSystem =
           {
+            config,
             system,
             inputs',
             ...
           }:
           {
+            pkgsDirectory = ./packages;
+            pkgsNameSeparator = "-";
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
               overlays = [
                 # Add overlays here.
                 (final: prev: {
                   uniclip = inputs'.uniclip.packages.uniclip;
+                  pwndbg = inputs'.pwndbg.packages.default;
+                  local = config.packages;
 
                   # FIX: Remove this after wl-clipboard released a new update. (Current date: 08/01/2026)
                   wl-clipboard = prev.wl-clipboard.overrideAttrs (old: {
@@ -98,6 +141,12 @@
 
                 # Plymouth theme
                 inputs.mac-style-plymouth.overlays.default
+
+                # CachyOS Kernel
+                inputs.nix-cachyos-kernel.overlays.pinned
+
+                # Binary Ninja
+                # inputs.binaryninja.overlays.default
               ];
               config = {
                 allowUnfree = true;
@@ -109,6 +158,7 @@
           # Import necessary modules.
           ./nix.nix
           inputs.flake-parts.flakeModules.modules
+          inputs.pkgs-by-name-for-flake-parts.flakeModule
           (import-tree ./lib)
           (import-tree ./features)
           (import-tree ./profiles)
@@ -116,8 +166,8 @@
           (import-tree ./users)
 
           # Make hosts here.
-          (mkHost "qemu-aarch64" "aarch64-linux")
-          (mkHost "lemonade" "x86_64-linux")
+          (mkHost "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")
+          (mkHost "Yuri-Lemonade" "x86_64-linux")
         ];
       }
     );

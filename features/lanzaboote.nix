@@ -1,7 +1,7 @@
 { inputs, self, lib, ... }:
 {
   # From https://github.com/QiroNT/nixconf.
-  flake.modules.nixos.lanzaboote = { ... }: {
+  flake.modules.nixos.lanzaboote = { pkgs, ... }: {
     imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
     boot = {
@@ -10,9 +10,12 @@
           efi.canTouchEfiVariables = lib.mkForce false;
           systemd-boot.enable = lib.mkForce false;
         };
+
         lanzaboote = {
           enable = true;
-          pkiBundle = "/etc/secureboot";
+          pkiBundle = "/var/lib/sbctl";
+          autoGenerateKeys.enable = true;
+          autoEnrollKeys.enable = true;
         };
 
         # to roll disk encryption keys into TPM, use the following:
@@ -20,5 +23,7 @@
         # TODO add pcr 11 after https://github.com/nix-community/lanzaboote/issues/348
         initrd.systemd.enable = true;
       };
+
+    environment.systemPackages = [ pkgs.sbctl ];
   };
 }

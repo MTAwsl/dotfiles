@@ -11,7 +11,14 @@
         git
         htop
         fzf
+
+        # System monitor
+        iw
+        pciutils
+        usbutils
       ];
+
+      users.groups.plugdev = { };
 
       programs = {
         git = {
@@ -31,6 +38,7 @@
           };
         };
 
+        nix-ld.enable = true;
         bat.enable = true;
         zsh = {
           enable = true;

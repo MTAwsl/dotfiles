@@ -10,12 +10,29 @@
         nodePackages."typescript"
         astro-language-server
 
-        # Package development
-        nix-update
+        rustc
+        cargo
 
-        # CLI data fmt parser
-        jq
-        yj
+        go
+
+        # Python
+        uv
+        (python3.withPackages (
+          python-pkgs: with python-pkgs; [
+            pandas
+            numpy
+            requests
+            pycryptodome
+            argparse
+            ipython
+          ]
+        ))
+
+        gcc
+        gdb
+        cmake
+        autoconf
+        automake
       ];
 
     };

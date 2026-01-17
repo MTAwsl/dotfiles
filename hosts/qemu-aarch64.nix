@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.host-qemu-aarch64 =
+  flake.modules.nixos."host-Yuri-NixOS-QEMU-AARCH64" =
     { lib, pkgs, ... }:
     {
       imports =

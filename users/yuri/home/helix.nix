@@ -1,7 +1,12 @@
-{ ... }:
+{ self, ... }:
 {
   flake.modules.homeManager.yuri-helix =
-    { pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     {
       imports = [
         {
@@ -10,6 +15,9 @@
             nodePackages.typescript
             astro-language-server
             nixfmt
+            nixd
+            deadnix
+            statix
           ];
         }
       ];
@@ -17,44 +25,155 @@
       programs.helix = {
         enable = true;
         settings = {
-          theme = "monokai";
+          # theme = "monokai"; # Managed by stylix
           editor = {
             cursorline = true;
             true-color = true;
+            color-modes = true;
+            bufferline = "multiple";
+            line-number = "relative";
+            rulers = [
+              80
+              120
+            ];
+            indent-guides.render = true;
             soft-wrap = {
               enable = true;
               max-wrap = 25;
               max-indent-retain = 0;
               wrap-indicator = "";
             };
+
+            end-of-line-diagnostics = "warning";
+            inline-diagnostics.cursor-line = "warning";
+          };
+
+          keys.normal = {
+            esc = [
+              "collapse_selection"
+              "keep_primary_selection"
+            ];
+          };
+
+          # hmmmm.....u sure?
+          keys.normal.space = {
+            # replace file explorer with yazi
+            e =
+              let
+                yazi-wrapper = pkgs.writeShellScript "yazi-wrapper" ''
+                  if [[ -n $ZELLIJ ]]; then
+                    YAZI_TMP=$(mktemp -d)
+
+                    mkfifo "$YAZI_TMP/fifo"
+
+                    zellij run -fc --width 90% --height 90% -x 5% -y 5% -- \
+                      sh -c "${pkgs.yazi}/bin/yazi \"$1\" --chooser-file=\"$YAZI_TMP/out\" | tee \"$YAZI_TMP/fifo\""
+
+                    cat < "$YAZI_TMP/fifo" > /dev/null
+
+                    cat "$YAZI_TMP/out"
+                    rm -rf "$YAZI_TMP"
+                  else
+                    # use the system stty if possible to fix permission issue
+                    # on macos
+                    STTY=stty
+                    if [ -f /bin/stty ]; then
+                      STTY=/bin/stty
+                    fi
+
+                    # save and restore tty settings
+                    # the "official" version fixes settings by using stuff like
+                    # `x1b[?1049h]`, which is not what helix uses exactly.
+                    # this script just save and restores it instead.
+                    SAVED_TTY=$($STTY -g < /dev/tty)
+                    $STTY sane < /dev/tty
+
+                    ${pkgs.yazi}/bin/yazi "$1" --chooser-file=/dev/stdout
+
+                    $STTY "$SAVED_TTY" < /dev/tty
+                  fi
+                '';
+              in
+              [
+                ":set mouse false"
+                ":open %sh{${yazi-wrapper} '%{buffer_name}'}"
+                ":redraw"
+                ":set mouse true"
+              ];
           };
         };
 
         languages = {
-          language = [
-            {
-              name = "nix";
-              auto-format = true;
-              formatter.command = lib.getExe pkgs.nixfmt;
-            }
-            {
-              name = "astro";
-              scope = "source.astro";
-              injection-regex = "astro";
-              file-types = [ "astro" ];
-              language-servers = [ "astro-ls" ];
-              formatter = {
-                command = "prettier";
-                args = [
-                  "--plugin"
-                  "prettier-plugin-astro"
-                  "--parser"
-                  "astro"
-                ];
+
+          # Brillant. Thanks Chino.
+          language =
+            let
+              cfg = {
+                nix = {
+                  auto-format = true;
+                  formatter.command = "${lib.getExe pkgs.nixfmt}";
+                };
+                typst = {
+                  auto-format = true;
+                };
+                astro = {
+                  scope = "source.astro";
+                  injection-regex = "astro";
+                  file-types = [ "astro" ];
+                  language-servers = [ "astro-ls" ];
+                  formatter = {
+                    command = "prettier";
+                    args = [
+                      "--plugin"
+                      "prettier-plugin-astro"
+                      "--parser"
+                      "astro"
+                    ];
+                  };
+                  auto-format = true;
+                };
               };
-              auto-format = true;
-            }
-          ];
+
+              default-language-servers =
+                (builtins.fromTOML (builtins.readFile "${config.programs.helix.package.src}/languages.toml"))
+                .language
+                |> builtins.filter (
+                  l: builtins.hasAttr "name" l && builtins.hasAttr "scope" l && builtins.hasAttr "language-servers" l
+                )
+                |> map (l: lib.nameValuePair l.name { language-servers = _: l.language-servers; })
+                |> builtins.listToAttrs;
+
+              codebook-langs = [
+                "c"
+                "cpp"
+                "css"
+                "html"
+                "javascript"
+                "lua"
+                "nix"
+                "python"
+                "rust"
+                "toml"
+                "typescript"
+                "zig"
+              ];
+              harper-langs = [
+                "markdown"
+                "typst"
+              ];
+
+              append-ls =
+                server: langs:
+                langs
+                |> map (l: lib.nameValuePair l { language-servers.__append = [ server ]; })
+                |> builtins.listToAttrs;
+            in
+            self.lib.infuse cfg [
+              default-language-servers
+              (append-ls "codebook" codebook-langs)
+              (append-ls "harper-ls" harper-langs)
+            ]
+            |> lib.mapAttrsToList (name: value: value // { inherit name; });
 
           language-server = {
             typescript-language-server = {
@@ -64,6 +183,25 @@
                 "--tsserver-path=${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"
               ];
               config.documentFormatting = false;
+            };
+
+            tinymist.config = {
+              formatterMode = "typstyle";
+              formatterProseWrap = true;
+            };
+
+            rust-analyzer.config = {
+              check.command = "clippy";
+            };
+
+            codebook = {
+              command = "codebook-lsp";
+              args = [ "serve" ];
+            };
+
+            harper-ls = {
+              command = "harper-ls";
+              args = [ "--stdio" ];
             };
 
             astro-ls = {
@@ -76,6 +214,18 @@
               };
             };
           };
+
+          extraPackages = with pkgs; [
+            nixd
+            rust-analyzer
+            tinymist # typst
+            typstyle
+            vscode-langservers-extracted # html/css/json/eslint
+            clang-tools # c
+            lldb
+            codebook # spell check
+            harper
+          ];
         };
       };
     };
