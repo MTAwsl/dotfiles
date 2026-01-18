@@ -54,6 +54,9 @@
             # editor
             export EDITOR="hx"
             export VISUAL="$EDITOR"
+
+            # bitwarden ssh sock
+            export SSH_AUTH_SOCK="/home/yuri/.bitwarden-ssh-agent.sock"
           '';
         };
 

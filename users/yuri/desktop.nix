@@ -69,9 +69,12 @@
           grim # Use with Niri spawn-with-sh
           satty
 
+          # Yubikey manager
+          yubioath-flutter
+
           # apps
           audacity
-          bitwarden-desktop
+          bitwarden-desktop # This is unstable. For now do not lock the vault,
           bottles
           lutris
           filezilla

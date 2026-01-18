@@ -54,6 +54,9 @@
         pam.services.greetd.enableGnomeKeyring = true;
       };
 
+      # Disable GCR ssh agent
+      services.gnome.gcr-ssh-agent.enable = false;
+
       networking.firewall = {
         allowedTCPPortRanges = [
           # {

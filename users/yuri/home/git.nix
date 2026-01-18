@@ -11,5 +11,10 @@
           init.defaultBranch = "master";
         };
       };
+
+      programs.difftastic = {
+        enable = true;
+        git.enable = true;
+      };
     };
 }
