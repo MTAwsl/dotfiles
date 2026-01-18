@@ -3,6 +3,10 @@
   flake.modules.homeManager.yuri-devtools =
     { pkgs, ... }:
     {
+      programs.zsh.shellAliases = {
+        gdb = "pwndbg";
+      };
+
       home.packages = with pkgs; [
         # aflplusplus
         patchelf
@@ -11,14 +15,12 @@
         pwndbg
         ghidra-bin
         bingrep
-        unicorn
+        # unicorn # TODO: Separate this to a shell with QBDI.
         radare2
         rizin
         frida-tools
         apktool
-        # binary-ninja-free-wayland
-        python3Packages.angr
-        python3Packages.impacket
+        binaryninja-free # Update this after licensed
 
         # Credential
         trufflehog
@@ -79,7 +81,7 @@
         hashcat-utils
         nth
         john
-        seclists
+        wordlists
 
         # Web
         (burpsuite.override { proEdition = false; })
@@ -89,13 +91,13 @@
         # Pentest
         metasploit
         snmpcheck
-        minicom # See #5
+        minicom
         picocom
         socat
         goreplay
         tcpdump
         netsniff-ng
-        bloodhound-ce
+        # bloodhound-ce # See #6
         bloodhound-py
         enum4linux-ng
         evil-winrm-py
@@ -103,6 +105,7 @@
         powerview
         samba
         smbscan
+        python3Packages.impacket
 
         # Tunnel
         sshuttle

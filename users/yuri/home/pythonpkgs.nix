@@ -1,23 +1,12 @@
 { ... }:
 {
-  flake.modules.homeManager.yuri-devtools =
+  flake.modules.homeManager.yuri-pythonpkgs =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
-        # Node JS and LSP.
-        nodejs
-        nodePackages."typescript"
-        astro-language-server
-
-        rustc
-        cargo
-
-        go
-
-        # Python
-        uv
         (python3.withPackages (
           python-pkgs: with python-pkgs; [
+            # Devtools
             pandas
             numpy
             requests
@@ -25,14 +14,12 @@
             pycryptodome
             argparse
             ipython
+            # unicorn
+            # angr
+            # unicorn-angr
           ]
         ))
 
-        gcc
-        gdb
-        cmake
-        autoconf
-        automake
       ];
 
     };

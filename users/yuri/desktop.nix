@@ -10,10 +10,14 @@
     {
       home-manager.users.yuri = {
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-          kanshi
+          # kanshi
           niri
+          dms-shell
           stylix
           qtgtk
+
+          # Airpods on Linux
+          librepods
 
           # Shell
           starship
@@ -71,6 +75,7 @@
           bottles
           lutris
           filezilla
+          swayimg
           # gale
           gimp
           gparted
@@ -87,12 +92,25 @@
           vesktop
           vlc
           zed-editor
+          pear-desktop # YT Music
         ];
 
         programs = {
           vscode.enable = true;
           mpv.enable = true;
           obs-studio.enable = true;
+        };
+
+        # HyprIdle
+        services.hypridle = {
+          enable = true;
+          settings = {
+            general = {
+              lock_cmd = "pidof hyprlock || hyprlock";
+              before_sleep_cmd = "loginctl lock-session";
+            };
+            listener = [ ];
+          };
         };
       };
 

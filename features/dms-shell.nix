@@ -1,9 +1,13 @@
-{ self, ... }:
+{ inputs, ... }:
 {
   flake.modules.nixos.dms-shell =
     { ... }:
     {
-      programs.dms-shell = {
+      imports = [
+        inputs.dms.nixosModules.dank-material-shell
+      ];
+
+      programs.dank-material-shell = {
         enable = true;
         systemd = {
           enable = false; # Systemd service for auto-start
@@ -12,11 +16,13 @@
 
         # Core features
         enableSystemMonitoring = true; # System monitoring widgets (dgop)
-        enableClipboard = true; # Clipboard history manager
         enableVPN = true; # VPN management widget
         enableDynamicTheming = true; # Wallpaper-based theming (matugen)
         enableAudioWavelength = true; # Audio visualizer (cava)
         enableCalendarEvents = true; # Calendar integration (khal)
       };
+
+      # Avoid conflict
+      systemd.user.services.niri-flake-polkit.enable = false;
     };
 }

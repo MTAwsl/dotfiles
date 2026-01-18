@@ -4,6 +4,7 @@
     { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
+        file
         vim
         wget
         prettier
@@ -27,15 +28,6 @@
 
         yazi = {
           enable = true;
-          plugins = with pkgs.yaziPlugins; {
-            inherit
-              chmod
-              smart-enter
-              vcs-files
-              git
-              full-border
-              ;
-          };
         };
 
         nix-ld.enable = true;

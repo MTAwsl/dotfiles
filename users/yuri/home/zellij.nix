@@ -6,968 +6,10 @@
       programs = {
         zellij = {
           enable = true;
-          settings = {
-            on_force_close = "quit";
-            default_layout = "compact";
-            pane_frames = false;
-            plugins = {
-              compact-bar = {
-                _props.location = "zellij:compact-bar";
-                tooltip = "F1";
-              };
-            };
-
-            default_mode = "locked";
-            keybinds = {
-              clear-defaults = true;
-
-              normal = { };
-
-              locked = {
-                bind = {
-                  "Ctrl g" = {
-                    SwitchToMode = "Normal";
-                  };
-                };
-              };
-
-              resize = {
-                bind = [
-                  {
-                    "r" = {
-                      SwitchToMode = "Normal";
-                    };
-                  }
-                  {
-                    "h" = {
-                      Resize = "Increase Left";
-                    };
-                    "Left" = {
-                      Resize = "Increase Left";
-                    };
-                  }
-                  {
-                    "j" = {
-                      Resize = "Increase Down";
-                    };
-                    "Down" = {
-                      Resize = "Increase Down";
-                    };
-                  }
-                  {
-                    "k" = {
-                      Resize = "Increase Up";
-                    };
-                    "Up" = {
-                      Resize = "Increase Up";
-                    };
-                  }
-                  {
-                    "l" = {
-                      Resize = "Increase Right";
-                    };
-                    "Right" = {
-                      Resize = "Increase Right";
-                    };
-                  }
-                  {
-                    "H" = {
-                      Resize = "Decrease Left";
-                    };
-                  }
-                  {
-                    "J" = {
-                      Resize = "Decrease Down";
-                    };
-                  }
-                  {
-                    "K" = {
-                      Resize = "Decrease Up";
-                    };
-                  }
-                  {
-                    "L" = {
-                      Resize = "Decrease Right";
-                    };
-                  }
-                  {
-                    "=" = {
-                      Resize = "Increase";
-                    };
-                    "+" = {
-                      Resize = "Increase";
-                    };
-                  }
-                  {
-                    "-" = {
-                      Resize = "Decrease";
-                    };
-                  }
-                ];
-              };
-
-              pane = {
-                bind = [
-                  {
-                    "p" = {
-                      SwitchToMode = "Normal";
-                    };
-                  }
-                  {
-                    "h" = {
-                      MoveFocus = "Left";
-                    };
-                    "Left" = {
-                      MoveFocus = "Left";
-                    };
-                  }
-                  {
-                    "l" = {
-                      MoveFocus = "Right";
-                    };
-                    "Right" = {
-                      MoveFocus = "Right";
-                    };
-                  }
-                  {
-                    "j" = {
-                      MoveFocus = "Down";
-                    };
-                    "Down" = {
-                      MoveFocus = "Down";
-                    };
-                  }
-                  {
-                    "k" = {
-                      MoveFocus = "Up";
-                    };
-                    "Up" = {
-                      MoveFocus = "Up";
-                    };
-                  }
-                  {
-                    "Tab" = {
-                      SwitchFocus = [ ];
-                    };
-                  }
-                  {
-                    "n" = {
-                      NewPane = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "d" = {
-                      NewPane = "Down";
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "r" = {
-                      NewPane = "Right";
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "s" = {
-                      NewPane = "stacked";
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "x" = {
-                      CloseFocus = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "f" = {
-                      ToggleFocusFullscreen = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "z" = {
-                      TogglePaneFrames = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "w" = {
-                      ToggleFloatingPanes = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "e" = {
-                      TogglePaneEmbedOrFloating = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "c" = {
-                      SwitchToMode = "RenamePane";
-                      PaneNameInput = 0;
-                    };
-                  }
-                  {
-                    "i" = {
-                      TogglePanePinned = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                ];
-              };
-
-              move = {
-                bind = [
-                  {
-                    "m" = {
-                      SwitchToMode = "Normal";
-                    };
-                  }
-                  {
-                    "n" = {
-                      MovePane = [ ];
-                    };
-                    "Tab" = {
-                      MovePane = [ ];
-                    };
-                  }
-                  {
-                    "p" = {
-                      MovePaneBackwards = [ ];
-                    };
-                  }
-                  {
-                    "h" = {
-                      MovePane = "Left";
-                    };
-                    "Left" = {
-                      MovePane = "Left";
-                    };
-                  }
-                  {
-                    "j" = {
-                      MovePane = "Down";
-                    };
-                    "Down" = {
-                      MovePane = "Down";
-                    };
-                  }
-                  {
-                    "k" = {
-                      MovePane = "Up";
-                    };
-                    "Up" = {
-                      MovePane = "Up";
-                    };
-                  }
-                  {
-                    "l" = {
-                      MovePane = "Right";
-                    };
-                    "Right" = {
-                      MovePane = "Right";
-                    };
-                  }
-                ];
-              };
-
-              tab = {
-                bind = [
-                  {
-                    "t" = {
-                      SwitchToMode = "Normal";
-                    };
-                  }
-                  {
-                    "r" = {
-                      SwitchToMode = "RenameTab";
-                      TabNameInput = 0;
-                    };
-                  }
-                  {
-                    "h" = {
-                      GoToPreviousTab = [ ];
-                    };
-                    "Left" = {
-                      GoToPreviousTab = [ ];
-                    };
-                    "Up" = {
-                      GoToPreviousTab = [ ];
-                    };
-                    "k" = {
-                      GoToPreviousTab = [ ];
-                    };
-                  }
-                  {
-                    "l" = {
-                      GoToNextTab = [ ];
-                    };
-                    "Right" = {
-                      GoToNextTab = [ ];
-                    };
-                    "Down" = {
-                      GoToNextTab = [ ];
-                    };
-                    "j" = {
-                      GoToNextTab = [ ];
-                    };
-                  }
-                  {
-                    "n" = {
-                      NewTab = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "x" = {
-                      CloseTab = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "s" = {
-                      ToggleActiveSyncTab = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "b" = {
-                      BreakPane = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "]" = {
-                      BreakPaneRight = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "[" = {
-                      BreakPaneLeft = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "1" = {
-                      GoToTab = 1;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "2" = {
-                      GoToTab = 2;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "3" = {
-                      GoToTab = 3;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "4" = {
-                      GoToTab = 4;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "5" = {
-                      GoToTab = 5;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "6" = {
-                      GoToTab = 6;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "7" = {
-                      GoToTab = 7;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "8" = {
-                      GoToTab = 8;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "9" = {
-                      GoToTab = 9;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "Tab" = {
-                      ToggleTab = [ ];
-                    };
-                  }
-                ];
-              };
-
-              scroll = {
-                bind = [
-                  {
-                    "s" = {
-                      SwitchToMode = "Normal";
-                    };
-                  }
-                  {
-                    "e" = {
-                      EditScrollback = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "f" = {
-                      SwitchToMode = "EnterSearch";
-                      SearchInput = 0;
-                    };
-                  }
-                  {
-                    "Ctrl c" = {
-                      ScrollToBottom = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "j" = {
-                      ScrollDown = [ ];
-                    };
-                    "Down" = {
-                      ScrollDown = [ ];
-                    };
-                  }
-                  {
-                    "k" = {
-                      ScrollUp = [ ];
-                    };
-                    "Up" = {
-                      ScrollUp = [ ];
-                    };
-                  }
-                  {
-                    "Ctrl f" = {
-                      PageScrollDown = [ ];
-                    };
-                    "PageDown" = {
-                      PageScrollDown = [ ];
-                    };
-                    "Right" = {
-                      PageScrollDown = [ ];
-                    };
-                    "l" = {
-                      PageScrollDown = [ ];
-                    };
-                  }
-                  {
-                    "Ctrl b" = {
-                      PageScrollUp = [ ];
-                    };
-                    "PageUp" = {
-                      PageScrollUp = [ ];
-                    };
-                    "Left" = {
-                      PageScrollUp = [ ];
-                    };
-                    "h" = {
-                      PageScrollUp = [ ];
-                    };
-                  }
-                  {
-                    "d" = {
-                      HalfPageScrollDown = [ ];
-                    };
-                  }
-                  {
-                    "u" = {
-                      HalfPageScrollUp = [ ];
-                    };
-                  }
-                  {
-                    "Alt left" = {
-                      MoveFocusOrTab = "left";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt down" = {
-                      MoveFocus = "down";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt up" = {
-                      MoveFocus = "up";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt right" = {
-                      MoveFocusOrTab = "right";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt h" = {
-                      MoveFocusOrTab = "left";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt j" = {
-                      MoveFocus = "down";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt k" = {
-                      MoveFocus = "up";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                  {
-                    "Alt l" = {
-                      MoveFocusOrTab = "right";
-                      SwitchToMode = "locked";
-                    };
-                  }
-                ];
-              };
-
-              search = {
-                bind = [
-                  {
-                    "Ctrl c" = {
-                      ScrollToBottom = [ ];
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "j" = {
-                      ScrollDown = [ ];
-                    };
-                    "Down" = {
-                      ScrollDown = [ ];
-                    };
-                  }
-                  {
-                    "k" = {
-                      ScrollUp = [ ];
-                    };
-                    "Up" = {
-                      ScrollUp = [ ];
-                    };
-                  }
-                  {
-                    "Ctrl f" = {
-                      PageScrollDown = [ ];
-                    };
-                    "PageDown" = {
-                      PageScrollDown = [ ];
-                    };
-                    "Right" = {
-                      PageScrollDown = [ ];
-                    };
-                    "l" = {
-                      PageScrollDown = [ ];
-                    };
-                  }
-                  {
-                    "Ctrl b" = {
-                      PageScrollUp = [ ];
-                    };
-                    "PageUp" = {
-                      PageScrollUp = [ ];
-                    };
-                    "Left" = {
-                      PageScrollUp = [ ];
-                    };
-                    "h" = {
-                      PageScrollUp = [ ];
-                    };
-                  }
-                  {
-                    "d" = {
-                      HalfPageScrollDown = [ ];
-                    };
-                  }
-                  {
-                    "u" = {
-                      HalfPageScrollUp = [ ];
-                    };
-                  }
-                  {
-                    "n" = {
-                      Search = "down";
-                    };
-                  }
-                  {
-                    "p" = {
-                      Search = "up";
-                    };
-                  }
-                  {
-                    "c" = {
-                      SearchToggleOption = "CaseSensitivity";
-                    };
-                  }
-                  {
-                    "w" = {
-                      SearchToggleOption = "Wrap";
-                    };
-                  }
-                  {
-                    "o" = {
-                      SearchToggleOption = "WholeWord";
-                    };
-                  }
-                ];
-              };
-
-              entersearch = {
-                bind = [
-                  {
-                    "Ctrl c" = {
-                      SwitchToMode = "Scroll";
-                    };
-                    "Esc" = {
-                      SwitchToMode = "Scroll";
-                    };
-                  }
-                  {
-                    "Enter" = {
-                      SwitchToMode = "Search";
-                    };
-                  }
-                ];
-              };
-
-              renametab = {
-                bind = [
-                  {
-                    "Ctrl c" = {
-                      SwitchToMode = "Locked";
-                    };
-                    "Enter" = {
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "Esc" = {
-                      UndoRenameTab = [ ];
-                      SwitchToMode = "Tab";
-                    };
-                  }
-                ];
-              };
-
-              renamepane = {
-                bind = [
-                  {
-                    "Ctrl c" = {
-                      SwitchToMode = "Locked";
-                    };
-                    "Enter" = {
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "Esc" = {
-                      UndoRenamePane = [ ];
-                      SwitchToMode = "Pane";
-                    };
-                  }
-                ];
-              };
-
-              session = {
-                bind = [
-                  {
-                    "o" = {
-                      SwitchToMode = "Normal";
-                    };
-                  }
-                  {
-                    "d" = {
-                      Detach = [ ];
-                    };
-                  }
-                  {
-                    "w" = {
-                      LaunchOrFocusPlugin = "session-manager";
-                      floating = true;
-                      move_to_focused_tab = true;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "c" = {
-                      LaunchOrFocusPlugin = "configuration";
-                      floating = true;
-                      move_to_focused_tab = true;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "p" = {
-                      LaunchOrFocusPlugin = "plugin-manager";
-                      floating = true;
-                      move_to_focused_tab = true;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "a" = {
-                      LaunchOrFocusPlugin = "zellij:about";
-                      floating = true;
-                      move_to_focused_tab = true;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                  {
-                    "s" = {
-                      LaunchOrFocusPlugin = "zellij:share";
-                      floating = true;
-                      move_to_focused_tab = true;
-                      SwitchToMode = "Locked";
-                    };
-                  }
-                ];
-              };
-
-              # Shared Mode Mappings
-              shared_except = [
-                {
-                  section = [
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                  ];
-                  bind = [
-                    {
-                      "Ctrl g" = {
-                        SwitchToMode = "Locked";
-                      };
-                    }
-                    {
-                      "Ctrl q" = {
-                        Quit = [ ];
-                      };
-                    }
-                    {
-                      "Enter" = {
-                        SwitchToMode = "Locked";
-                      };
-                    }
-                  ];
-                }
-                {
-                  section = [
-                    "renamepane"
-                    "renametab"
-                    "entersearch"
-                    "locked"
-                  ];
-                  bind = {
-                    "esc" = {
-                      SwitchToMode = "locked";
-                    };
-                  };
-                }
-                {
-                  section = [
-                    "pane"
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                    "entersearch"
-                  ];
-                  bind = {
-                    "p" = {
-                      SwitchToMode = "Pane";
-                    };
-                  };
-                }
-                {
-                  section = [
-                    "resize"
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                    "entersearch"
-                  ];
-                  bind = {
-                    "r" = {
-                      SwitchToMode = "Resize";
-                    };
-                  };
-                }
-                {
-                  section = [
-                    "scroll"
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                    "entersearch"
-                  ];
-                  bind = {
-                    "s" = {
-                      SwitchToMode = "Scroll";
-                    };
-                  };
-                }
-                {
-                  section = [
-                    "session"
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                    "entersearch"
-                  ];
-                  bind = {
-                    "o" = {
-                      SwitchToMode = "Session";
-                    };
-                  };
-                }
-                {
-                  section = [
-                    "tab"
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                    "entersearch"
-                  ];
-                  bind = {
-                    "t" = {
-                      SwitchToMode = "Tab";
-                    };
-                  };
-                }
-                {
-                  section = [
-                    "move"
-                    "locked"
-                    "renametab"
-                    "renamepane"
-                    "entersearch"
-                  ];
-                  bind = {
-                    "m" = {
-                      SwitchToMode = "Move";
-                    };
-                  };
-                }
-              ];
-
-              shared_among = [
-                {
-                  section = [
-                    "normal"
-                    "locked"
-                  ];
-                  bind = [
-                    {
-                      "Alt n" = {
-                        NewPane = [ ];
-                      };
-                    }
-                    {
-                      "Alt f" = {
-                        ToggleFloatingPanes = [ ];
-                      };
-                    }
-                    {
-                      "Alt i" = {
-                        MoveTab = "Left";
-                      };
-                    }
-                    {
-                      "Alt o" = {
-                        MoveTab = "Right";
-                      };
-                    }
-                    {
-                      "Alt h" = {
-                        MoveFocusOrTab = "Left";
-                      };
-                      "Alt Left" = {
-                        MoveFocusOrTab = "Left";
-                      };
-                    }
-                    {
-                      "Alt l" = {
-                        MoveFocusOrTab = "Right";
-                      };
-                      "Alt Right" = {
-                        MoveFocusOrTab = "Right";
-                      };
-                    }
-                    {
-                      "Alt j" = {
-                        MoveFocus = "Down";
-                      };
-                      "Alt Down" = {
-                        MoveFocus = "Down";
-                      };
-                    }
-                    {
-                      "Alt k" = {
-                        MoveFocus = "Up";
-                      };
-                      "Alt Up" = {
-                        MoveFocus = "Up";
-                      };
-                    }
-                    {
-                      "Alt =" = {
-                        Resize = "Increase";
-                      };
-                      "Alt +" = {
-                        Resize = "Increase";
-                      };
-                    }
-                    {
-                      "Alt -" = {
-                        Resize = "Decrease";
-                      };
-                    }
-                    {
-                      "Alt [" = {
-                        PreviousSwapLayout = [ ];
-                      };
-                    }
-                    {
-                      "Alt ]" = {
-                        NextSwapLayout = [ ];
-                      };
-                    }
-                    {
-                      "Alt p" = {
-                        TogglePaneInGroup = [ ];
-                      };
-                    }
-                    {
-                      "Alt Shift p" = {
-                        ToggleGroupMarking = [ ];
-                      };
-                    }
-                  ];
-                }
-              ];
-            };
-          };
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+          exitShellOnExit = true;
         };
-
         zsh.initContent = ''
           function current_dir() {
             local current_dir=$PWD
@@ -1008,5 +50,209 @@
           fi
         '';
       };
+
+      xdg.configFile."zellij/config.kdl".text = ''
+        default_mode "locked"
+
+        keybinds clear-defaults=true {
+            normal {
+            }
+            locked {
+                bind "Ctrl g" { SwitchToMode "Normal"; }
+            }
+            resize {
+                bind "r" { SwitchToMode "Normal"; }
+                bind "h" "Left" { Resize "Increase Left"; }
+                bind "j" "Down" { Resize "Increase Down"; }
+                bind "k" "Up" { Resize "Increase Up"; }
+                bind "l" "Right" { Resize "Increase Right"; }
+                bind "H" { Resize "Decrease Left"; }
+                bind "J" { Resize "Decrease Down"; }
+                bind "K" { Resize "Decrease Up"; }
+                bind "L" { Resize "Decrease Right"; }
+                bind "=" "+" { Resize "Increase"; }
+                bind "-" { Resize "Decrease"; }
+            }
+            pane {
+                bind "p" { SwitchToMode "Normal"; }
+                bind "h" "Left" { MoveFocus "Left"; }
+                bind "l" "Right" { MoveFocus "Right"; }
+                bind "j" "Down" { MoveFocus "Down"; }
+                bind "k" "Up" { MoveFocus "Up"; }
+                bind "Tab" { SwitchFocus; }
+                bind "n" { NewPane; SwitchToMode "Locked"; }
+                bind "d" { NewPane "Down"; SwitchToMode "Locked"; }
+                bind "r" { NewPane "Right"; SwitchToMode "Locked"; }
+                bind "s" { NewPane "stacked"; SwitchToMode "Locked"; }
+                bind "x" { CloseFocus; SwitchToMode "Locked"; }
+                bind "f" { ToggleFocusFullscreen; SwitchToMode "Locked"; }
+                bind "z" { TogglePaneFrames; SwitchToMode "Locked"; }
+                bind "w" { ToggleFloatingPanes; SwitchToMode "Locked"; }
+                bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Locked"; }
+                bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
+                bind "i" { TogglePanePinned; SwitchToMode "Locked"; }
+            }
+            move {
+                bind "m" { SwitchToMode "Normal"; }
+                bind "n" "Tab" { MovePane; }
+                bind "p" { MovePaneBackwards; }
+                bind "h" "Left" { MovePane "Left"; }
+                bind "j" "Down" { MovePane "Down"; }
+                bind "k" "Up" { MovePane "Up"; }
+                bind "l" "Right" { MovePane "Right"; }
+            }
+            tab {
+                bind "t" { SwitchToMode "Normal"; }
+                bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
+                bind "h" "Left" "Up" "k" { GoToPreviousTab; }
+                bind "l" "Right" "Down" "j" { GoToNextTab; }
+                bind "n" { NewTab; SwitchToMode "Locked"; }
+                bind "x" { CloseTab; SwitchToMode "Locked"; }
+                bind "s" { ToggleActiveSyncTab; SwitchToMode "Locked"; }
+                bind "b" { BreakPane; SwitchToMode "Locked"; }
+                bind "]" { BreakPaneRight; SwitchToMode "Locked"; }
+                bind "[" { BreakPaneLeft; SwitchToMode "Locked"; }
+                bind "1" { GoToTab 1; SwitchToMode "Locked"; }
+                bind "2" { GoToTab 2; SwitchToMode "Locked"; }
+                bind "3" { GoToTab 3; SwitchToMode "Locked"; }
+                bind "4" { GoToTab 4; SwitchToMode "Locked"; }
+                bind "5" { GoToTab 5; SwitchToMode "Locked"; }
+                bind "6" { GoToTab 6; SwitchToMode "Locked"; }
+                bind "7" { GoToTab 7; SwitchToMode "Locked"; }
+                bind "8" { GoToTab 8; SwitchToMode "Locked"; }
+                bind "9" { GoToTab 9; SwitchToMode "Locked"; }
+                bind "Tab" { ToggleTab; }
+            }
+            scroll {
+                bind "s" { SwitchToMode "Normal"; }
+                bind "e" { EditScrollback; SwitchToMode "Locked"; }
+                bind "f" { SwitchToMode "EnterSearch"; SearchInput 0; }
+                bind "Ctrl c" { ScrollToBottom; SwitchToMode "Locked"; }
+                bind "j" "Down" { ScrollDown; }
+                bind "k" "Up" { ScrollUp; }
+                bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+                bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+                bind "d" { HalfPageScrollDown; }
+                bind "u" { HalfPageScrollUp; }
+                bind "Alt left" { MoveFocusOrTab "left"; SwitchToMode "locked"; }
+                bind "Alt down" { MoveFocus "down"; SwitchToMode "locked"; }
+                bind "Alt up" { MoveFocus "up"; SwitchToMode "locked"; }
+                bind "Alt right" { MoveFocusOrTab "right"; SwitchToMode "locked"; }
+                bind "Alt h" { MoveFocusOrTab "left"; SwitchToMode "locked"; }
+                bind "Alt j" { MoveFocus "down"; SwitchToMode "locked"; }
+                bind "Alt k" { MoveFocus "up"; SwitchToMode "locked"; }
+                bind "Alt l" { MoveFocusOrTab "right"; SwitchToMode "locked"; }
+            }
+            search {
+                bind "Ctrl c" { ScrollToBottom; SwitchToMode "Locked"; }
+                bind "j" "Down" { ScrollDown; }
+                bind "k" "Up" { ScrollUp; }
+                bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
+                bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
+                bind "d" { HalfPageScrollDown; }
+                bind "u" { HalfPageScrollUp; }
+                bind "n" { Search "down"; }
+                bind "p" { Search "up"; }
+                bind "c" { SearchToggleOption "CaseSensitivity"; }
+                bind "w" { SearchToggleOption "Wrap"; }
+                bind "o" { SearchToggleOption "WholeWord"; }
+            }
+            entersearch {
+                bind "Ctrl c" "Esc" { SwitchToMode "Scroll"; }
+                bind "Enter" { SwitchToMode "Search"; }
+            }
+            renametab {
+                bind "Ctrl c" "Enter" { SwitchToMode "Locked"; }
+                bind "Esc" { UndoRenameTab; SwitchToMode "Tab"; }
+            }
+            renamepane {
+                bind "Ctrl c" "Enter" { SwitchToMode "Locked"; }
+                bind "Esc" { UndoRenamePane; SwitchToMode "Pane"; }
+            }
+            session {
+                bind "o" { SwitchToMode "Normal"; }
+                bind "d" { Detach; }
+                bind "w" {
+                    LaunchOrFocusPlugin "session-manager" {
+                        floating true
+                        move_to_focused_tab true
+                    };
+                    SwitchToMode "Locked"
+                }
+                bind "c" {
+                    LaunchOrFocusPlugin "configuration" {
+                        floating true
+                        move_to_focused_tab true
+                    };
+                    SwitchToMode "Locked"
+                }
+                bind "p" {
+                    LaunchOrFocusPlugin "plugin-manager" {
+                        floating true
+                        move_to_focused_tab true
+                    };
+                    SwitchToMode "Locked"
+                }
+                bind "a" {
+                    LaunchOrFocusPlugin "zellij:about" {
+                        floating true
+                        move_to_focused_tab true
+                    };
+                    SwitchToMode "Locked"
+                }
+                bind "s" {
+                    LaunchOrFocusPlugin "zellij:share" {
+                        floating true
+                        move_to_focused_tab true
+                    };
+                    SwitchToMode "Locked"
+                }
+            }
+            shared_except "locked" "renametab" "renamepane" {
+                bind "Ctrl g" { SwitchToMode "Locked"; }
+                bind "Ctrl q" { Quit; }
+            }
+            shared_except "renamepane" "renametab" "entersearch" "locked" {
+                bind "esc" { SwitchToMode "locked"; }
+            }
+            shared_among "normal" "locked" {
+                bind "Alt n" { NewPane; }
+                bind "Alt f" { ToggleFloatingPanes; }
+                bind "Alt i" { MoveTab "Left"; }
+                bind "Alt o" { MoveTab "Right"; }
+                bind "Alt h" "Alt Left" { MoveFocusOrTab "Left"; }
+                bind "Alt l" "Alt Right" { MoveFocusOrTab "Right"; }
+                bind "Alt j" "Alt Down" { MoveFocus "Down"; }
+                bind "Alt k" "Alt Up" { MoveFocus "Up"; }
+                bind "Alt =" "Alt +" { Resize "Increase"; }
+                bind "Alt -" { Resize "Decrease"; }
+                bind "Alt [" { PreviousSwapLayout; }
+                bind "Alt ]" { NextSwapLayout; }
+                bind "Alt p" { TogglePaneInGroup; }
+                bind "Alt Shift p" { ToggleGroupMarking; }
+            }
+            shared_except "locked" "renametab" "renamepane" {
+                bind "Enter" { SwitchToMode "Locked"; }
+            }
+            shared_except "pane" "locked" "renametab" "renamepane" "entersearch" {
+                bind "p" { SwitchToMode "Pane"; }
+            }
+            shared_except "resize" "locked" "renametab" "renamepane" "entersearch" {
+                bind "r" { SwitchToMode "Resize"; }
+            }
+            shared_except "scroll" "locked" "renametab" "renamepane" "entersearch" {
+                bind "s" { SwitchToMode "Scroll"; }
+            }
+            shared_except "session" "locked" "renametab" "renamepane" "entersearch" {
+                bind "o" { SwitchToMode "Session"; }
+            }
+            shared_except "tab" "locked" "renametab" "renamepane" "entersearch" {
+                bind "t" { SwitchToMode "Tab"; }
+            }
+            shared_except "move" "locked" "renametab" "renamepane" "entersearch" {
+                bind "m" { SwitchToMode "Move"; }
+            }
+        }
+      '';
     };
 }

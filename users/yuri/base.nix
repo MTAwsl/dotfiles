@@ -36,12 +36,14 @@
           username = "yuri";
           homeDirectory = "/home/yuri";
           stateVersion = "26.05";
-        };
+          packages = with pkgs; [
+            gnupg
+          ];
 
-        # User Avatar
-        # I recommend to set it up otherwise DMS may becomes laggy.
-        home.file.".face" = {
-          source = ./face.png;
+          # User Avatar (Optional)
+          file.".face" = {
+            source = ./face.png;
+          };
         };
 
         programs = {

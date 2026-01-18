@@ -88,7 +88,7 @@
                     SAVED_TTY=$($STTY -g < /dev/tty)
                     $STTY sane < /dev/tty
 
-                    ${pkgs.yazi}/bin/yazi "$1" --chooser-file=/dev/stdout
+                    ${pkgs.yazi}/bin/yazi "$1" --chooser-file=/dev/stdout < /dev/tty
 
                     $STTY "$SAVED_TTY" < /dev/tty
                   fi

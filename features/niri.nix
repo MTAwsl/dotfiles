@@ -8,6 +8,10 @@
       ];
 
       programs.niri.enable = true;
+
+      # Switch back to stable once https://github.com/sodiboo/niri-flake/pull/1548 is closed.
+      programs.niri.package = pkgs.niri-unstable;
+
       programs.xwayland.enable = true;
 
       environment.systemPackages = with pkgs; [

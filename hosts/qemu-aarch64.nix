@@ -28,7 +28,7 @@
       environment.sessionVariables = {
         LIBGL_ALWAYS_SOFTWARE = "1";
       };
-      programs.niri.package = pkgs.niri; # niri-flake only contains x86_64 builds for now. Use nixpkgs instead.
+      programs.niri.package = lib.mkForce pkgs.niri; # niri-flake only contains x86_64 builds for now. Use nixpkgs instead.
 
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;

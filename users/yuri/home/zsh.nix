@@ -32,6 +32,7 @@
             cat = "bat";
             diff = "difft";
             ls = "eza";
+            fzhx = "hx $(fzf)";
           };
 
           initContent = ''

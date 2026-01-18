@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,6 +76,11 @@
 
     nix-yazi-plugins = {
       url = "github:lordkekz/nix-yazi-plugins";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    librepods = {
+      url = "github:kavishdevar/librepods/linux/rust";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -124,6 +134,7 @@
                 # Add overlays here.
                 (final: prev: {
                   uniclip = inputs'.uniclip.packages.uniclip;
+                  librepods = inputs'.librepods.packages.default;
                   pwndbg = inputs'.pwndbg.packages.default;
                   local = config.packages;
 
@@ -138,6 +149,9 @@
                     };
                   });
                 })
+
+                # Niri-Flake's overlay.
+                inputs.niri.overlays.niri
 
                 # Plymouth theme
                 inputs.mac-style-plymouth.overlays.default

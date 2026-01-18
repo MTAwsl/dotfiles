@@ -40,11 +40,13 @@
 
       # Host specific settings.
       users.users.yuri.extraGroups = [ "docker" ];
-      home-manager.users.yuri = {
-        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-          kanshi-lemonade
-        ];
-      };
+
+      # Use DMS shell to manage displays now.
+      # home-manager.users.yuri = {
+      #   imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+      #     kanshi-lemonade
+      #   ];
+      # };
 
       boot.initrd.luks.devices = {
         luks-root = {
@@ -102,7 +104,6 @@
           "sd_mod"
         ];
         kernelModules = [
-          "i915"
           "thunderbolt"
         ];
       };
@@ -110,7 +111,7 @@
       boot.extraModulePackages = [ ];
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
       boot.kernelModules = [ "kvm-intel" ];
-      boot.kernelParams = [ "i915.enable_guc=2" ];
+      boot.kernelParams = [ ];
       boot.loader.systemd-boot.configurationLimit = 3;
 
       services.logind.settings.Login = {
@@ -139,28 +140,5 @@
 
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
-
-      # Graphics
-      hardware.nvidia.prime = {
-        offload = {
-          enable = true;
-          enableOffloadCmd = true;
-        };
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:1:0:0";
-      };
-
-      # Intel
-      hardware.graphics = {
-        extraPackages = with pkgs; [
-          intel-media-driver
-          intel-compute-runtime-legacy1
-        ];
-      };
-
-      services.xserver.videoDrivers = [
-        "modesetting"
-        "nvidia"
-      ];
     };
 }

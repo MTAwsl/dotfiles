@@ -31,15 +31,6 @@
           # is closed
           # debug.wait-for-frame-completion-before-queueing = [ ];
 
-          outputs."DP-1" = {
-            scale = 1.0;
-            mode = {
-              width = 3440;
-              height = 1440;
-              refresh = 100.000;
-            };
-          };
-
           hotkey-overlay.skip-at-startup = true;
           prefer-no-csd = true;
 
@@ -82,8 +73,8 @@
             XDG_CURRENT_DESKTOP = "niri";
             QT_QPA_PLATFORM = "wayland";
             ELECTRON_OZONE_PLATFORM_HINT = "auto";
-            QT_QPA_PLATFORMTHEME = "qt5ct";
-            QT_QPA_PLATFORMTHEME_QT6 = "qt6ct";
+            QT_QPA_PLATFORMTHEME = "gtk3";
+            QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
           };
 
           layer-rules = [
@@ -135,6 +126,15 @@
             }
             {
               matches = [
+                {
+                  app-id = "org.gnome.Nautilus";
+                  is-active = true;
+                }
+              ];
+              opacity = 0.9;
+            }
+            {
+              matches = [
                 { app-id = "org.quickshell$"; }
               ];
               open-floating = true;
@@ -160,21 +160,31 @@
               matches = [
                 { app-id = "com.mitchellh.ghostty"; }
               ];
-              draw-border-with-background = true;
+              draw-border-with-background = false;
+              default-column-width.proportion = 0.3;
+            }
+            {
+              matches = [
+                {
+                  app-id = "com.mitchellh.ghostty";
+                  is-active = false;
+                }
+              ];
+              opacity = 0.95; # stylix already made ghostty opaque.
+              draw-border-with-background = false;
+              default-column-width.proportion = 0.3;
             }
             {
               matches = [
                 { is-active = false; }
               ];
-              opacity = 0.9;
+              opacity = 0.85;
             }
           ];
 
           spawn-at-startup = [
-            { sh = "app2unit -C -s s -- dms run"; }
             { sh = "niri msg action focus-workspace 3"; }
-            # { sh = "wl-paste --type text --watch cliphist store &"; }
-            # { sh = "wl-paste --type image --watch cliphist store &"; }
+            { sh = "dbus-update-activation-environment --systemd --all"; }
             # { sh = "app2unit -s app-graphical.slice -- firefox-devedition"; }
             # { sh = "kdeconnect-indicator &"; }
             # { sh = ''app2unit -- ghostty -e zsh -l -c "zellij a -c defaulted"''; }
@@ -461,15 +471,13 @@
             font-feature = "calt, ss01, ss02, ss03, ss04, ss05, ss06, ss07, ss08, ss09, ss10, liga";
             shell-integration = "zsh";
             shell-integration-features = "sudo, title, ssh-env";
+            background-blur = true;
           };
         };
       };
 
       # KDE Connect is an overkill for clipboard sharing.
       services.kdeconnect.enable = false;
-
-      # Enable cliphist
-      services.cliphist.enable = true;
 
       xdg.configFile."uwsm/env".text = ''
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"

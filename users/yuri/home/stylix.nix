@@ -6,6 +6,7 @@
       stylix = {
         base16Scheme = "${pkgs.base16-schemes}/share/themes/monokai.yaml";
         polarity = "dark";
+        opacity.terminal = 0.9;
         targets = {
           firefox = {
             profileNames = [
@@ -14,6 +15,7 @@
             fonts.enable = false;
           };
           vscode.enable = false;
+          qt.enable = false;
         };
         fonts.sizes = {
           terminal = 12;

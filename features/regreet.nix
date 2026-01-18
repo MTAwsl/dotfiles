@@ -18,7 +18,8 @@
     in
     {
       environment.systemPackages = with pkgs; [
-        kanshi
+        # Use DMS to manage displays.
+        # kanshi
       ];
 
       services.greetd = {
