@@ -17,6 +17,7 @@
       boot.kernelParams = [
         "nvidia-drm.modeset=1"
         "nvidia-drm.fbdev=1"
+        "acpi_backlight=video"
       ];
 
       services.xserver.videoDrivers = [ "nvidia" ];

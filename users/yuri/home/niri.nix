@@ -9,7 +9,8 @@
     }:
     {
       home.packages = with pkgs; [
-        seahorse
+        # Screenshot
+        flameshot
       ];
 
       programs = {
@@ -75,6 +76,8 @@
             ELECTRON_OZONE_PLATFORM_HINT = "auto";
             QT_QPA_PLATFORMTHEME = "gtk3";
             QT_QPA_PLATFORMTHEME_QT6 = "gtk3";
+            APP2UNIT_SLICES = "a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice";
+            APP2UNIT_TYPE = "scope";
           };
 
           layer-rules = [
@@ -121,6 +124,7 @@
             {
               matches = [
                 { app-id = "^firefox-devedition$"; }
+                { app-id = "Bitwarden"; }
               ];
               open-on-workspace = "1";
             }
@@ -131,7 +135,7 @@
                   is-active = true;
                 }
               ];
-              opacity = 0.9;
+              opacity = 0.95;
             }
             {
               matches = [
@@ -166,6 +170,20 @@
             {
               matches = [
                 {
+                  app-id = "steam";
+                  title = "^notificationtoasts_\\d+_desktop$";
+                }
+              ];
+              default-floating-position = {
+                x = 10;
+                y = 10;
+                relative-to = "top-right";
+              };
+              open-focused = false;
+            }
+            {
+              matches = [
+                {
                   app-id = "com.mitchellh.ghostty";
                   is-active = false;
                 }
@@ -183,12 +201,14 @@
           ];
 
           spawn-at-startup = [
-            { sh = "niri msg action focus-workspace 3"; }
             { sh = "dbus-update-activation-environment --systemd --all"; }
-            # { sh = "app2unit -s app-graphical.slice -- firefox-devedition"; }
+            { sh = "app2unit -- firefox-devedition"; }
+            { sh = ''app2unit -- ghostty -e zsh -l -c "zellij a -c defaulted"''; }
+            { sh = ''app2unit -- bitwarden"''; }
+            { sh = "app2unit -- vesktop"; }
+            { sh = "app2unit -- Telegram"; }
+            { sh = "niri msg action focus-workspace 4"; }
             # { sh = "kdeconnect-indicator &"; }
-            # { sh = ''app2unit -- ghostty -e zsh -l -c "zellij a -c defaulted"''; }
-            # { sh = "app2unit -- vesktop"; }
           ];
 
           binds =
@@ -257,7 +277,8 @@
 
                 "Mod+Shift+S" = {
                   hotkey-overlay.title = "Screenshot";
-                  action = spawn-sh "output=$(niri msg --json focused-output | jq -r .name); grim -o $output - | satty --fullscreen --filename -";
+                  # action = spawn-sh "output=$(niri msg --json focused-output | jq -r .name); grim -o $output - | satty --fullscreen --filename -";
+                  action = spawn-sh "flameshot gui";
                 };
 
                 # Uncomment to use orca
@@ -268,11 +289,11 @@
                 # };
 
                 "XF86AudioRaiseVolume" = {
-                  action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01+";
+                  action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+ -l 1";
                   allow-when-locked = true;
                 };
                 "XF86AudioLowerVolume" = {
-                  action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01-";
+                  action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02-";
                   allow-when-locked = true;
                 };
                 "XF86AudioMute" = {
@@ -472,6 +493,10 @@
             shell-integration = "zsh";
             shell-integration-features = "sudo, title, ssh-env";
             background-blur = true;
+            keybind = [
+              "ctrl+tab=unbind"
+              "ctrl+shift+tab=unbind"
+            ];
           };
         };
       };
@@ -482,6 +507,13 @@
       xdg.configFile."uwsm/env".text = ''
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"
         export APP2UNIT_TYPE="scope"
+      '';
+
+      # FIX: Remove this after https://github.com/flameshot-org/flameshot/issues/3605 is closed.
+      xdg.configFile."flameshot/flameshot.ini".text = ''
+        [General]
+        useGrimAdapter=true
+        disabledGrimWarning=true        
       '';
     };
 }

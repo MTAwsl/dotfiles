@@ -98,6 +98,7 @@
         tcpdump
         netsniff-ng
         # bloodhound-ce # See #6
+        bloodhound-cli
         bloodhound-py
         enum4linux-ng
         evil-winrm-py

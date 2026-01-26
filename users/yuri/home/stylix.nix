@@ -16,6 +16,7 @@
           };
           vscode.enable = false;
           qt.enable = false;
+          fzf.enable = false;
         };
         fonts.sizes = {
           terminal = 12;

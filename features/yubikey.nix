@@ -10,6 +10,7 @@
         # are able to log in with the associated U2F key.
         enable = true;
         settings = {
+          authfile = "/etc/u2f_keys";
           origin = "pam://" + self.meta.owner.pam_origin;
           interactive = true;
           cue = true;
@@ -17,17 +18,17 @@
       };
 
       security.pam.services = {
+        polkit-1.u2fAuth = true;
         login.u2fAuth = true;
         sudo.u2fAuth = true;
       };
 
       # Lock screen after removing yubikey
+      # Change Revision number if this is not working.
       services.udev.extraRules = ''
         ACTION=="remove",\
-        ENV{ID_BUS}=="usb",\
-        ENV{ID_MODEL_ID}=="0407",\
-        ENV{ID_VENDOR_ID}=="1050",\
-        ENV{ID_VENDOR}=="Yubico",\
+        ENV{SUBSYSTEM}=="usb",\
+        ENV{PRODUCT}=="1050/407/574",\
         RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
       '';
 

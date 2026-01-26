@@ -6,12 +6,12 @@
       environment.systemPackages = with pkgs; [
         file
         vim
+        fzf
+        git
         wget
         prettier
         helix
-        git
         htop
-        fzf
 
         # System monitor
         iw
@@ -19,7 +19,17 @@
         usbutils
       ];
 
+      environment.sessionVariables = {
+        SSH_AUTH_SOCK = "~/.ssh-agent.socket";
+      };
+
+      security.polkit.enable = true;
+
       users.groups.plugdev = { };
+      systemd.settings.Manager.DefaultTimeoutStopSec = "10s";
+      systemd.user.extraConfig = ''
+        DefaultTimeoutStopSec=10s
+      '';
 
       programs = {
         git = {

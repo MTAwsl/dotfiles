@@ -83,6 +83,11 @@
       url = "github:kavishdevar/librepods/linux/rust";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    bloodhound-cli = {
+      url = "github:/yurinek0/nix-bloodhound-cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -136,6 +141,7 @@
                   uniclip = inputs'.uniclip.packages.uniclip;
                   librepods = inputs'.librepods.packages.default;
                   pwndbg = inputs'.pwndbg.packages.default;
+                  bloodhound-cli = inputs'.bloodhound-cli.packages.default;
                   local = config.packages;
 
                   # FIX: Remove this after wl-clipboard released a new update. (Current date: 08/01/2026)
@@ -147,6 +153,16 @@
                       rev = "e8082035dafe0241739d7f7d16f7ecfd2ce06172";
                       hash = "sha256-sR/P+urw3LwAxwjckJP3tFeUfg5Axni+Z+F3mcEqznw=";
                     };
+                  });
+
+                  # FIX: Remove this after https://github.com/NixOS/nixpkgs/issues/181759 is closed
+                  flameshot = prev.flameshot.overrideAttrs (oldAttrs: {
+                    patches = oldAttrs.patches or [ ] ++ [
+                      (prev.fetchpatch {
+                        url = "https://github.com/flameshot-org/flameshot/pull/4363.patch";
+                        hash = "sha256-G3uSLIWZ8mOVTgO3EtH8YgUbpMf8Qkuur6pcoM7hrug=";
+                      })
+                    ];
                   });
                 })
 

@@ -53,6 +53,7 @@
 
       xdg.configFile."zellij/config.kdl".text = ''
         default_mode "locked"
+        show_startup_tips false
 
         keybinds clear-defaults=true {
             normal {
@@ -132,8 +133,8 @@
                 bind "k" "Up" { ScrollUp; }
                 bind "Ctrl f" "PageDown" "Right" "l" { PageScrollDown; }
                 bind "Ctrl b" "PageUp" "Left" "h" { PageScrollUp; }
-                bind "d" { HalfPageScrollDown; }
-                bind "u" { HalfPageScrollUp; }
+                bind "Ctrl d" { HalfPageScrollDown; }
+                bind "Ctrl u" { HalfPageScrollUp; }
                 bind "Alt left" { MoveFocusOrTab "left"; SwitchToMode "locked"; }
                 bind "Alt down" { MoveFocus "down"; SwitchToMode "locked"; }
                 bind "Alt up" { MoveFocus "up"; SwitchToMode "locked"; }
@@ -216,6 +217,22 @@
                 bind "esc" { SwitchToMode "locked"; }
             }
             shared_among "normal" "locked" {
+                // Tabs (Firefox-alike)
+                bind "Ctrl t" { NewTab; }
+                bind "Ctrl Tab" { GoToNextTab; }
+                bind "Ctrl Shift Tab" { GoToPreviousTab; }
+                bind "Alt 1" { GoToTab 1; }
+                bind "Alt 2" { GoToTab 2; }
+                bind "Alt 3" { GoToTab 3; }
+                bind "Alt 4" { GoToTab 4; }
+                bind "Alt 5" { GoToTab 5; }
+                bind "Alt 6" { GoToTab 6; }
+                bind "Alt 7" { GoToTab 7; }
+                bind "Alt 8" { GoToTab 8; }
+                bind "Alt 8" { GoToTab 8; }
+                bind "Alt 9" { GoToTab 1; GoToPreviousTab; }
+
+                // Panes
                 bind "Alt n" { NewPane; }
                 bind "Alt f" { ToggleFloatingPanes; }
                 bind "Alt i" { MoveTab "Left"; }

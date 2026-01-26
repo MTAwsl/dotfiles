@@ -19,6 +19,9 @@
           # Airpods on Linux
           librepods
 
+          udiskie
+          # keepassxc
+
           # Shell
           starship
           zellij
@@ -63,14 +66,11 @@
 
         home.packages = with pkgs; [
 
-          # Screenshot
-          # Switch back to flameshot once https://github.com/flameshot-org/flameshot/issues/3605 is closed.
-          # flameshot
-          grim # Use with Niri spawn-with-sh
-          satty
-
           # Yubikey manager
           yubioath-flutter
+
+          # Pipewire
+          pwvucontrol
 
           # apps
           audacity
@@ -117,7 +117,7 @@
         };
       };
 
-      fonts.fontDir.enable = true;
+      services.onedrive.enable = false;
 
       i18n.inputMethod = {
         enable = true;
@@ -133,26 +133,13 @@
         };
       };
 
-      # sound
-      security.rtkit.enable = true;
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-      };
-
-      # printing
-      services.printing.enable = true;
-
       # the app that maximizes my retention
-      programs.steam.enable = true;
-
-      # controller
-      # hardware.xone.enable = true;
-      hardware.xpadneo.enable = true;
-
-      # mouse config (piper)
-      services.ratbagd.enable = true;
+      programs.steam = {
+        enable = true;
+        extraCompatPackages = with pkgs; [
+          # Let ProtonUp manages it
+          # proton-ge-bin
+        ];
+      };
     };
 }

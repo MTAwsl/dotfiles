@@ -56,6 +56,7 @@
       };
 
       environment.etc.crypttab.text = ''
+        luks-data UUID=f24bb1b4-5204-4e57-ab7a-87a3ef751126 /root/data.key
         luks-swap UUID=695b24b6-2263-42dc-9db5-1a2545fe8675 /root/swap.key
       '';
 
@@ -65,7 +66,10 @@
       networking.hostName = "Yuri-Lemonade";
       networking.networkmanager = {
         enable = true;
-        wifi.backend = "iwd";
+        wifi = {
+          backend = "iwd";
+          powersave = false;
+        };
       };
 
       # The bluetooth device is ready to pair.
@@ -130,6 +134,11 @@
           "fmask=0077"
           "dmask=0077"
         ];
+      };
+
+      fileSystems."/mnt/data" = {
+        device = "/dev/mapper/luks-data";
+        fsType = "ext4";
       };
 
       swapDevices = [

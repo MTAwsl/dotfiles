@@ -7,6 +7,8 @@
         (inputs.nix-yazi-plugins.legacyPackages.x86_64-linux.homeManagerModules.default)
       ];
 
+      home.packages = with pkgs; [ ];
+
       programs.yazi = {
         enable = true;
         enableBashIntegration = true;

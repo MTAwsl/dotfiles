@@ -1,11 +1,14 @@
 { self, inputs, ... }:
 {
   flake.modules.nixos.niri =
-    { config, pkgs, ... }:
+    { lib, pkgs, ... }:
     {
       imports = [
         inputs.niri.nixosModules.niri
       ];
+
+      services.gnome.gnome-keyring.enable = lib.mkForce true;
+      services.gnome.gcr-ssh-agent.enable = false;
 
       programs.niri.enable = true;
 
@@ -48,14 +51,6 @@
           extraArgs = [ "--session" ];
         };
       };
-
-      security = {
-        polkit.enable = true;
-        pam.services.greetd.enableGnomeKeyring = true;
-      };
-
-      # Disable GCR ssh agent
-      services.gnome.gcr-ssh-agent.enable = false;
 
       networking.firewall = {
         allowedTCPPortRanges = [

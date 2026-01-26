@@ -7,6 +7,7 @@
         enable = true;
         package = pkgs.firefox-devedition;
         policies.preferences = {
+          "spellchecker.dictionary" = "English (Australia)";
           "browser.sessionstore.max_resumed_crashes" = -1;
         };
         profiles = {

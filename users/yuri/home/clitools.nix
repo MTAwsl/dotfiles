@@ -79,12 +79,39 @@
         package = pkgs.tlrc;
       };
 
-      programs.nh = {
-        enable = true;
-        flake = "${config.home.homeDirectory}/.config/nix-config";
-      };
-
       programs = {
+        fzf = {
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+          colors = {
+            bg = "-1";
+            "bg+" = "-1";
+          };
+          defaultCommand = "fd --type f";
+          fileWidgetCommand = "fd --type f";
+          fileWidgetOptions = [
+            "--preview 'bat --style=numbers --color=always --line-range :500 {}'"
+          ];
+        };
+
+        nh = {
+          enable = true;
+          flake = "${config.home.homeDirectory}/.config/nix-config";
+        };
+
+        direnv = {
+          enable = true;
+          nix-direnv.enable = true;
+        };
+
+        # file explorer
+        yazi = {
+          enable = true;
+          enableBashIntegration = true;
+          enableZshIntegration = true;
+        };
+
         nix-index.enable = true; # command-not-found
         nix-index-database.comma.enable = true; # , -> nix run nixpkgs#
       };

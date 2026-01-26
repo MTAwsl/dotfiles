@@ -55,8 +55,13 @@
             export EDITOR="hx"
             export VISUAL="$EDITOR"
 
-            # bitwarden ssh sock
+            # ssh sock
             export SSH_AUTH_SOCK="/home/yuri/.bitwarden-ssh-agent.sock"
+
+            # Rebind FZF
+            bindkey -r "^F"
+            bindkey "^F" fzf-file-widget
+
           '';
         };
 
@@ -66,18 +71,8 @@
           options = [ "--cmd cd" ];
         };
 
-        # file explorer
-        yazi = {
-          enable = true;
-          enableBashIntegration = true;
-          enableZshIntegration = true;
-        };
-
         # the cat replacement that actually does something
         bat.enable = true;
-
-        # great file fuzzy finder
-        fzf.enable = true;
 
         atuin = {
           enable = true;
@@ -89,12 +84,6 @@
             style = "compact";
           };
         };
-
-        direnv = {
-          enable = true;
-          nix-direnv.enable = true;
-        };
-
       };
     };
 
