@@ -9,6 +9,11 @@
         dnsmasq
       ];
 
+      users.groups = {
+        kvm = { };
+        libvirtd = { };
+      };
+
       systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
 
       boot.binfmt.emulatedSystems = [
@@ -21,6 +26,7 @@
         qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
         qemu.swtpm.enable = true;
       };
+
       programs.virt-manager.enable = true;
     };
 }

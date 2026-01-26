@@ -18,6 +18,39 @@
             nixd
             deadnix
             statix
+
+            dockerfile-language-server # Dockerfile
+            docker-compose-language-service
+
+            nodePackages.bash-language-server # Bash
+            nodePackages.yaml-language-server # YAML
+
+            jq
+            jq-lsp
+
+            pyright # Python (Type checker & LSP)
+            ruff
+
+            rust-analyzer
+            clippy
+
+            cmake-language-server # CMake
+            taplo # TOML
+
+            clang-tools # C / C++            gopls # Go
+            gotools # Go formatters/tools
+            lua-language-server # Lua
+            jdt-language-server # Java
+            omnisharp-roslyn
+            marksman # Markdown
+            lldb
+
+            nixd
+            tinymist # typst
+            typstyle
+            vscode-langservers-extracted # html/css/json/eslint
+            codebook # spell check
+            harper
           ];
         }
       ];
@@ -132,6 +165,28 @@
                   };
                   auto-format = true;
                 };
+                python = {
+                  roots = [
+                    "pyproject.toml"
+                    "setup.py"
+                    "poetry.lock"
+                    ".git"
+                    ".jj"
+                    ".venv/"
+                  ];
+                  file-types = [
+                    "py"
+                    "ipynb"
+                  ];
+                  formatter = {
+                    command = "ruff";
+                    args = [
+                      "format"
+                      "-"
+                    ];
+                  };
+                  auto-format = true;
+                };
               };
 
               default-language-servers =
@@ -144,19 +199,22 @@
                 |> builtins.listToAttrs;
 
               codebook-langs = [
-                "c"
-                "cpp"
-                "css"
+                # "c"
+                # "cpp"
+                # "css"
                 "html"
-                "javascript"
-                "lua"
-                "nix"
-                "python"
-                "rust"
-                "toml"
-                "typescript"
-                "zig"
+                "markdown"
+                "typst"
+                # "javascript"
+                # "lua"
+                # "nix"
+                # "python"
+                # "rust"
+                # "toml"
+                # "typescript"
+                # "zig"
               ];
+
               harper-langs = [
                 "markdown"
                 "typst"
@@ -172,6 +230,8 @@
               default-language-servers
               (append-ls "codebook" codebook-langs)
               (append-ls "harper-ls" harper-langs)
+              (append-ls "pyright" [ "python" ])
+              (append-ls "ruff" [ "python" ])
             ]
             |> lib.mapAttrsToList (name: value: value // { inherit name; });
 
@@ -183,6 +243,56 @@
                 "--tsserver-path=${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"
               ];
               config.documentFormatting = false;
+            };
+
+            pyright = {
+              command = "${pkgs.pyright}/bin/pyright-langserver";
+              args = [ "--stdio" ];
+            };
+
+            ruff = {
+              command = "ruff";
+              args = [ "server" ];
+              environment = {
+                "RUFF_TRACE" = "messages";
+              };
+              config = {
+                settings = {
+                  lineLength = 80;
+                  logLevel = "debug";
+                  lint = {
+                    select = [
+                      "E"
+                      "F"
+                      "W"
+                      "B"
+                      "I"
+                      "RUF"
+                      "N"
+                      "LOG"
+                      "ERA"
+                      "W"
+                      "D"
+                      "UP"
+                      "ANN"
+                      "ASYNC"
+                      "S"
+                      "RET"
+                      "TCH"
+                      "ARG"
+                      "PTH"
+                      "DOC"
+                    ];
+                    preview = true;
+                  };
+                  format = {
+                    preview = true;
+                    "quote-style" = "double";
+                    "docstring-code-format" = true;
+                    "indent-style" = "space";
+                  };
+                };
+              };
             };
 
             tinymist.config = {
@@ -214,18 +324,6 @@
               };
             };
           };
-
-          extraPackages = with pkgs; [
-            nixd
-            rust-analyzer
-            tinymist # typst
-            typstyle
-            vscode-langservers-extracted # html/css/json/eslint
-            clang-tools # c
-            lldb
-            codebook # spell check
-            harper
-          ];
         };
       };
     };

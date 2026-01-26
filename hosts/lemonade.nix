@@ -113,6 +113,7 @@
       };
 
       boot.extraModulePackages = [ ];
+      boot.extraModprobeConfig = "options kvm_intel nested=1";
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
       boot.kernelModules = [ "kvm-intel" ];
       boot.kernelParams = [ ];

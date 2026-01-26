@@ -16,6 +16,8 @@
         extraGroups = [
           "networkmanager"
           "wheel"
+          "kvm"
+          "libvirtd"
           "input"
           "plugdev"
         ];

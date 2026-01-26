@@ -28,6 +28,9 @@
 
           firefox
 
+          # XDG Default APPS
+          xdg
+
           # i18n-rime-ice
           (
             { lib, ... }:
@@ -74,7 +77,7 @@
 
           # apps
           audacity
-          bitwarden-desktop # This is unstable. For now do not lock the vault,
+          bitwarden-desktop # This is unstable. For now do not lock the vault, see https://github.com/bitwarden/clients/issues/18463
           bottles
           lutris
           filezilla
