@@ -37,6 +37,8 @@
 
           input.keyboard.numlock = true;
 
+          clipboard.disable-primary = true;
+
           layout = {
             gaps = 5;
             border = {

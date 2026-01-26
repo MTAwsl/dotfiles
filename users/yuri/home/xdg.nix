@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 {
   flake.modules.homeManager.yuri-xdg =
     { ... }:
@@ -6,42 +6,69 @@
       xdg.mimeApps = {
         enable = true;
 
-        defaultApplications = {
-          # Images: Swayimg default
-          "image/jpeg" = [ "swayimg.desktop" ];
-          "image/png" = [ "swayimg.desktop" ];
-          "image/gif" = [ "swayimg.desktop" ];
-          "image/webp" = [ "swayimg.desktop" ];
-          "image/tiff" = [ "swayimg.desktop" ];
-          "image/bmp" = [ "swayimg.desktop" ];
-          "image/svg+xml" = [ "swayimg.desktop" ];
+        defaultApplications =
+          let
+            imageTypes = [
+              "jpeg"
+              "png"
+              "gif"
+              "webp"
+              "tiff"
+              "bmp"
+              "svg+xml"
+            ];
+            textTypes = [
+              "plain"
+              "markdown"
+              "x-shellscript"
+              "x-nix"
+            ];
+            applicationTextTypes = [
+              "json"
+              "toml"
+              "yaml"
+            ];
+            videoTypes = [
+              "mp4"
+              "x-matroska"
+              "webm"
+              "quicktime"
+              "x-msvideo"
+              "mpeg"
+            ];
 
-          # Videos: VLC default, MPV fallback
-          "video/mp4" = [
-            "vlc.desktop"
-            "mpv.desktop"
+            webSchemeTypes = [
+              "http"
+              "https"
+              "about"
+              "unknown"
+            ];
+
+            mkType =
+              name: types: handler:
+              let
+                isString = o: (builtins.typeOf o) == "string";
+                handlerList = if (isString handler) then [ handler ] else handler;
+                typesList = if (isString types) then [ types ] else types;
+              in
+              typesList |> (map (t: lib.nameValuePair (name + "/" + t) handlerList)) |> lib.listToAttrs;
+          in
+          lib.foldl' lib.mergeAttrs { } [
+            (mkType "image" imageTypes "swayimg.desktop")
+            (mkType "text" textTypes "dev.zed.Zed.desktop")
+            (mkType "application" applicationTextTypes "dev.zed.Zed.desktop")
+            (mkType "video" videoTypes [
+              "vlc.desktop"
+              "mpv.desktop"
+            ])
+            (mkType "x-scheme-handler" webSchemeTypes "firefox-devedition.desktop")
+
+            {
+              "text/html" = [ "firefox-devedition.desktop" ];
+              "application/pdf" = [ "firefox-devedition.desktop" ];
+            }
           ];
-          "video/x-matroska" = [
-            "vlc.desktop"
-            "mpv.desktop"
-          ]; # .mkv
-          "video/webm" = [
-            "vlc.desktop"
-            "mpv.desktop"
-          ];
-          "video/quicktime" = [
-            "vlc.desktop"
-            "mpv.desktop"
-          ]; # .mov
-          "video/x-msvideo" = [
-            "vlc.desktop"
-            "mpv.desktop"
-          ]; # .avi
-          "video/mpeg" = [
-            "vlc.desktop"
-            "mpv.desktop"
-          ];
-        };
+
       };
     };
 }
