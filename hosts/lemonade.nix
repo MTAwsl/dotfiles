@@ -112,12 +112,24 @@
         ];
       };
 
-      boot.extraModulePackages = [ ];
+      boot.kernelModules = [
+        "lenovo-legion-module"
+        "kvm-intel"
+      ];
+      boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
       boot.extraModprobeConfig = "options kvm_intel nested=1";
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
-      boot.kernelModules = [ "kvm-intel" ];
       boot.kernelParams = [ ];
       boot.loader.systemd-boot.configurationLimit = 3;
+
+      # Hardware specific packages.
+      environment.systemPackages = with pkgs; [
+        lenovo-legion
+      ];
+
+      # I agree with Linus.
+      # https://github.com/NVIDIA/open-gpu-kernel-modules/issues/483
+      # hardware.nvidia.power-limit = 60; # Limit maximum power draw to 60W to prevent overheating.
 
       services.logind.settings.Login = {
         HandleLidSwitchExternalPower = "ignore";

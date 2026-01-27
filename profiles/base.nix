@@ -24,6 +24,12 @@
       };
 
       security.polkit.enable = true;
+      networking.networkmanager.plugins = with pkgs; [
+        networkmanager-l2tp
+        networkmanager-openconnect
+        networkmanager-openvpn
+        networkmanager-ssh
+      ];
 
       users.groups.plugdev = { };
       systemd.settings.Manager.DefaultTimeoutStopSec = "10s";

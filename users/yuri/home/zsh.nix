@@ -59,7 +59,7 @@
             export SSH_AUTH_SOCK="/home/yuri/.bitwarden-ssh-agent.sock"
 
             # Rebind FZF
-            bindkey -r "^F"
+            bindkey -r "^T"
             bindkey "^F" fzf-file-widget
 
           '';

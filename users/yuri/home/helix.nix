@@ -66,7 +66,7 @@
             bufferline = "multiple";
             line-number = "relative";
             rulers = [
-              80
+              89
               120
             ];
             indent-guides.render = true;
@@ -258,7 +258,9 @@
               };
               config = {
                 settings = {
-                  lineLength = 80;
+                  lineLength = 88;
+                  # Too lazy to fix ruff linting rule.
+                  # TODO: Start a template pyproject with uv and nix shell.
                   logLevel = "debug";
                   lint = {
                     select = [

@@ -87,6 +87,7 @@
         (burpsuite.override { proEdition = false; })
         sqlmap
         wireshark
+        whatweb
 
         # Pentest
         metasploit
