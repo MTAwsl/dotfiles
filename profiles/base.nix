@@ -30,6 +30,7 @@
         networkmanager-openvpn
         networkmanager-ssh
       ];
+      networking.firewall.checkReversePath = "loose"; # Fix VPN connections.
 
       users.groups.plugdev = { };
       systemd.settings.Manager.DefaultTimeoutStopSec = "10s";

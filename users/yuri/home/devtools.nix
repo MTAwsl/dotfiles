@@ -35,5 +35,7 @@
         automake
       ];
 
+      # uv's custom python bin path.
+      home.sessionPath = [ "/home/yuri/.local/bin" ];
     };
 }

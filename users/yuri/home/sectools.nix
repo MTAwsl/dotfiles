@@ -75,6 +75,7 @@
         netcat
         scrcpy
         proxychains-ng
+        wireshark
 
         # Password
         hashcat
@@ -86,7 +87,6 @@
         # Web
         (burpsuite.override { proEdition = false; })
         sqlmap
-        wireshark
         whatweb
 
         # Pentest

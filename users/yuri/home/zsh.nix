@@ -33,6 +33,9 @@
             diff = "difft";
             ls = "eza";
             fzhx = "hx $(fzf)";
+            ssh-no-keychk = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
+            sftp-no-keychk = "sftp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
+            scp-no-keychk = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null";
           };
 
           initContent = ''
