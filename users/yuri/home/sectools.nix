@@ -90,6 +90,7 @@
         whatweb
 
         # Pentest
+        rlwrap
         metasploit
         snmpcheck
         minicom
@@ -98,7 +99,6 @@
         goreplay
         tcpdump
         netsniff-ng
-        # bloodhound-ce # See #6
         bloodhound-cli
         bloodhound-py
         enum4linux-ng
@@ -107,6 +107,7 @@
         powerview
         samba
         smbscan
+        penelope
         python3Packages.impacket
 
         # Tunnel

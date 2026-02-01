@@ -26,6 +26,7 @@
         nvidia
         docker
         qemu-host
+        network
       ])
       # Import host profiles.
       ++ (with self.lib.withPrefix "profile" self.modules.nixos; [
@@ -39,7 +40,9 @@
       ]);
 
       # Host specific settings.
-      users.users.yuri.extraGroups = [ "docker" ];
+
+      # Uncomment this to test for docker.
+      # users.users.yuri.extraGroups = [ "docker" ];
 
       # Use DMS shell to manage displays now.
       # home-manager.users.yuri = {
@@ -47,6 +50,9 @@
       #     kanshi-lemonade
       #   ];
       # };
+
+      # Disable unstable DP-1 Output
+      home-manager.users.yuri.programs.niri.settings.outputs."DP-1".enable = false;
 
       boot.initrd.luks.devices = {
         luks-root = {
@@ -64,19 +70,6 @@
 
       # Network settings
       networking.hostName = "Yuri-Lemonade";
-      networking.networkmanager = {
-        enable = true;
-        wifi = {
-          backend = "iwd";
-          powersave = false;
-        };
-      };
-
-      # The bluetooth device is ready to pair.
-      hardware.bluetooth = {
-        enable = true;
-        powerOnBoot = true;
-      };
 
       time.timeZone = "Australia/Sydney";
       i18n.defaultLocale = "en_AU.UTF-8";

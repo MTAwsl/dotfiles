@@ -85,7 +85,7 @@
     };
 
     bloodhound-cli = {
-      url = "github:/yurinek0/nix-bloodhound-cli";
+      url = "github:yurinek0/nix-bloodhound-cli";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -143,6 +143,10 @@
                   pwndbg = inputs'.pwndbg.packages.default;
                   bloodhound-cli = inputs'.bloodhound-cli.packages.default;
                   local = config.packages;
+
+                  penelope = prev.penelope.overrideAttrs (oldAttrs: {
+                    postPatch = ""; # Install penelope.py.
+                  });
 
                   # FIX: Remove this after wl-clipboard released a new update. (Current date: 08/01/2026)
                   wl-clipboard = prev.wl-clipboard.overrideAttrs (old: {

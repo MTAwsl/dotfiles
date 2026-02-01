@@ -12,8 +12,8 @@
         settings = {
           authfile = "/etc/u2f_keys";
           origin = "pam://" + self.meta.owner.pam_origin;
-          interactive = true;
-          cue = true;
+          interactive = false;
+          cue = false;
         };
       };
 
