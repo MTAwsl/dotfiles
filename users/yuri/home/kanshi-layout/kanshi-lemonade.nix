@@ -4,9 +4,7 @@
     { ... }:
     {
       services.kanshi.settings = [
-        # SCENARIO 3: Two External Monitors Connected (HDMI + DP)
-        # Priority: HDMI is at 0,0 (Left/Primary), DP is to the right.
-        # Internal screen (eDP-1) is disabled.
+        # Disable DP output
         {
           profile.name = "dual-external";
           profile.outputs = [
@@ -20,6 +18,7 @@
             }
             {
               criteria = "DP-1";
+              status = "disable";
             }
           ];
         }

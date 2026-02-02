@@ -15,7 +15,7 @@
       users.users.yuri.extraGroups = [ "wireshark" ];
       home-manager.users.yuri = {
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-          # kanshi
+          kanshi
           niri
           dms-shell
           stylix

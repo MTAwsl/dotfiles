@@ -12,6 +12,8 @@
         rustc
         cargo
 
+        dotnet-sdk
+
         go
 
         # Python

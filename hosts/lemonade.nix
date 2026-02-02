@@ -44,12 +44,11 @@
       # Uncomment this to test for docker.
       # users.users.yuri.extraGroups = [ "docker" ];
 
-      # Use DMS shell to manage displays now.
-      # home-manager.users.yuri = {
-      #   imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-      #     kanshi-lemonade
-      #   ];
-      # };
+      home-manager.users.yuri = {
+        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+          kanshi-lemonade
+        ];
+      };
 
       # Disable unstable DP-1 Output
       home-manager.users.yuri.programs.niri.settings.outputs."DP-1".enable = false;
