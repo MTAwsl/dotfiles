@@ -14,6 +14,21 @@ let
         backupFileExtension = "bak";
         backupCommand = "rm";
         overwriteBackup = true;
+        sharedModules = [
+          (
+            {
+              lib,
+              ...
+            }:
+            {
+              # isDesktopProfile option.
+              options.home.isDesktopProfile = lib.mkOption {
+                type = lib.types.bool;
+                default = false;
+              };
+            }
+          )
+        ];
       };
     };
 in

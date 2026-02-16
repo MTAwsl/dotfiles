@@ -17,6 +17,7 @@
           vscode.enable = false;
           qt.enable = false;
           fzf.enable = false;
+          dank-material-shell.enable = false;
         };
         fonts.sizes = {
           terminal = 12;

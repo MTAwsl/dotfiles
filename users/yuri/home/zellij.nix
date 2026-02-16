@@ -54,6 +54,7 @@
       xdg.configFile."zellij/config.kdl".text = ''
         default_mode "locked"
         show_startup_tips false
+        session_serialization false
 
         keybinds clear-defaults=true {
             normal {

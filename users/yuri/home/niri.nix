@@ -11,6 +11,10 @@
       home.packages = with pkgs; [
         # Screenshot
         flameshot
+        libnotify
+
+        # KDE Connect is an overkill for clipboard sharing.
+        # kde-connect
       ];
 
       programs = {
@@ -210,7 +214,6 @@
             { sh = "app2unit -- vesktop"; }
             { sh = "app2unit -- Telegram"; }
             { sh = "niri msg action focus-workspace 4"; }
-            # { sh = "kdeconnect-indicator &"; }
           ];
 
           binds =
@@ -502,9 +505,6 @@
           };
         };
       };
-
-      # KDE Connect is an overkill for clipboard sharing.
-      services.kdeconnect.enable = false;
 
       xdg.configFile."uwsm/env".text = ''
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"

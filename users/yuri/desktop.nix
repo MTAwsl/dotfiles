@@ -2,8 +2,6 @@
 {
   flake.modules.nixos.user-yuri-desktop =
     {
-      config,
-      lib,
       pkgs,
       ...
     }:
@@ -12,7 +10,10 @@
         wireshark
       ];
 
-      users.users.yuri.extraGroups = [ "wireshark" ];
+      users.users.yuri = {
+        extraGroups = [ "wireshark" ];
+      };
+
       home-manager.users.yuri = {
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
           kanshi
@@ -35,6 +36,7 @@
 
           # XDG Default APPS
           xdg
+          patch-xdg-open
 
           # i18n-rime-ice
           (
@@ -72,6 +74,7 @@
           )
         ];
 
+        home.isDesktopProfile = true;
         home.packages = with pkgs; [
 
           # Yubikey manager
@@ -86,7 +89,6 @@
           swayimg
           # gale
           gimp
-          gparted
           # heroic # Epic Games launcher
           inkscape-with-extensions
           obsidian

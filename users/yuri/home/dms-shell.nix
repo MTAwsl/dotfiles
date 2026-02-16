@@ -12,6 +12,8 @@
       ];
 
       programs.dank-material-shell = {
+        # Do not define settings here unless a declearative config is required.
+        # Or the settings will be overwritten.
         enable = true;
         niri = {
           enableKeybinds = false; # Sets static preset keybinds

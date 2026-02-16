@@ -127,6 +127,7 @@
           {
             config,
             system,
+            pkgs,
             inputs',
             ...
           }:

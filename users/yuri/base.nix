@@ -14,16 +14,13 @@
         description = "Sayuri Nekomiya";
         shell = pkgs.zsh;
         extraGroups = [
-          "networkmanager"
+          "networkmanager" # Risk accepted.
           "wheel"
-          "kvm"
-          "libvirtd"
-          "input"
-          "plugdev"
         ];
       };
 
       home-manager.users.yuri = {
+
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
           git
           yazi
@@ -32,6 +29,8 @@
           starship
           clitools
           devtools
+          sys-update-prompt
+          gh-release-tracker
         ];
 
         home = {
