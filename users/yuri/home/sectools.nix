@@ -1,6 +1,6 @@
 { ... }:
 {
-  flake.modules.homeManager.yuri-devtools =
+  flake.modules.homeManager.yuri-sectools =
     { pkgs, ... }:
     {
       programs.zsh.shellAliases = {

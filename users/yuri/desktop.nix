@@ -22,6 +22,9 @@
           stylix
           qtgtk
 
+          devtools
+          sectools
+
           # Airpods on Linux
           librepods
 
@@ -40,6 +43,8 @@
           # XDG Default APPS
           xdg
           patch-xdg-open
+
+          gh-release-tracker
 
           # i18n-rime-ice
           (

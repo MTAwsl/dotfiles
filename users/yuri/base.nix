@@ -28,9 +28,7 @@
           zsh
           starship
           clitools
-          devtools
           sys-update-prompt
-          gh-release-tracker
         ];
 
         home = {
