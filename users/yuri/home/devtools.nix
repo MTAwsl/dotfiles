@@ -6,7 +6,7 @@
       home.packages = with pkgs; [
         # Node JS and LSP.
         nodejs
-        nodePackages."typescript"
+        typescript
         astro-language-server
 
         rustc

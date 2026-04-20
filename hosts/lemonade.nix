@@ -50,9 +50,6 @@
         ];
       };
 
-      # Disable unstable DP-1 Output
-      home-manager.users.yuri.programs.niri.settings.outputs."DP-1".enable = false;
-
       boot.initrd.luks.devices = {
         luks-root = {
           device = "/dev/disk/by-uuid/25a3784d-03b9-41c1-a156-cc0676ca9c85";

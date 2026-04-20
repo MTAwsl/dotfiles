@@ -1,14 +1,14 @@
 {
-  buildGo124Module,
+  buildGo126Module,
   fetchFromGitHub,
   ...
 }:
 let
   buildExec =
     exec: vendorHash:
-    buildGo124Module rec {
+    buildGo126Module rec {
       pname = "certdx-${exec}";
-      version = "0.4.2";
+      version = "0.4.5";
 
       src = fetchFromGitHub {
         owner = "ParaParty";

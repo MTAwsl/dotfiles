@@ -32,6 +32,9 @@
           starship
           zellij
 
+          # Vibe
+          opencode
+
           firefox
 
           # XDG Default APPS
@@ -103,6 +106,8 @@
           vlc
           zed-editor
           pear-desktop # YT Music
+          zip
+          unzip
         ];
 
         programs = {

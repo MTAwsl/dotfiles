@@ -12,7 +12,7 @@
         {
           home.packages = with pkgs; [
             nodejs
-            nodePackages.typescript
+            typescript
             astro-language-server
             nixfmt
             nixd
@@ -22,8 +22,8 @@
             dockerfile-language-server # Dockerfile
             docker-compose-language-service
 
-            nodePackages.bash-language-server # Bash
-            nodePackages.yaml-language-server # YAML
+            bash-language-server # Bash
+            yaml-language-server # YAML
 
             jq
             jq-lsp
@@ -100,7 +100,7 @@
                     mkfifo "$YAZI_TMP/fifo"
 
                     zellij run -fc --width 90% --height 90% -x 5% -y 5% -- \
-                      sh -c "${pkgs.yazi}/bin/yazi \"$1\" --chooser-file=\"$YAZI_TMP/out\" | tee \"$YAZI_TMP/fifo\""
+                      sh -c "${pkgs.yazi}/bin/yazi \"$1\" --chooser-file=\"$YAZI_TMP/out\" | tee \"$YAZI_TMP/fifo\"" > /dev/null
 
                     cat < "$YAZI_TMP/fifo" > /dev/null
 
@@ -190,10 +190,13 @@
               };
 
               default-language-servers =
-                (builtins.fromTOML (builtins.readFile "${config.programs.helix.package.src}/languages.toml"))
-                .language
+                (fromTOML (builtins.readFile "${pkgs.helix-unwrapped.src}/languages.toml")).language
                 |> builtins.filter (
-                  l: builtins.hasAttr "name" l && builtins.hasAttr "scope" l && builtins.hasAttr "language-servers" l
+                  l:
+                  builtins.hasAttr "name" l
+                  && builtins.hasAttr "scope" l
+                  && builtins.hasAttr "language-servers" l
+                  && l.name != "python"
                 )
                 |> map (l: lib.nameValuePair l.name { language-servers = _: l.language-servers; })
                 |> builtins.listToAttrs;
@@ -237,10 +240,10 @@
 
           language-server = {
             typescript-language-server = {
-              command = "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server";
+              command = "${pkgs.typescript-language-server}/bin/typescript-language-server";
               args = [
                 "--stdio"
-                "--tsserver-path=${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"
+                "--tsserver-path=${pkgs.typescript}/lib/node_modules/typescript/lib"
               ];
               config.documentFormatting = false;
             };
@@ -261,7 +264,7 @@
                   lineLength = 88;
                   # Too lazy to fix ruff linting rule.
                   # TODO: Start a template pyproject with uv and nix shell.
-                  logLevel = "debug";
+                  # logLevel = "debug";
                   lint = {
                     select = [
                       "E"
@@ -269,21 +272,8 @@
                       "W"
                       "B"
                       "I"
-                      "RUF"
-                      "N"
-                      "LOG"
-                      "ERA"
-                      "W"
-                      "D"
                       "UP"
-                      "ANN"
-                      "ASYNC"
                       "S"
-                      "RET"
-                      "TCH"
-                      "ARG"
-                      "PTH"
-                      "DOC"
                     ];
                     preview = true;
                   };
@@ -321,7 +311,7 @@
               args = [ "--stdio" ];
               config = {
                 typescript = {
-                  tsdk = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
+                  tsdk = "${pkgs.typescript}/lib/node_modules/typescript/lib";
                 };
               };
             };

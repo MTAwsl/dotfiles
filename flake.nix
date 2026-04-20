@@ -88,6 +88,8 @@
       url = "github:yurinek0/nix-bloodhound-cli";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    opencode.url = "github:anomalyco/opencode";
   };
 
   outputs =
@@ -140,6 +142,16 @@
                 # Add overlays here.
                 (final: prev: {
                   uniclip = inputs'.uniclip.packages.uniclip;
+
+                  # FIX: Remove overrideAttrs after https://github.com/anomalyco/opencode/pull/23255 is merged or https://github.com/anomalyco/opencode/issues/23256 is closed.
+                  opencode = inputs'.opencode.packages.opencode.overrideAttrs (oldAttrs: {
+                    preBuild = (oldAttrs.preBuild or "") + ''
+                      substituteInPlace packages/opencode/src/cli/cmd/generate.ts \
+                        --replace-fail 'const prettier = await import("prettier")' 'const prettier: any = { format: async (s: string) => s }' \
+                        --replace-fail 'const babel = await import("prettier/plugins/babel")' 'const babel = {}' \
+                        --replace-fail 'const estree = await import("prettier/plugins/estree")' 'const estree = {}'
+                    '';
+                  });
                   librepods = inputs'.librepods.packages.default;
                   pwndbg = inputs'.pwndbg.packages.default;
                   bloodhound-cli = inputs'.bloodhound-cli.packages.default;
@@ -147,17 +159,6 @@
 
                   penelope = prev.penelope.overrideAttrs (oldAttrs: {
                     postPatch = ""; # Install penelope.py.
-                  });
-
-                  # FIX: Remove this after wl-clipboard released a new update. (Current date: 08/01/2026)
-                  wl-clipboard = prev.wl-clipboard.overrideAttrs (old: {
-                    version = "25.11.25.0"; # YY.MM.DD.rev
-                    src = prev.fetchFromGitHub {
-                      owner = "bugaevc";
-                      repo = "wl-clipboard";
-                      rev = "e8082035dafe0241739d7f7d16f7ecfd2ce06172";
-                      hash = "sha256-sR/P+urw3LwAxwjckJP3tFeUfg5Axni+Z+F3mcEqznw=";
-                    };
                   });
 
                   # FIX: Remove this after https://github.com/NixOS/nixpkgs/issues/181759 is closed
