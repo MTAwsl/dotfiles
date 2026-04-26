@@ -35,6 +35,10 @@
               criteria = "HDMI-A-1";
               position = "0,0";
             }
+            {
+              criteria = "DP-1";
+              status = "disable";
+            }
           ];
         }
 
@@ -49,6 +53,10 @@
             {
               criteria = "DP-1";
               position = "0,0";
+            }
+            {
+              criteria = "HDMI-A-1";
+              position = "disable";
             }
           ];
         }

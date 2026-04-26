@@ -142,16 +142,6 @@
                 # Add overlays here.
                 (final: prev: {
                   uniclip = inputs'.uniclip.packages.uniclip;
-
-                  # FIX: Remove overrideAttrs after https://github.com/anomalyco/opencode/pull/23255 is merged or https://github.com/anomalyco/opencode/issues/23256 is closed.
-                  opencode = inputs'.opencode.packages.opencode.overrideAttrs (oldAttrs: {
-                    preBuild = (oldAttrs.preBuild or "") + ''
-                      substituteInPlace packages/opencode/src/cli/cmd/generate.ts \
-                        --replace-fail 'const prettier = await import("prettier")' 'const prettier: any = { format: async (s: string) => s }' \
-                        --replace-fail 'const babel = await import("prettier/plugins/babel")' 'const babel = {}' \
-                        --replace-fail 'const estree = await import("prettier/plugins/estree")' 'const estree = {}'
-                    '';
-                  });
                   librepods = inputs'.librepods.packages.default;
                   pwndbg = inputs'.pwndbg.packages.default;
                   bloodhound-cli = inputs'.bloodhound-cli.packages.default;
@@ -161,15 +151,55 @@
                     postPatch = ""; # Install penelope.py.
                   });
 
-                  # FIX: Remove this after https://github.com/NixOS/nixpkgs/issues/181759 is closed
-                  flameshot = prev.flameshot.overrideAttrs (oldAttrs: {
-                    patches = oldAttrs.patches or [ ] ++ [
-                      (prev.fetchpatch {
-                        url = "https://github.com/flameshot-org/flameshot/pull/4363.patch";
-                        hash = "sha256-G3uSLIWZ8mOVTgO3EtH8YgUbpMf8Qkuur6pcoM7hrug=";
-                      })
-                    ];
-                  });
+                  # FIX: Remove once https://github.com/nixos/nixpkgs/issues/513245 is closed
+                  lutris = prev.lutris.override {
+                    # Intercept buildFHSEnv to modify target packages
+                    buildFHSEnv =
+                      args:
+                      pkgs.buildFHSEnv (
+                        args
+                        // {
+                          multiPkgs =
+                            envPkgs:
+                            let
+                              # Fetch original package list
+                              originalPkgs = args.multiPkgs envPkgs;
+
+                              # Disable tests for openldap
+                              customLdap = envPkgs.openldap.overrideAttrs (_: {
+                                doCheck = false;
+                              });
+                            in
+                            # Replace broken openldap with the custom one
+                            builtins.filter (p: (p.pname or "") != "openldap") originalPkgs ++ [ customLdap ];
+                        }
+                      );
+                  };
+
+                  # FIX: Remove once https://github.com/nixos/nixpkgs/issues/513245 is closed
+                  bottles = prev.bottles.override {
+                    # Intercept buildFHSEnv to modify target packages
+                    buildFHSEnv =
+                      args:
+                      pkgs.buildFHSEnv (
+                        args
+                        // {
+                          multiPkgs =
+                            envPkgs:
+                            let
+                              # Fetch original package list
+                              originalPkgs = args.multiPkgs envPkgs;
+
+                              # Disable tests for openldap
+                              customLdap = envPkgs.openldap.overrideAttrs (_: {
+                                doCheck = false;
+                              });
+                            in
+                            # Replace broken openldap with the custom one
+                            builtins.filter (p: (p.pname or "") != "openldap") originalPkgs ++ [ customLdap ];
+                        }
+                      );
+                  };
                 })
 
                 # Niri-Flake's overlay.

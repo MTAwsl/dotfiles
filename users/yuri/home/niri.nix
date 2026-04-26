@@ -492,7 +492,7 @@
         ghostty = {
           enable = true;
           settings = {
-            window-width = "30%";
+            window-width = 130;
             font-family = "Monaspace Neon NF"; # handled by stylix
             font-style = "Light";
             font-feature = "calt, ss01, ss02, ss03, ss04, ss05, ss06, ss07, ss08, ss09, ss10, liga";
