@@ -6,7 +6,7 @@
       home.packages = [
         (pkgs.writeShellScriptBin "xdg-open" ''
           export XDG_CURRENT_DESKTOP=GNOME
-          ${pkgs.xdg-utils}/bin/xdg-open $@
+          exec ${pkgs.xdg-utils}/bin/xdg-open "$@"
         '')
       ];
     };

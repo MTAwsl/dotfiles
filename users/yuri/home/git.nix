@@ -7,15 +7,13 @@
         enable = true;
         signing = {
           key = self.meta.owner.github-ssh-pubkey;
+          format = "ssh";
           signByDefault = true;
         };
         settings = {
           user.name = "Sayuri Nekomiya";
           user.email = "bbh@awsl.rip";
           init.defaultBranch = "master";
-          gpg = {
-            format = "ssh";
-          };
         };
       };
 

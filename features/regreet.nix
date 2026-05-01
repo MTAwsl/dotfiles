@@ -33,5 +33,10 @@
       };
 
       programs.regreet.enable = true;
+
+      # NOTE: We intentionally run regreet through a custom niri command.
+      # Disable Stylix regreet target to avoid compatibility warnings for
+      # non-default greetd session command shapes.
+      stylix.targets.regreet.enable = false;
     };
 }

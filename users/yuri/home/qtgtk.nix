@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.modules.homeManager.yuri-qtgtk =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       home.packages = with pkgs; [
         papirus-icon-theme
@@ -9,6 +9,7 @@
 
       gtk = {
         enable = true;
+        gtk4.theme = config.gtk.theme;
         iconTheme = {
           package = pkgs.papirus-icon-theme;
           name = "Papirus-Dark";

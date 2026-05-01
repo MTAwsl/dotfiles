@@ -5,12 +5,15 @@
 }:
 let
   home-manager-config =
-    { lib, ... }:
+    { lib, pkgs, ... }:
     {
       home-manager = {
         verbose = true;
         useUserPackages = true;
         useGlobalPkgs = true;
+        extraSpecialArgs = {
+          inherit (pkgs) yaziPluginsHomeModule;
+        };
         backupFileExtension = "bak";
         backupCommand = "rm";
         overwriteBackup = true;

@@ -71,7 +71,6 @@
 
     pwndbg = {
       url = "github:pwndbg/pwndbg";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-yazi-plugins = {
@@ -79,8 +78,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    librepods = {
-      url = "github:kavishdevar/librepods/linux/rust";
+    nix-librepods-bin = {
+      url = "github:YuriNek0/nix-librepods-bin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -90,6 +89,7 @@
     };
 
     opencode.url = "github:anomalyco/opencode";
+    oac-flake.url = "github:YuriNek0/oac-flake";
   };
 
   outputs =
@@ -122,6 +122,7 @@
       in
       {
         systems = [
+          "x86_64-linux"
           "aarch64-linux"
         ];
 
@@ -140,66 +141,11 @@
               inherit system;
               overlays = [
                 # Add overlays here.
-                (final: prev: {
-                  uniclip = inputs'.uniclip.packages.uniclip;
-                  librepods = inputs'.librepods.packages.default;
-                  pwndbg = inputs'.pwndbg.packages.default;
-                  bloodhound-cli = inputs'.bloodhound-cli.packages.default;
-                  local = config.packages;
-
-                  penelope = prev.penelope.overrideAttrs (oldAttrs: {
-                    postPatch = ""; # Install penelope.py.
-                  });
-
-                  # FIX: Remove once https://github.com/nixos/nixpkgs/issues/513245 is closed
-                  lutris = prev.lutris.override {
-                    # Intercept buildFHSEnv to modify target packages
-                    buildFHSEnv =
-                      args:
-                      pkgs.buildFHSEnv (
-                        args
-                        // {
-                          multiPkgs =
-                            envPkgs:
-                            let
-                              # Fetch original package list
-                              originalPkgs = args.multiPkgs envPkgs;
-
-                              # Disable tests for openldap
-                              customLdap = envPkgs.openldap.overrideAttrs (_: {
-                                doCheck = false;
-                              });
-                            in
-                            # Replace broken openldap with the custom one
-                            builtins.filter (p: (p.pname or "") != "openldap") originalPkgs ++ [ customLdap ];
-                        }
-                      );
-                  };
-
-                  # FIX: Remove once https://github.com/nixos/nixpkgs/issues/513245 is closed
-                  bottles = prev.bottles.override {
-                    # Intercept buildFHSEnv to modify target packages
-                    buildFHSEnv =
-                      args:
-                      pkgs.buildFHSEnv (
-                        args
-                        // {
-                          multiPkgs =
-                            envPkgs:
-                            let
-                              # Fetch original package list
-                              originalPkgs = args.multiPkgs envPkgs;
-
-                              # Disable tests for openldap
-                              customLdap = envPkgs.openldap.overrideAttrs (_: {
-                                doCheck = false;
-                              });
-                            in
-                            # Replace broken openldap with the custom one
-                            builtins.filter (p: (p.pname or "") != "openldap") originalPkgs ++ [ customLdap ];
-                        }
-                      );
-                  };
+                (import ./overlays/common-inputs.nix {
+                  inherit inputs' config;
+                })
+                (import ./overlays/openldap-workarounds.nix {
+                  inherit pkgs;
                 })
 
                 # Niri-Flake's overlay.

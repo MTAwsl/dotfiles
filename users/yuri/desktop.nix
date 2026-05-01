@@ -2,6 +2,7 @@
 {
   flake.modules.nixos.user-yuri-desktop =
     {
+      lib,
       pkgs,
       ...
     }:
@@ -15,105 +16,80 @@
       };
 
       home-manager.users.yuri = {
-        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-          kanshi
-          niri
-          dms-shell
-          stylix
-          qtgtk
+        imports =
+          with self.lib.withPrefix "yuri" self.modules.homeManager;
+          [
+            kanshi
+            niri
+            dms-shell
+            stylix
+            qtgtk
 
-          devtools
-          sectools
+            devtools
 
-          # Airpods on Linux
-          librepods
+            udiskie
+            # keepassxc
 
-          udiskie
-          # keepassxc
+            # Shell
+            starship
+            zellij
 
-          # Shell
-          starship
-          zellij
+            # Vibe
+            opencode
 
-          # Vibe
-          opencode
+            firefox
 
-          firefox
+            # XDG Default APPS
+            xdg
+            patch-xdg-open
 
-          # XDG Default APPS
-          xdg
-          patch-xdg-open
+            gh-release-tracker
 
-          gh-release-tracker
-
-          # i18n-rime-ice
-          (
-            { lib, ... }:
-            {
-              home.activation = {
-
-                writeRimeConfig = lib.hm.dag.entryAfter [ "writeBoundry" ] ''
-                  TARGET="$HOME/.local/share/fcitx5/rime/default.custom.yaml"
-
-                  if [ ! -e "$TARGET" ]; then
-                    mkdir -p "$(dirname "$TARGET")"
-                    cat <<EOF > "$TARGET"
-                  patch:
-                    __include: rime_ice_suggestion:/
-
-                  schema_list:
-                    - schema: rime_ice
-                  EOF
-
-                  fi'';
-
-                writeRimeData = lib.hm.dag.entryAfter [ "writeBoundry" ] ''
-                  DEST="$HOME/.local/share/fcitx5/rime"
-                  SRC="${pkgs.rime-ice}/share/rime-data"
-
-                  if [ ! -d "$DEST" ]; then
-                    mkdir -p "$DEST"
-                  fi
-
-                  ln -sfn "$SRC"/* "$DEST/"
-                '';
-              };
-            }
-          )
-        ];
+            rime-ice
+          ]
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
+            sectools
+          ]
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
+            librepods
+          ];
 
         home.isDesktopProfile = true;
-        home.packages = with pkgs; [
+        home.packages =
+          with pkgs;
+          (lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
+            # Yubikey manager
+            yubioath-flutter
 
-          # Yubikey manager
-          yubioath-flutter
-
-          # apps
-          audacity
-          bitwarden-desktop # This is unstable. For now do not lock the vault, see https://github.com/bitwarden/clients/issues/18463
-          bottles
-          lutris
-          filezilla
-          swayimg
-          # gale
-          gimp
-          # heroic # Epic Games launcher
-          inkscape-with-extensions
-          obsidian
-          piper
-          protonup-qt
-          qbittorrent
-          # signal-desktop
-          syncplay
-          telegram-desktop
-          # ventoy-full
-          vesktop
-          vlc
-          zed-editor
-          pear-desktop # YT Music
-          zip
-          unzip
-        ];
+            # Gaming stack packages with x86_64-only dependencies.
+            bottles
+            lutris
+            protonup-qt
+          ])
+          ++ [
+            # apps
+            audacity
+            bitwarden-desktop # This is unstable. For now do not lock the vault, see https://github.com/bitwarden/clients/issues/18463
+            filezilla
+            swayimg
+            # gale
+            gimp
+            # heroic # Epic Games launcher
+            inkscape-with-extensions
+            obsidian
+            piper
+            qbittorrent
+            # signal-desktop
+            syncplay
+            telegram-desktop
+            # ventoy-full
+            vesktop
+            vlc
+            zed-editor
+            pear-desktop # YT Music
+            zip
+            unzip
+          ];
 
         programs = {
           vscode.enable = true;
@@ -150,8 +126,9 @@
         };
       };
 
-      # the app that maximizes my retention
-      programs.steam = {
+      # Steam requires x86_64 userspace support.
+      programs.steam = lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
+        # the app that maximizes my retention
         enable = true;
         extraCompatPackages = with pkgs; [
           # Let ProtonUp manages it

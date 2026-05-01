@@ -1,10 +1,10 @@
-{ inputs, ... }:
+{ ... }:
 {
   flake.modules.homeManager.yuri-yazi =
-    { pkgs, ... }:
+    { pkgs, yaziPluginsHomeModule, ... }:
     {
       imports = [
-        (inputs.nix-yazi-plugins.legacyPackages.x86_64-linux.homeManagerModules.default)
+        yaziPluginsHomeModule
       ];
 
       home.packages = with pkgs; [ ];
@@ -13,6 +13,7 @@
         enable = true;
         enableBashIntegration = true;
         enableZshIntegration = true;
+        shellWrapperName = "yy";
 
         plugins = with pkgs.yaziPlugins; {
           inherit vcs-files;

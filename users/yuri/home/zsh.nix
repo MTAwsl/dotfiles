@@ -16,6 +16,7 @@
       programs = {
         zsh = {
           enable = true;
+          dotDir = config.home.homeDirectory;
           # zprof.enable = true;
 
           oh-my-zsh = {

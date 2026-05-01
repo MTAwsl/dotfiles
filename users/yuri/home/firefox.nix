@@ -1,11 +1,12 @@
 { ... }:
 {
   flake.modules.homeManager.yuri-firefox =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       programs.firefox = {
         enable = true;
         package = pkgs.firefox-devedition;
+        configPath = "${config.xdg.configHome}/mozilla/firefox";
         policies.preferences = {
           "spellchecker.dictionary" = "English (Australia)";
           "browser.sessionstore.max_resumed_crashes" = -1;
