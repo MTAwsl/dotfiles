@@ -19,10 +19,6 @@
         usbutils
       ];
 
-      environment.sessionVariables = {
-        SSH_AUTH_SOCK = "~/.ssh-agent.socket";
-      };
-
       security.polkit.enable = true;
       networking.networkmanager.plugins = with pkgs; [
         networkmanager-l2tp

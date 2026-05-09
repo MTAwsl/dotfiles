@@ -14,6 +14,7 @@
 
     import-tree = {
       url = "github:vic/import-tree";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     uniclip = {
@@ -38,6 +39,7 @@
 
     pkgs-by-name-for-flake-parts = {
       url = "github:drupol/pkgs-by-name-for-flake-parts";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     lanzaboote = {
@@ -62,6 +64,7 @@
 
     nix-cachyos-kernel = {
       url = "github:xddxdd/nix-cachyos-kernel";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # binaryninja = {
@@ -71,6 +74,7 @@
 
     pwndbg = {
       url = "github:pwndbg/pwndbg";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-yazi-plugins = {
@@ -88,8 +92,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    opencode.url = "github:anomalyco/opencode";
-    oac-flake.url = "github:YuriNek0/oac-flake";
+    msgraph-health-sentinel = {
+      url = "github:YuriNek0/msgraph-health-sentinel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    anthropic-readings = {
+      url = "github:YuriNek0/Anthropic-Readlist-Tracker";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    onedrive-vercel-index = {
+      url = "github:spencerwooo/onedrive-vercel-index";
+      flake = false;
+    };
+
+    opencode = {
+      url = "github:anomalyco/opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # FIX: Migrate to https://github.com/darrenhinde/OpenAgentsControl after https://github.com/darrenhinde/OpenAgentsControl/pull/314 is merged.
+    oac-flake = {
+      url = "github:YuriNek0/oac-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -179,6 +206,7 @@
 
           # Make hosts here.
           (mkHost "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")
+          (mkHost "Yuri-Sherbet" "aarch64-linux")
           (mkHost "Yuri-Lemonade" "x86_64-linux")
         ];
       }

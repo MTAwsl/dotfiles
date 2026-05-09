@@ -45,6 +45,8 @@
 
             gh-release-tracker
 
+            yubikey-ssh-agent
+
             rime-ice
           ]
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [

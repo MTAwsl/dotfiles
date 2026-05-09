@@ -59,9 +59,6 @@
             export EDITOR="hx"
             export VISUAL="$EDITOR"
 
-            # ssh sock
-            export SSH_AUTH_SOCK="/home/yuri/.bitwarden-ssh-agent.sock"
-
             # Rebind FZF
             bindkey -r "^T"
             bindkey "^F" fzf-file-widget
