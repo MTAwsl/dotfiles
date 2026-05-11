@@ -61,16 +61,24 @@
             };
 
             default-language-servers =
-              (fromTOML (builtins.readFile "${pkgs.helix-unwrapped.src}/languages.toml")).language
-              |> builtins.filter (
-                l:
-                builtins.hasAttr "name" l
-                && builtins.hasAttr "scope" l
-                && builtins.hasAttr "language-servers" l
-                && l.name != "python"
-              )
-              |> map (l: lib.nameValuePair l.name { language-servers = _: l.language-servers; })
-              |> builtins.listToAttrs;
+              let
+                upstreamLanguages = builtins.tryEval (
+                  (builtins.fromTOML (builtins.readFile "${pkgs.helix-unwrapped.src}/languages.toml")).language
+                );
+              in
+              if upstreamLanguages.success then
+                upstreamLanguages.value
+                |> builtins.filter (
+                  l:
+                  builtins.hasAttr "name" l
+                  && builtins.hasAttr "scope" l
+                  && builtins.hasAttr "language-servers" l
+                  && l.name != "python"
+                )
+                |> map (l: lib.nameValuePair l.name { language-servers = _: l.language-servers; })
+                |> builtins.listToAttrs
+              else
+                { };
 
             codebook-langs = [
               # "c"

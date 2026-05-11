@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 let
   inherit (lib)
     concatMapStringsSep
@@ -13,6 +13,7 @@ in
   flake.modules.nixos.argon-fan-hat =
     {
       config,
+      pkgs,
       ...
     }:
     let

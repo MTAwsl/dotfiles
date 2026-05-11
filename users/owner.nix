@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  flake.meta.owner = {
+  flake.lib.meta.owner = {
     username = "yuri";
     fullname = "Sayuri Nekomiya";
     email = "bbh@awsl.rip";

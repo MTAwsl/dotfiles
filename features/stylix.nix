@@ -8,7 +8,7 @@
       stylix = {
         enable = true;
         polarity = "dark";
-        base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+        base16Scheme = "${inputs.stylix.inputs.tinted-schemes}/base16/catppuccin-mocha.yaml";
 
         targets = {
           plymouth.enable = false;

@@ -9,7 +9,7 @@ in
     let
       hostName = config.networking.hostName;
       fireflyUrl = "http://${hostName}";
-      siteOwner = config.flake.meta.owner.email;
+      siteOwner = config.flake.lib.meta.owner.email;
     in
     {
       assertions = [

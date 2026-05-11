@@ -40,12 +40,10 @@
 
       # FIX: Temporary devtools installation override. Remove after build is stable.
       home-manager.users.yuri = {
-        imports =
-          with self.lib.withPrefix "yuri" self.modules.homeManager;
-            [
-              devtools
-            ];
-        }
+        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+          devtools
+        ];
+      };
 
       networking.hostName = "Yuri-Sherbet";
 

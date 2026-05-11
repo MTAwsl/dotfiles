@@ -1,6 +1,5 @@
 {
   inputs,
-  pkgs,
   ...
 }:
 let
@@ -9,10 +8,11 @@ let
   serviceGroup = serviceName;
   serviceHome = "/opt/${serviceName}";
   configFile = "${serviceHome}/config.yaml";
-  package = inputs.anthropic-readings.packages.${pkgs.system}.default;
 in
 {
-  flake.modules.nixos.anthropic-readings = {
+  flake.modules.nixos.anthropic-readings = { pkgs, ... }: let
+    package = inputs.anthropic-readings.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  in {
     users.groups.${serviceGroup} = { };
 
     users.users.${serviceUser} = {

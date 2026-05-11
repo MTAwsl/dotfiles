@@ -23,7 +23,7 @@
           spawn-at-startup = [
             { sh = "spice-vdagent"; }
             {
-              sh = "app2unit -s s -t service -d \"Uniclip-rs clipboard sharing\" -p Restart=always -p RestartSec=5 -- uniclip-rs -p ${self.meta.qemu-host.ip}:${self.meta.qemu-host.uniclip-port}";
+              sh = "app2unit -s s -t service -d \"Uniclip-rs clipboard sharing\" -p Restart=always -p RestartSec=5 -- uniclip-rs -p ${self.lib.meta.qemu-host.ip}:${self.lib.meta.qemu-host.uniclip-port}";
             }
           ];
         };

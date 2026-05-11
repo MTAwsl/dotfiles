@@ -2,7 +2,9 @@
 {
   options = {
     flake.lib = lib.mkOption {
-      type = lib.types.attrs;
+      type = lib.types.submodule {
+        freeformType = lib.types.attrsOf lib.types.anything;
+      };
       default = { };
     };
   };

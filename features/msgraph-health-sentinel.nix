@@ -1,6 +1,5 @@
 {
   inputs,
-  pkgs,
   ...
 }:
 let
@@ -9,10 +8,11 @@ let
   serviceGroup = serviceName;
   serviceHome = "/opt/${serviceName}";
   configFile = "${serviceHome}/config.json";
-  package = inputs.msgraph-health-sentinel.packages.${pkgs.system}.default;
 in
 {
-  flake.modules.nixos.msgraph-health-sentinel = {
+  flake.modules.nixos.msgraph-health-sentinel = { pkgs, ... }: let
+    package = inputs.msgraph-health-sentinel.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  in {
     users.groups.${serviceGroup} = { };
 
     users.users.${serviceUser} = {

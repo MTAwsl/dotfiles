@@ -3,13 +3,14 @@
   flake.modules.homeManager.yuri-sys-update-prompt =
     {
       config,
+      options,
       pkgs,
       lib,
       ...
     }:
     let
       flakePath = "${config.home.homeDirectory}/.config/nix-config";
-      isDesktopProfile = config.home.isDesktopProfile;
+      hasNiri = lib.hasAttrByPath [ "programs" "niri" ] options;
       checkFlakeScript = pkgs.writeShellScriptBin "check-flake-age" ''
         if [ ! -f "${flakePath}/flake.lock" ]; then
             exit 0
@@ -33,27 +34,36 @@
       '';
     in
     {
-      home.packages =
-        with pkgs;
+      config = lib.mkMerge (
         [
-          checkFlakeScript
-          jq
+          {
+            home.packages =
+              with pkgs;
+              [
+                checkFlakeScript
+                jq
+              ]
+              ++ lib.optionals config.home.isDesktopProfile [
+                libnotify
+              ];
+
+            programs.zsh.initContent = ''
+              ${checkFlakeScript}/bin/check-flake-age
+            '';
+          }
         ]
-        ++ lib.optionals isDesktopProfile [
-          libnotify
-        ];
-
-      programs.zsh.initContent = ''
-        ${checkFlakeScript}/bin/check-flake-age
-      '';
-
-      programs.niri.settings.spawn-at-startup = lib.mkIf isDesktopProfile [
-        {
-          command = [
-            "${checkFlakeScript}/bin/check-flake-age"
-            "--notify"
-          ];
-        }
-      ];
+        ++ lib.optionals hasNiri [
+          (lib.mkIf config.home.isDesktopProfile {
+            programs.niri.settings.spawn-at-startup = [
+              {
+                command = [
+                  "${checkFlakeScript}/bin/check-flake-age"
+                  "--notify"
+                ];
+              }
+            ];
+          })
+        ]
+      );
     };
 }

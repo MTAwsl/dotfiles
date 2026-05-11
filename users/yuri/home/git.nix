@@ -6,7 +6,7 @@
       programs.git = {
         enable = true;
         signing = {
-          key = self.meta.owner.github-ssh-pubkey;
+          key = self.lib.meta.owner.github-ssh-pubkey;
           format = "ssh";
           signByDefault = true;
         };

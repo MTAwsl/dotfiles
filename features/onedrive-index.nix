@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 let
   serviceName = "onedrive-index";
   serviceUser = serviceName;
@@ -11,49 +11,50 @@ let
   siteConfigFile = "${configDir}/site.config.js";
   apiConfigFile = "${configDir}/api.config.js";
   nextBin = "${appDir}/node_modules/next/dist/bin/next";
-
-  launchScript = pkgs.writeShellApplication {
-    name = "onedrive-index-launch";
-    runtimeInputs = with pkgs; [
-      bash
-      coreutils
-      nodejs_22
-    ];
-    text = ''
-      set -euo pipefail
-
-      readonly APP_DIR="${appDir}"
-      readonly SITE_CONFIG_FILE="${siteConfigFile}"
-      readonly API_CONFIG_FILE="${apiConfigFile}"
-      readonly REDIS_URL_FILE="${redisUrlFile}"
-      readonly NEXT_BIN="${nextBin}"
-
-      test -f "$APP_DIR/package.json"
-      test -f "$APP_DIR/.next/BUILD_ID"
-      test -d "$APP_DIR/public"
-      test -d "$APP_DIR/node_modules"
-      test -f "$SITE_CONFIG_FILE"
-      test -f "$API_CONFIG_FILE"
-      test -f "$REDIS_URL_FILE"
-      test -x "$NEXT_BIN"
-
-      mkdir -p "$APP_DIR/config"
-      ln -sfn "$SITE_CONFIG_FILE" "$APP_DIR/config/site.config.js"
-      ln -sfn "$API_CONFIG_FILE" "$APP_DIR/config/api.config.js"
-
-      export REDIS_URL="$(< "$REDIS_URL_FILE")"
-      export NODE_ENV="production"
-      export HOSTNAME="127.0.0.1"
-      export PORT="3000"
-
-      cd "$APP_DIR"
-      exec ${pkgs.nodejs_22}/bin/node "$NEXT_BIN" start --hostname "$HOSTNAME" --port "$PORT"
-    '';
-  };
 in
 {
   flake.modules.nixos.onedrive-index =
-    { config, ... }:
+    { config, pkgs, ... }:
+    let
+      launchScript = pkgs.writeShellApplication {
+        name = "onedrive-index-launch";
+        runtimeInputs = with pkgs; [
+          bash
+          coreutils
+          nodejs_22
+        ];
+        text = ''
+          set -euo pipefail
+
+          readonly APP_DIR="${appDir}"
+          readonly SITE_CONFIG_FILE="${siteConfigFile}"
+          readonly API_CONFIG_FILE="${apiConfigFile}"
+          readonly REDIS_URL_FILE="${redisUrlFile}"
+          readonly NEXT_BIN="${nextBin}"
+
+          test -f "$APP_DIR/package.json"
+          test -f "$APP_DIR/.next/BUILD_ID"
+          test -d "$APP_DIR/public"
+          test -d "$APP_DIR/node_modules"
+          test -f "$SITE_CONFIG_FILE"
+          test -f "$API_CONFIG_FILE"
+          test -f "$REDIS_URL_FILE"
+          test -x "$NEXT_BIN"
+
+          mkdir -p "$APP_DIR/config"
+          ln -sfn "$SITE_CONFIG_FILE" "$APP_DIR/config/site.config.js"
+          ln -sfn "$API_CONFIG_FILE" "$APP_DIR/config/api.config.js"
+
+          export REDIS_URL="$(< "$REDIS_URL_FILE")"
+          export NODE_ENV="production"
+          export HOSTNAME="127.0.0.1"
+          export PORT="3000"
+
+          cd "$APP_DIR"
+          exec ${pkgs.nodejs_22}/bin/node "$NEXT_BIN" start --hostname "$HOSTNAME" --port "$PORT"
+        '';
+      };
+    in
     {
       assertions = [
         {

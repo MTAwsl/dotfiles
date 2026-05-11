@@ -14,7 +14,6 @@
 
     import-tree = {
       url = "github:vic/import-tree";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     uniclip = {
@@ -39,7 +38,6 @@
 
     pkgs-by-name-for-flake-parts = {
       url = "github:drupol/pkgs-by-name-for-flake-parts";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     lanzaboote = {

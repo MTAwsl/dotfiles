@@ -4,7 +4,7 @@
     { config, pkgs, ... }:
     let
       niriConfigKdl = pkgs.writeText "regreet-niri-conf.kdl" ''
-        spawn-sh-at-startup "kanshi -c /home/${self.meta.owner.username}/.config/kanshi/config"
+        spawn-sh-at-startup "kanshi -c /home/${self.lib.meta.owner.username}/.config/kanshi/config"
         spawn-sh-at-startup "${pkgs.regreet}/bin/regreet; niri msg action quit --skip-confirmation"
         hotkey-overlay {
             skip-at-startup

@@ -1,7 +1,7 @@
 { lib, ... }:
 {
   options = {
-    flake.meta = lib.mkOption {
+    flake.lib.meta = lib.mkOption {
       type = lib.types.attrs;
       default = { };
     };
