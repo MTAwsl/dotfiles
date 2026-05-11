@@ -64,7 +64,7 @@
 
             "Mod+Alt+L" = {
               hotkey-overlay.title = "Lock Screen";
-              action = spawn "hyprlock";
+              action = spawn-sh "dms ipc call lock lock";
             };
 
             "Mod+Shift+S" = {

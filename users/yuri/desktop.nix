@@ -43,12 +43,10 @@
             xdg
             patch-xdg-open
 
-            gh-release-tracker
+             gh-release-tracker
 
-            yubikey-ssh-agent
-
-            rime-ice
-          ]
+             rime-ice
+           ]
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
             sectools
           ]
@@ -97,18 +95,6 @@
           vscode.enable = true;
           mpv.enable = true;
           obs-studio.enable = true;
-        };
-
-        # HyprIdle
-        services.hypridle = {
-          enable = true;
-          settings = {
-            general = {
-              lock_cmd = "pidof hyprlock || hyprlock";
-              before_sleep_cmd = "loginctl lock-session";
-            };
-            listener = [ ];
-          };
         };
       };
 

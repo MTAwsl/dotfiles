@@ -61,8 +61,7 @@
     };
 
     nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:xddxdd/nix-cachyos-kernel/release";
     };
 
     # binaryninja = {
@@ -110,7 +109,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # FIX: Migrate to https://github.com/darrenhinde/OpenAgentsControl after https://github.com/darrenhinde/OpenAgentsControl/pull/314 is merged.
     oac-flake = {
       url = "github:YuriNek0/oac-flake";
       inputs.nixpkgs.follows = "nixpkgs";

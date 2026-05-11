@@ -13,11 +13,9 @@
         # polkit-agent # Use DMS's Polkit agent.
 
         # Switch back to dms-greeter once it supports YubiKey.
-        # dms-greeter
+        dms-greeter
         # tuigreet
-
-        regreet
-        hyprlock # Choose hyprlock as lock screen cmd in DMS Settings
+        # regreet
       ];
 
       environment.systemPackages = with pkgs; [

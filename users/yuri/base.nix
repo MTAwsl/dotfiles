@@ -17,12 +17,16 @@
           "networkmanager" # Risk accepted.
           "wheel"
         ];
+        openssh.authorizedKeys.keys = [
+          "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPm8fm2GbPerlhMI4jwfjyg3HGIyql/n2XaMNHwHn8nTAAAABHNzaDo= Sayuri Nekomiya's YubiKey 5"
+        ];
       };
 
       home-manager.users.yuri = {
 
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
           git
+          ssh-agent
           yazi
           helix
           zsh

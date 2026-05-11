@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 {
   flake.modules.homeManager.yuri-git =
     { ... }:
@@ -6,13 +6,13 @@
       programs.git = {
         enable = true;
         signing = {
-          key = self.lib.meta.owner.github-ssh-pubkey;
+          key = "~/.ssh/id_ed25519_sk";
           format = "ssh";
           signByDefault = true;
         };
         settings = {
           user.name = "Sayuri Nekomiya";
-          user.email = "bbh@awsl.rip";
+          user.email = "contactme@awsl.rip";
           init.defaultBranch = "master";
         };
       };
