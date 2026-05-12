@@ -25,7 +25,42 @@
         controlPersist = "no";
       };
       bitwardenFallbackCheck = "test ! -S ${yubikeyAgentSocket} || ! SSH_AUTH_SOCK=${yubikeyAgentSocket} ${pkgs.openssh}/bin/ssh-add -L >/dev/null 2>&1";
-      bitwardenReadyCheck = "test -S ${bitwardenAgentSocket} && SSH_AUTH_SOCK=${bitwardenAgentSocket} ${pkgs.openssh}/bin/ssh-add -L >/dev/null 2>&1";
+      bitwardenMatchScript = pkgs.writeShellScript "ssh-bitwarden-match" ''
+        if ! ${bitwardenFallbackCheck}; then
+          exit 1
+        fi
+
+        if ! test -S ${bitwardenAgentSocket}; then
+          exit 1
+        fi
+
+        if SSH_AUTH_SOCK=${bitwardenAgentSocket} ${pkgs.coreutils}/bin/timeout 5s ${pkgs.openssh}/bin/ssh-add -L >/dev/null 2>&1; then
+          exit 0
+        fi
+
+        if [ "$?" -eq 124 ]; then
+          printf '\033[1;33mwarning:\033[0m Bitwarden SSH agent did not respond within 5 seconds; continuing with YubiKey agent.\n' >&2
+        fi
+
+        exit 1
+      '';
+      yubikeyAgentBootstrapScript = pkgs.writeShellScript "ssh-agent-fido-bootstrap" ''
+        for _ in 1 2 3 4 5 6 7 8 9 10; do
+          if test -S ${yubikeyAgentSocket}; then
+            break
+          fi
+
+          sleep 0.5
+        done
+
+        if ! test -S ${yubikeyAgentSocket} || ! test -f ${yubikeyPrivateKeyFile}; then
+          exit 0
+        fi
+
+        if ! SSH_AUTH_SOCK=${yubikeyAgentSocket} ${pkgs.coreutils}/bin/timeout 5s ${pkgs.openssh}/bin/ssh-add ${yubikeyPrivateKeyFile} >/dev/null 2>&1; then
+          printf '\033[1;33mwarning:\033[0m Failed to add YubiKey SSH key to agent automatically.\n' >&2
+        fi
+      '';
     in
     {
       programs.ssh = {
@@ -35,7 +70,7 @@
           bitwarden-fallback = lib.hm.dag.entryBefore [ "*" ] (
             commonSshSettings
             // {
-              match = ''exec "${bitwardenFallbackCheck} && ${bitwardenReadyCheck}"'';
+              match = ''exec "${bitwardenMatchScript}"'';
               identityAgent = bitwardenAgentSocket;
               identitiesOnly = false;
             }
@@ -57,6 +92,7 @@
           Type = "simple";
           ExecStartPre = "${pkgs.coreutils}/bin/rm -f ${yubikeyAgentSocket}";
           ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a ${yubikeyAgentSocket}";
+          ExecStartPost = yubikeyAgentBootstrapScript;
           Restart = "on-failure";
           RestartSec = "5s";
           NoNewPrivileges = true;

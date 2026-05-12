@@ -36,6 +36,7 @@
 
             # Vibe
             opencode
+            oac-models
 
             firefox
 

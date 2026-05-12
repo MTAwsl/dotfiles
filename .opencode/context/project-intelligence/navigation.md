@@ -1,9 +1,9 @@
-<!-- Context: project-intelligence/nav | Priority: high | Version: 1.7 | Updated: 2026-04-30 -->
+<!-- Context: project-intelligence/nav | Priority: high | Version: 1.8 | Updated: 2026-05-12 -->
 
 # Project Intelligence
 
 **Purpose**: Quick entry points for business + technical project context.
-**Last Updated**: 2026-04-30
+**Last Updated**: 2026-05-12
 
 ## Quick Reference
 
@@ -16,6 +16,7 @@
 | What You Need | File | Description |
 |---|---|---|
 | Technical architecture and coding patterns | `technical-domain.md` | Flake stack, module patterns, naming, standards, security (including modular file-size guidance, `# FIX:` lifecycle rules, and AI guardrails prohibiting `nixos-rebuild`/`nh` plus no activation) |
+| Context authoring workflow | `context-authoring.md` | `/add-context` style rules, frontmatter/MVI expectations, navigation upkeep, and `.tmp/` handling |
 | Business context | `business-domain.md` | Repo goals, constraints, and outcomes |
 | Business-to-technical mapping | `business-tech-bridge.md` | Requirement-to-module mapping |
 | Decision history | `decisions-log.md` | Architectural rationale and temporary overrides |
@@ -26,6 +27,7 @@
 | File | Priority | When to Load |
 |---|---|---|
 | `technical-domain.md` | critical | Any implementation or refactor in this repo |
+| `context-authoring.md` | high | Any project-intelligence or slash-command context update |
 | `business-domain.md` | high | Product or intent alignment |
 | `business-tech-bridge.md` | high | Feature planning and scoping |
 | `decisions-log.md` | high | Architecture change analysis |
@@ -35,6 +37,7 @@
 
 **Project Context Files**:
 - `.opencode/context/project-intelligence/technical-domain.md` - technical source of truth
+- `.opencode/context/project-intelligence/context-authoring.md` - context creation and maintenance rules
 - `.opencode/context/project-intelligence/business-domain.md` - business context
 - `.opencode/context/project-intelligence/business-tech-bridge.md` - bridge mapping
 - `.opencode/context/project-intelligence/decisions-log.md` - decision history

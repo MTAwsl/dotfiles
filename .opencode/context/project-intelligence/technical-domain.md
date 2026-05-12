@@ -1,9 +1,9 @@
-<!-- Context: project-intelligence/technical | Priority: critical | Version: 1.5 | Updated: 2026-04-30 -->
+<!-- Context: project-intelligence/technical | Priority: critical | Version: 1.6 | Updated: 2026-05-12 -->
 
 # Technical Domain
 
 **Purpose**: Canonical technical patterns for this NixOS flake repository.  
-**Last Updated**: 2026-04-30
+**Last Updated**: 2026-05-12
 
 ## Quick Reference
 
@@ -82,6 +82,8 @@ This repository uses a flake-based, dendritic module architecture where scoped m
 - Make each Nix file relatively small and modular.
 - For temporary upstream workarounds, add `# FIX: <description with issue URL>` immediately above the workaround block.
 - During optimization/cleaning/refactoring, verify each `# FIX:` URL; if upstream has merged the fix, remove the workaround code.
+- During building and verification, avoid accessing files outside this repository whenever the needed truth can be derived from the tracked Nix files here.
+- If generated Nix outputs must be inspected, prefer `/nix/store` before requesting approval to read other external paths.
 - AI agents must not run `nixos-rebuild` commands.
 - AI agents must not run `nh` utilities.
 - AI agents must never activate Nix system configuration.

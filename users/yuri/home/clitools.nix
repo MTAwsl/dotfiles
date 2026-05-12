@@ -97,7 +97,7 @@
 
         nh = {
           enable = true;
-          flake = "${config.home.homeDirectory}/.config/nix-config";
+          flake = "${config.home.homeDirectory}/repos/yuri-nixconf";
         };
 
         direnv = {

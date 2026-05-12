@@ -6,6 +6,7 @@
 - Architecture is modular and dendritic: hosts assemble profiles/features/users; Home Manager is embedded via NixOS user wiring.
 - Project intelligence context lives in `.opencode/context/project-intelligence/` and should be treated as the canonical onboarding map for business + technical intent.
 - Key intelligence files: `technical-domain.md`, `business-domain.md`, `business-tech-bridge.md`, `decisions-log.md`, `living-notes.md`, and `navigation.md`.
+- Context authoring rules live in `.opencode/context/project-intelligence/context-authoring.md`; follow them when creating or updating project intelligence files.
 
 ## Repo Shape
 - This repo is a Nix flake assembled from code. The root `README.md` is a human overview; this file remains the agent execution guide.
@@ -39,12 +40,21 @@
 - For Home Manager changes, verify through the owning NixOS host build; this repo does not expose a separate HM build target.
 - For local packages, build the exact flake package attr, e.g. `nix build .#packages.aarch64-linux.monaspace`.
 - `nix flake check --no-build` evaluates every host, so it is broader than a focused host/package check.
+- During building and verification, avoid accessing files outside this repository when the answer can be derived from tracked Nix files here.
+- If generated Nix outputs must be inspected, prefer `/nix/store` before asking for approval to access other external paths.
 
 ## Agent Guardrails (Non-Negotiable)
 - Never run `nixos-rebuild` commands in this repository.
 - Never run `nh` utilities in this repository.
 - Never attempt to activate system configuration (no switch/test/boot-style activation flows).
 - If a full-system or otherwise sensitive build command is needed, present the exact command and request fresh explicit user approval immediately before execution.
+
+## Context Authoring Guardrails
+- Keep project-intelligence files repo-local under `.opencode/context/project-intelligence/` unless the user explicitly asks for a global context target.
+- Preserve HTML frontmatter with context, priority, version, and updated date on every context file.
+- Keep context files MVI-sized: under 200 lines, quickly scannable, and focused on a single job.
+- Every context file must include a `## 📂 Codebase References` section tied to real repository files.
+- Update `.opencode/context/project-intelligence/navigation.md` whenever project-intelligence files are added or materially changed.
 
 ## Known Quirk
 - `hosts/qemu-aarch64.nix` forces `programs.niri.package = lib.mkForce pkgs.niri` because the `niri` flake input only provides `x86_64` builds; do not switch that host back to the overlay package without checking architecture support.
