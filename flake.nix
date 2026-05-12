@@ -71,7 +71,6 @@
 
     pwndbg = {
       url = "github:pwndbg/pwndbg";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-yazi-plugins = {

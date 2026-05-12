@@ -856,6 +856,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1769861202,
+        "narHash": "sha256-JwhbEHmbFFH754loOPbpjPHf9EAi+oMm2RsFXnlbt1g=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f214de98544a6acf0d9917ba265ac50849048fcb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nur": {
       "inputs": {
         "flake-parts": [
@@ -942,11 +958,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778601868,
-        "narHash": "sha256-43x9s0jPDd/ZrT4J6ky+2WZP6DdiaP7eMWcEiBG5QuY=",
+        "lastModified": 1778604028,
+        "narHash": "sha256-TXoEX91As0NB29U0E4zqDM91kooqG1bOXOHO0jNvSEg=",
         "owner": "anomalyco",
         "repo": "opencode",
-        "rev": "c7d8b0d56562209d69ef6a20424a4681827766bd",
+        "rev": "3dc2c1d81c3ac6a0e508ddf3cf918e76888faf08",
         "type": "github"
       },
       "original": {
@@ -995,9 +1011,7 @@
     },
     "pwndbg": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_3",
         "pyproject-build-systems": "pyproject-build-systems",
         "pyproject-nix": "pyproject-nix",
         "uv2nix": "uv2nix"
