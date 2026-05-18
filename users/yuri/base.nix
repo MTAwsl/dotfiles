@@ -3,6 +3,7 @@ let
   username = "yuri";
   avatarPath = ./face.png;
   accountsServiceIconPath = "/var/lib/AccountsService/icons/${username}";
+  accountsServiceUserPath = "/var/lib/AccountsService/users/${username}";
 in
 {
   flake.modules.nixos.user-yuri-base =
@@ -14,11 +15,19 @@ in
     {
       services.accounts-daemon.enable = true;
 
+      environment.etc."AccountsService/users/${username}".text = ''
+        [User]
+        Icon=${accountsServiceIconPath}
+      '';
+
       systemd.tmpfiles.rules = [
+        "d /var/lib/AccountsService 0755 root root -"
         "d /var/lib/AccountsService/icons 0755 root root -"
         "d /var/lib/AccountsService/users 0755 root root -"
-        "L+ ${accountsServiceIconPath} - - - - ${avatarPath}"
-        "f+ /var/lib/AccountsService/users/${username} 0644 root root - [User]\nIcon=${accountsServiceIconPath}"
+        "C+ ${accountsServiceIconPath} 0644 root root - ${avatarPath}"
+        "z ${accountsServiceIconPath} 0644 root root -"
+        "C+ ${accountsServiceUserPath} 0644 root root - /etc/AccountsService/users/${username}"
+        "z ${accountsServiceUserPath} 0644 root root -"
       ];
 
       users.users.yuri = {
@@ -40,7 +49,6 @@ in
 
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
           git
-          git-commit-helpers
           ssh-agent
           yazi
           helix

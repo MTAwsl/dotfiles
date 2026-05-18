@@ -20,8 +20,7 @@
         enable = true;
         platformTheme.name = "gtk3";
         style = {
-          package = pkgs.papirus-icon-theme;
-          name = "Papirus-Dark";
+          name = "Fusion";
         };
       };
     };

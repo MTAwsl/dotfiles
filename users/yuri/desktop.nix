@@ -34,20 +34,19 @@
             starship
             zellij
 
-            # Vibe
-            opencode
-            oac-models
-
             firefox
+
+            # Vibe
+            ai-tools
 
             # XDG Default APPS
             xdg
             patch-xdg-open
 
-             gh-release-tracker
+            gh-release-tracker
 
-             rime-ice
-           ]
+            rime-ice
+          ]
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
             sectools
           ]

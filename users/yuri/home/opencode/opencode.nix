@@ -27,7 +27,7 @@
           plugin = [ "@mohak34/opencode-notifier@latest" ];
           permission = {
             external_directory = {
-              "/*" = "deny";
+              "/*" = "ask";
               "~/.config" = "deny";
               "~/.config/**" = "deny";
               "~/.config/opencode" = "allow";
@@ -36,15 +36,10 @@
               "/nix/store/**" = "allow";
             };
             read = {
-              "/*" = "deny";
               "*" = "allow";
               "*.env" = "deny";
               "*.env.*" = "deny";
               "*.env.example" = "allow";
-              "~/.config/opencode" = "allow";
-              "~/.config/opencode/**" = "allow";
-              "/nix/store" = "allow";
-              "/nix/store/**" = "allow";
             };
             edit = {
               "~/.config/opencode" = "ask";
@@ -57,6 +52,22 @@
               "pwd" = "allow";
               "ls" = "allow";
               "ls *" = "allow";
+              "wc" = "allow";
+              "wc *" = "allow";
+              "jq" = "allow";
+              "jq *" = "allow";
+              "rg" = "allow";
+              "rg *" = "allow";
+              "ast-grep" = "allow";
+              "ast-grep *" = "allow";
+              "sg" = "allow";
+              "sg *" = "allow";
+              "file" = "allow";
+              "file *" = "allow";
+              "stat" = "allow";
+              "stat *" = "allow";
+              "tree" = "allow";
+              "tree *" = "allow";
               "git status" = "allow";
               "git status *" = "allow";
               "git diff" = "allow";

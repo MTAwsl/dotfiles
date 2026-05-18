@@ -50,7 +50,7 @@
             break
           fi
 
-          sleep 0.5
+          ${pkgs.coreutils}/bin/sleep 0.5
         done
 
         if ! test -S ${yubikeyAgentSocket} || ! test -f ${yubikeyPrivateKeyFile}; then

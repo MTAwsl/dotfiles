@@ -83,6 +83,7 @@
 
           environment = {
             XDG_CURRENT_DESKTOP = "niri";
+            XDG_SESSION_TYPE = "wayland";
             QT_QPA_PLATFORM = "wayland";
             ELECTRON_OZONE_PLATFORM_HINT = "auto";
             QT_QPA_PLATFORMTHEME = "gtk3";
@@ -152,6 +153,8 @@
       };
 
       xdg.configFile."uwsm/env".text = ''
+        export XDG_CURRENT_DESKTOP="niri"
+        export XDG_SESSION_TYPE="wayland"
         export APP2UNIT_SLICES="a=app-graphical.slice b=background-graphical.slice s=session-graphical.slice"
         export APP2UNIT_TYPE="scope"
       '';

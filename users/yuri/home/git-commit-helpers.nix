@@ -9,7 +9,7 @@
       ...
     }:
     let
-      model = "GPT-5.3 Codex Spark";
+      model = "openai/gpt-5.3-codex-spark";
       agent = "OpenTechnicalWriter";
 
       hasOacOption = lib.hasAttrByPath [ "programs" "opencode" "oac" "enable" ] options;

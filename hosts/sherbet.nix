@@ -41,6 +41,7 @@
       # FIX: Temporary devtools installation override. Remove after build is stable.
       home-manager.users.yuri = {
         imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+          ai-tools
           devtools
         ];
       };

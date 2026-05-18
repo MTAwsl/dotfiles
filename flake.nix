@@ -21,6 +21,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # FIX: Remove once nixpkgs carries Flameshot v14 with https://github.com/flameshot-org/flameshot/pull/4664.
+    flameshot = {
+      url = "github:flameshot-org/flameshot"; # Nightly
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -124,6 +130,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } (
       top@{
         config,
+        flake-parts-lib,
         withSystem,
         moduleWithSystem,
         ...
@@ -152,8 +159,6 @@
           {
             config,
             system,
-            pkgs,
-            inputs',
             ...
           }:
           {
@@ -162,13 +167,7 @@
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
               overlays = [
-                # Add overlays here.
-                (import ./overlays/common-inputs.nix {
-                  inherit inputs' config;
-                })
-                (import ./overlays/openldap-workarounds.nix {
-                  inherit pkgs;
-                })
+                top.config.flake.overlays.default
 
                 # Niri-Flake's overlay.
                 inputs.niri.overlays.niri
@@ -191,10 +190,12 @@
         imports = [
           # Import necessary modules.
           ./nix.nix
+          inputs.flake-parts.flakeModules.easyOverlay
           inputs.flake-parts.flakeModules.modules
           inputs.pkgs-by-name-for-flake-parts.flakeModule
           (import-tree ./lib)
           (import-tree ./features)
+          (import-tree ./overlays)
           (import-tree ./profiles)
           (import-tree ./hosts)
           (import-tree ./users)
