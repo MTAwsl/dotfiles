@@ -62,6 +62,10 @@ _: {
       '';
     in
     {
+      home.packages = with pkgs; [
+        seahorse
+      ];
+
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
@@ -75,6 +79,7 @@ _: {
             }
           );
           "*" = commonSshSettings // {
+            addKeysToAgent = "yes";
             identityAgent = yubikeyAgentSocket;
             identitiesOnly = true;
             identityFile = yubikeyPrivateKeyFile;
@@ -89,6 +94,10 @@ _: {
 
         Service = {
           Type = "simple";
+          Environment = [
+            "SSH_ASKPASS=${pkgs.seahorse}/libexec/seahorse/ssh-askpass"
+            "SSH_ASKPASS_REQUIRE=force"
+          ];
           ExecStartPre = "${pkgs.coreutils}/bin/rm -f ${yubikeyAgentSocket}";
           ExecStart = "${pkgs.openssh}/bin/ssh-agent -D -a ${yubikeyAgentSocket}";
           ExecStartPost = yubikeyAgentBootstrapScript;

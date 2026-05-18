@@ -94,6 +94,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+    };
+
     msgraph-health-sentinel = {
       url = "github:YuriNek0/msgraph-health-sentinel";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -107,11 +111,6 @@
     onedrive-vercel-index = {
       url = "github:spencerwooo/onedrive-vercel-index";
       flake = false;
-    };
-
-    opencode = {
-      url = "github:anomalyco/opencode";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     oac-flake = {
@@ -172,6 +171,9 @@
 
                 # CachyOS Kernel
                 inputs.nix-cachyos-kernel.overlays.pinned
+
+                # AI agent packages
+                inputs.llm-agents.overlays.default
 
                 # Binary Ninja
                 # inputs.binaryninja.overlays.default

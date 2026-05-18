@@ -10,7 +10,7 @@ _: {
       scoutModel = "openai/gpt-5.4-mini-fast";
       contentModel = "openai/gpt-5.4-fast";
       dataModel = "openai/gpt-5.4";
-      utilityModel = "openai/gpt-5.4-nano";
+      utilityModel = "openai/gpt-5.4-mini-fast";
 
       highReasoning = {
         model = proReasoningModel;

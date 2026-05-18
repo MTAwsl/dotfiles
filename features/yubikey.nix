@@ -32,6 +32,12 @@
         RUN+="${pkgs.systemd}/bin/loginctl lock-sessions"
       '';
 
+      services.udev.packages = with pkgs; [
+        libfido2
+      ];
+
+      users.groups.plugdev = { };
+
       boot.initrd = {
         systemd.enable = true;
         availableKernelModules = [
