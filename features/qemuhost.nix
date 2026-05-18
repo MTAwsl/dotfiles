@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.qemu-host =
+_: {
+  flake.modules.features.qemu-host =
     { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [

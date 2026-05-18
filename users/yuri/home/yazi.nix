@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-yazi =
+_: {
+  flake.modules.users.yuri.home.yazi =
     { pkgs, yaziPluginsHomeModule, ... }:
     {
       imports = [

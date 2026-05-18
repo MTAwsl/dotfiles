@@ -123,27 +123,23 @@
   outputs =
     inputs@{
       flake-parts,
-      home-manager,
       import-tree,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       top@{
-        config,
-        flake-parts-lib,
         withSystem,
-        moduleWithSystem,
         ...
       }:
       let
-        mkHost = hostname: system: {
+        mkHost = hostKey: hostname: system: {
           flake.nixosConfigurations."${hostname}" = withSystem system (
             { pkgs, system, ... }:
             inputs.nixpkgs.lib.nixosSystem {
               inherit pkgs system;
               modules = [
-                inputs.self.modules.nixos.nix
-                inputs.self.modules.nixos."host-${hostname}"
+                inputs.self.modules.features.nix
+                inputs.self.modules.hosts.${hostKey}
               ];
             }
           );
@@ -157,7 +153,6 @@
 
         perSystem =
           {
-            config,
             system,
             ...
           }:
@@ -191,7 +186,6 @@
           # Import necessary modules.
           ./nix.nix
           inputs.flake-parts.flakeModules.easyOverlay
-          inputs.flake-parts.flakeModules.modules
           inputs.pkgs-by-name-for-flake-parts.flakeModule
           (import-tree ./lib)
           (import-tree ./features)
@@ -201,9 +195,9 @@
           (import-tree ./users)
 
           # Make hosts here.
-          (mkHost "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")
-          (mkHost "Yuri-Sherbet" "aarch64-linux")
-          (mkHost "Yuri-Lemonade" "x86_64-linux")
+          (mkHost "qemu-aarch64" "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")
+          (mkHost "sherbet" "Yuri-Sherbet" "aarch64-linux")
+          (mkHost "lemonade" "Yuri-Lemonade" "x86_64-linux")
         ];
       }
     );

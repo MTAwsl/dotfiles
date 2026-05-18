@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.redis = {
+_: {
+  flake.modules.features.redis = {
     services.redis.servers.default = {
       enable = true;
       bind = "127.0.0.1";

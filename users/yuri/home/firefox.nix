@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-firefox =
+_: {
+  flake.modules.users.yuri.home.firefox =
     { config, pkgs, ... }:
     {
       programs.firefox = {

@@ -1,10 +1,16 @@
-{ inputs, self, lib, ... }:
+{
+  inputs,
+  lib,
+  ...
+}:
 {
   # From https://github.com/QiroNT/nixconf.
-  flake.modules.nixos.lanzaboote = { pkgs, ... }: {
-    imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
+  flake.modules.features.lanzaboote =
+    { pkgs, ... }:
+    {
+      imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
-    boot = {
+      boot = {
         # secure boot, see lzbt & arch docs for setup
         loader = {
           efi.canTouchEfiVariables = lib.mkForce false;
@@ -24,6 +30,6 @@
         initrd.systemd.enable = true;
       };
 
-    environment.systemPackages = [ pkgs.sbctl ];
-  };
+      environment.systemPackages = [ pkgs.sbctl ];
+    };
 }

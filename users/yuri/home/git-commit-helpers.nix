@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-git-commit-helpers =
+_: {
+  flake.modules.users.yuri.home.git-commit-helpers =
     {
       config,
       options,

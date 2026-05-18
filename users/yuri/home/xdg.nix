@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.yuri-xdg =
+  flake.modules.users.yuri.home.xdg =
     { pkgs, ... }:
     {
       home.packages = [

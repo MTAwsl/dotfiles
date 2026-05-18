@@ -1,9 +1,9 @@
-<!-- Context: project-intelligence/business | Priority: high | Version: 1.2 | Updated: 2026-04-27 -->
+<!-- Context: project-intelligence/business | Priority: high | Version: 1.7 | Updated: 2026-05-18 -->
 
 # Business Domain
 
 **Purpose**: Capture why this repository exists and what outcomes it must deliver for its maintainer.  
-**Last Updated**: 2026-04-27
+**Last Updated**: 2026-05-18
 
 ## Quick Reference
 
@@ -20,7 +20,7 @@ This repository is the single source of truth for reproducible NixOS + Home Mana
 - Reproducibility is the primary value: hosts should be rebuilt from flake state, not manual tweaks.
 - Consistency matters: naming and module boundaries reduce maintenance overhead.
 - Security is a product requirement: avoid privilege escalation paths and keep dependencies updated.
-- Multi-host support is expected (`Yuri-Lemonade` and `Yuri-NixOS-QEMU-AARCH64`).
+- Multi-host support is expected; active validated outputs include `Yuri-Lemonade` and `Yuri-NixOS-QEMU-AARCH64`, while host module keys remain shorthand references separate from hostnames.
 - Config changes should remain reviewable and traceable in Git.
 
 ## Project Identity
@@ -30,7 +30,7 @@ This repository is the single source of truth for reproducible NixOS + Home Mana
 | Project | Personal NixOS configuration mono-repo |
 | Tagline | Declarative, reproducible, host-aware system config |
 | Primary Problem | Manual setup is slow, error-prone, and hard to audit |
-| Solution | Flake-composed NixOS + Home Manager modules with strict naming/scope |
+| Solution | Flake-composed NixOS + Home Manager modules with real nested namespaces, shorthand host keys, and `getHostUsers` host user selection |
 
 ## Target Users
 
@@ -68,6 +68,7 @@ Outcome: Security improvement without cross-module regressions
 
 - Keep global features minimal unless truly system-wide.
 - Avoid cross-referencing dependencies across unrelated module layers.
+- Keep user-specific names in `users/<username>/...` files and intentional call sites, not generic lib declarations.
 - Respect architecture-specific quirks (e.g., niri package differences on aarch64).
 
 ## 📂 Codebase References
@@ -76,6 +77,8 @@ Outcome: Security improvement without cross-module regressions
 - `flake.nix` - central reproducibility anchor (inputs/outputs/composition)
 - `hosts/lemonade.nix` - main physical host definition
 - `hosts/qemu-aarch64.nix` - virtual/aarch64 host definition
+- `lib/moduleNamespaces.nix` - namespace declaration boundary and user selection helpers
+- `lib/lib.nix` - generic `flake.lib` option boundary
 - `profiles/base.nix` - shared baseline user/system experience
 - `features/yubikey.nix` - security-focused feature boundary example
 

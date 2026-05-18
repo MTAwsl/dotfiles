@@ -1,9 +1,9 @@
-<!-- Context: project-intelligence/notes | Priority: high | Version: 1.4 | Updated: 2026-04-27 -->
+<!-- Context: project-intelligence/notes | Priority: high | Version: 1.9 | Updated: 2026-05-18 -->
 
 # Living Notes
 
 **Purpose**: Track active risks, debt, and open follow-ups for this repository.  
-**Last Updated**: 2026-04-27
+**Last Updated**: 2026-05-18
 
 ## Quick Reference
 
@@ -59,7 +59,9 @@ Reference: exact file path + issue URL
 
 ## What Works Well
 
-- Prefix-based module wiring keeps imports understandable.
+- Real nested `flake.modules` namespace wiring keeps imports understandable without old prefixes or string-key namespace paths.
+- `getHostUsers` keeps host user selection explicit, supports multi-user hosts, and leaves lower-level `getUsers` available for generic namespace selection while `lib/moduleNamespaces.nix` owns raw namespace declarations and `lib/lib.nix` stays generic.
+- Explicit Kanshi layout selection avoids hidden dependence on `networking.hostName`.
 - Host/profile/user boundaries are mostly clear and reusable.
 - Local package strategy under `packages/` is predictable.
 
@@ -67,6 +69,8 @@ Reference: exact file path + issue URL
 
 **Debt/Issue Anchors**:
 - `flake.nix` - temporary openldap workaround and overlay composition
+- `lib/moduleNamespaces.nix` - namespace declaration and user selection helper boundary
+- `lib/lib.nix` - generic `flake.lib` option boundary
 - `hosts/qemu-aarch64.nix` - niri package force for architecture mismatch
 - `users/yuri/home/niri.nix` - large high-churn HM module
 - `features/qemu-share-fs.nix` - qemu share helper and UID/GID assumptions

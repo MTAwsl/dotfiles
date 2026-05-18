@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-librepods =
+_: {
+  flake.modules.users.yuri.home.librepods =
     { config, pkgs, ... }:
     let
       systemdTarget = config.wayland.systemd.target;

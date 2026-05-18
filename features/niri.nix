@@ -1,21 +1,28 @@
-{ self, inputs, ... }:
+{ inputs, ... }:
 {
-  flake.modules.nixos.niri =
+  flake.modules.features.niri =
     { lib, pkgs, ... }:
     {
       imports = [
         inputs.niri.nixosModules.niri
       ];
 
-      services.gnome.gnome-keyring.enable = lib.mkForce true;
-      services.gnome.gcr-ssh-agent.enable = false;
+      services.gnome = {
+        gnome-keyring.enable = lib.mkForce true;
+        gcr-ssh-agent.enable = false;
+        sushi.enable = true;
+      };
 
-      programs.niri.enable = true;
+      programs = {
+        niri = {
+          enable = true;
 
-      # Switch back to stable once https://github.com/sodiboo/niri-flake/pull/1548 is closed.
-      programs.niri.package = pkgs.niri-unstable;
+          # Switch back to stable once https://github.com/sodiboo/niri-flake/pull/1548 is closed.
+          package = pkgs.niri-unstable;
+        };
 
-      programs.xwayland.enable = true;
+        xwayland.enable = true;
+      };
 
       xdg.portal = {
         enable = true;
@@ -56,7 +63,6 @@
 
       environment.variables.NIXOS_OZONE_WL = "1";
 
-      services.gnome.sushi.enable = true;
       programs.nautilus-open-any-terminal = {
         enable = true;
         terminal = "ghostty";

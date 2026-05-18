@@ -1,6 +1,5 @@
-{ self, ... }:
-{
-  flake.modules.nixos.profile-base =
+_: {
+  flake.modules.profiles.base =
     { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [

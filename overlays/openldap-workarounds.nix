@@ -1,9 +1,9 @@
-{ ... }:
-{
+_: {
   perSystem =
     { final, pkgs, ... }:
     let
-      withOpenLdapNoCheck = pkg:
+      withOpenLdapNoCheck =
+        pkg:
         pkg.override {
           buildFHSEnv =
             args:

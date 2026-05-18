@@ -1,9 +1,9 @@
-<!-- Context: project-intelligence/nav | Priority: high | Version: 1.8 | Updated: 2026-05-12 -->
+<!-- Context: project-intelligence/nav | Priority: high | Version: 1.13 | Updated: 2026-05-18 -->
 
 # Project Intelligence
 
 **Purpose**: Quick entry points for business + technical project context.
-**Last Updated**: 2026-05-12
+**Last Updated**: 2026-05-18
 
 ## Quick Reference
 
@@ -15,7 +15,7 @@
 
 | What You Need | File | Description |
 |---|---|---|
-| Technical architecture and coding patterns | `technical-domain.md` | Flake stack, module patterns, naming, standards, security (including modular file-size guidance, `# FIX:` lifecycle rules, and AI guardrails prohibiting `nixos-rebuild`/`nh` plus no activation) |
+| Technical architecture and coding patterns | `technical-domain.md` | Flake stack, real nested `flake.modules` namespaces, `getHostUsers` host user selection, host key/hostname separation, standards, and AI safety guardrails |
 | Context authoring workflow | `context-authoring.md` | `/add-context` style rules, frontmatter/MVI expectations, navigation upkeep, and `.tmp/` handling |
 | Business context | `business-domain.md` | Repo goals, constraints, and outcomes |
 | Business-to-technical mapping | `business-tech-bridge.md` | Requirement-to-module mapping |
@@ -45,6 +45,8 @@
 
 **Technical Anchors in Repository**:
 - `flake.nix` - central flake wiring and module imports
+- `lib/moduleNamespaces.nix` - raw namespace declarations plus `getHostUsers`/`getUsers` user selection
+- `lib/lib.nix` - generic `flake.lib` option boundary
 - `hosts/lemonade.nix` - host composition example
 - `features/niri.nix` - feature module pattern
 - `users/yuri/home/firefox.nix` - Home Manager module pattern

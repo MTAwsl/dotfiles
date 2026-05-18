@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.plymouth =
+_: {
+  flake.modules.features.plymouth =
     { pkgs, ... }:
     {
       boot = {

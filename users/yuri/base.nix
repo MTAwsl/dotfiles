@@ -4,12 +4,13 @@ let
   avatarPath = ./face.png;
   accountsServiceIconPath = "/var/lib/AccountsService/icons/${username}";
   accountsServiceUserPath = "/var/lib/AccountsService/users/${username}";
+  users = self.lib.getUsers self.modules.users;
+  user = users.${username};
 in
 {
-  flake.modules.nixos.user-yuri-base =
+  flake.modules.users.yuri.profiles.base =
     {
       pkgs,
-      lib,
       ...
     }:
     {
@@ -45,9 +46,9 @@ in
         ];
       };
 
-      home-manager.users.yuri = {
+      home-manager.users.${username} = {
 
-        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+        imports = with user.home; [
           git
           ssh-agent
           yazi

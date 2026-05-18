@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.yuri-dms-shell =
-    { ... }:
+  flake.modules.users.yuri.home.dms-shell =
+    _:
     let
       USERNAME = "yuri";
     in

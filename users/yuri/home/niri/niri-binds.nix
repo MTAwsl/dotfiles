@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-niri-binds =
+_: {
+  flake.modules.users.yuri.home.niri-binds =
     { config, lib, ... }:
     {
       programs.niri.settings.binds =
@@ -217,47 +216,69 @@
             };
           }
           (binds {
-            suffixes."Left" = "column-left";
-            suffixes."Down" = "window-down";
-            suffixes."Up" = "window-up";
-            suffixes."Right" = "column-right";
-            suffixes."H" = "column-left";
-            suffixes."J" = "window-down";
-            suffixes."K" = "window-up";
-            suffixes."L" = "column-right";
-            prefixes."Mod" = "focus";
-            prefixes."Mod+Ctrl" = "focus-monitor";
-            prefixes."Mod+Shift" = "move";
-            prefixes."Mod+Shift+Ctrl" = "move-column-to-monitor";
-            substitutions."monitor-column" = "monitor";
-            substitutions."monitor-window" = "monitor";
+            suffixes = {
+              "Left" = "column-left";
+              "Down" = "window-down";
+              "Up" = "window-up";
+              "Right" = "column-right";
+              "H" = "column-left";
+              "J" = "window-down";
+              "K" = "window-up";
+              "L" = "column-right";
+            };
+            prefixes = {
+              "Mod" = "focus";
+              "Mod+Ctrl" = "focus-monitor";
+              "Mod+Shift" = "move";
+              "Mod+Shift+Ctrl" = "move-column-to-monitor";
+            };
+            substitutions = {
+              "monitor-column" = "monitor";
+              "monitor-window" = "monitor";
+            };
           })
           (binds {
-            suffixes."Home" = "first";
-            suffixes."End" = "last";
-            prefixes."Mod" = "focus-column";
-            prefixes."Mod+Ctrl" = "move-column-to";
+            suffixes = {
+              "Home" = "first";
+              "End" = "last";
+            };
+            prefixes = {
+              "Mod" = "focus-column";
+              "Mod+Ctrl" = "move-column-to";
+            };
           })
           (binds {
-            suffixes."WheelScrollRight" = "right";
-            suffixes."WheelScrollLeft" = "left";
-            prefixes."Mod" = "focus-column";
-            prefixes."Mod+Ctrl" = "move-column";
+            suffixes = {
+              "WheelScrollRight" = "right";
+              "WheelScrollLeft" = "left";
+            };
+            prefixes = {
+              "Mod" = "focus-column";
+              "Mod+Ctrl" = "move-column";
+            };
           })
           (binds {
-            suffixes."WheelScrollDown" = "right";
-            suffixes."WheelScrollUp" = "left";
-            prefixes."Mod+Shift" = "focus-column";
-            prefixes."Mod+Ctrl+Shift" = "move-column";
+            suffixes = {
+              "WheelScrollDown" = "right";
+              "WheelScrollUp" = "left";
+            };
+            prefixes = {
+              "Mod+Shift" = "focus-column";
+              "Mod+Ctrl+Shift" = "move-column";
+            };
           })
           (binds {
-            suffixes."Page_Down" = "workspace-down";
-            suffixes."Page_Up" = "workspace-up";
-            suffixes."I" = "workspace-down";
-            suffixes."U" = "workspace-up";
-            prefixes."Mod" = "focus";
-            prefixes."Mod+Ctrl" = "move-column-to";
-            prefixes."Mod+Shift" = "move";
+            suffixes = {
+              "Page_Down" = "workspace-down";
+              "Page_Up" = "workspace-up";
+              "I" = "workspace-down";
+              "U" = "workspace-up";
+            };
+            prefixes = {
+              "Mod" = "focus";
+              "Mod+Ctrl" = "move-column-to";
+              "Mod+Shift" = "move";
+            };
           })
           (binds {
             suffixes =
@@ -270,8 +291,10 @@
                 ];
               })
               |> builtins.listToAttrs;
-            prefixes."Mod" = "focus";
-            prefixes."Mod+Shift" = "move-column-to";
+            prefixes = {
+              "Mod" = "focus";
+              "Mod+Shift" = "move-column-to";
+            };
           })
         ];
     };

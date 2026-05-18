@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.polkit-agent =
+_: {
+  flake.modules.features.polkit-agent =
     { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [

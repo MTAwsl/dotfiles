@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.yuri-clitools =
+  flake.modules.users.yuri.home.clitools =
     { config, pkgs, ... }:
     {
 

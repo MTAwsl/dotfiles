@@ -1,11 +1,10 @@
 {
-  config,
   lib,
   ...
 }:
 {
-  flake.modules.nixos.qemu-share-fs =
-    { ... }:
+  flake.modules.features.qemu-share-fs =
+    _:
     let
       mount_point = "/mnt/share";
     in

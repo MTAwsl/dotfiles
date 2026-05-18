@@ -1,10 +1,14 @@
 { self, ... }:
 {
-  flake.modules.nixos."host-Yuri-NixOS-QEMU-AARCH64" =
+  flake.modules.hosts.qemu-aarch64 =
     { lib, pkgs, ... }:
+    let
+      users = self.lib.getHostUsers self.modules.users [ "yuri" ];
+      inherit (users) yuri;
+    in
     {
       imports =
-        (with self.modules.nixos; [
+        (with self.modules.features; [
           # Home Manager
           home-manager
 
@@ -12,13 +16,13 @@
           sshd
         ])
         # Import host profiles.
-        ++ (with self.lib.withPrefix "profile" self.modules.nixos; [
+        ++ (with self.modules.profiles; [
           base
           desktop
           qemu-guest
         ])
         # Import user profiles.
-        ++ (with self.lib.withUserProfile "yuri"; [
+        ++ (with yuri.profiles; [
           base
           desktop
           qemu-guest
@@ -29,9 +33,6 @@
         LIBGL_ALWAYS_SOFTWARE = "1";
       };
       programs.niri.package = lib.mkForce pkgs.niri; # niri-flake only contains x86_64 builds for now. Use nixpkgs instead.
-
-      boot.loader.systemd-boot.enable = true;
-      boot.loader.efi.canTouchEfiVariables = true;
 
       i18n.defaultLocale = "en_AU.UTF-8";
 
@@ -47,50 +48,63 @@
         LC_TIME = "en_AU.UTF-8";
       };
 
-      networking.networkmanager.enable = true;
-      networking.firewall.enable = true;
+      networking = {
+        networkmanager.enable = true;
+        firewall.enable = true;
+        hostName = "Yuri-NixOS-QEMU-AARCH64";
+      };
 
       hardware.graphics.enable = true;
       # services.xserver.enable = true;
-      networking.hostName = "Yuri-NixOS-QEMU-AARCH64";
 
-      boot.initrd.availableKernelModules = [
-        "xhci_pci"
-        "virtio_pci"
-        "virtio_net"
-        "virtio_pci"
-        "virtio_mmio"
-        "virtio_blk"
-        "virtio_scsi"
-        "9p"
-        "9pnet_virtio"
-        "usbhid"
-        "usb_storage"
-        "sr_mod"
-      ];
+      boot = {
+        loader = {
+          systemd-boot.enable = true;
+          efi.canTouchEfiVariables = true;
+        };
 
-      boot.initrd.kernelModules = [
-        "virtio_balloon"
-        "virtio_console"
-        "virtio_rng"
-        "virtio_gpu"
-      ];
+        initrd = {
+          availableKernelModules = [
+            "xhci_pci"
+            "virtio_pci"
+            "virtio_net"
+            "virtio_pci"
+            "virtio_mmio"
+            "virtio_blk"
+            "virtio_scsi"
+            "9p"
+            "9pnet_virtio"
+            "usbhid"
+            "usb_storage"
+            "sr_mod"
+          ];
 
-      boot.kernelModules = [ ];
-      boot.extraModulePackages = [ ];
+          kernelModules = [
+            "virtio_balloon"
+            "virtio_console"
+            "virtio_rng"
+            "virtio_gpu"
+          ];
+        };
 
-      fileSystems."/" = {
-        device = "/dev/disk/by-uuid/540fdbde-2b58-4533-9d1d-c0358f154edf";
-        fsType = "ext4";
+        kernelModules = [ ];
+        extraModulePackages = [ ];
       };
 
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/F667-C8FB";
-        fsType = "vfat";
-        options = [
-          "fmask=0077"
-          "dmask=0077"
-        ];
+      fileSystems = {
+        "/" = {
+          device = "/dev/disk/by-uuid/540fdbde-2b58-4533-9d1d-c0358f154edf";
+          fsType = "ext4";
+        };
+
+        "/boot" = {
+          device = "/dev/disk/by-uuid/F667-C8FB";
+          fsType = "vfat";
+          options = [
+            "fmask=0077"
+            "dmask=0077"
+          ];
+        };
       };
 
       swapDevices = [

@@ -1,14 +1,12 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
-  flake.modules.homeManager.yuri-niri =
+  flake.modules.users.yuri.home.niri =
     {
-      config,
-      lib,
       pkgs,
       ...
     }:
     {
-      imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+      imports = with self.modules.users.yuri.home; [
         niri-binds
         niri-window-rules
       ];

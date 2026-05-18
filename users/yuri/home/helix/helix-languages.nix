@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.homeManager.yuri-helix-languages =
+  flake.modules.users.yuri.home.helix-languages =
     {
       pkgs,
       lib,
@@ -62,9 +62,9 @@
 
             default-language-servers =
               let
-                upstreamLanguages = builtins.tryEval (
-                  (builtins.fromTOML (builtins.readFile "${pkgs.helix-unwrapped.src}/languages.toml")).language
-                );
+                upstreamLanguages = builtins.tryEval (builtins.fromTOML (
+                  builtins.readFile "${pkgs.helix-unwrapped.src}/languages.toml"
+                )).language;
               in
               if upstreamLanguages.success then
                 upstreamLanguages.value

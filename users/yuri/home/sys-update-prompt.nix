@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-sys-update-prompt =
+_: {
+  flake.modules.users.yuri.home.sys-update-prompt =
     {
       config,
       options,

@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-rime-ice =
+_: {
+  flake.modules.users.yuri.home.rime-ice =
     { lib, pkgs, ... }:
     {
       home.activation = {

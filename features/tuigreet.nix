@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.tuigreet =
+_: {
+  flake.modules.features.tuigreet =
     { config, pkgs, ... }:
     {
       services.greetd = {

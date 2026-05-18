@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-ssh-agent =
+_: {
+  flake.modules.users.yuri.home.ssh-agent =
     {
       config,
       lib,

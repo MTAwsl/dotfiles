@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-niri-window-rules = {
+_: {
+  flake.modules.users.yuri.home.niri-window-rules = {
     programs.niri.settings.window-rules = [
       {
         geometry-corner-radius = {

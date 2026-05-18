@@ -1,24 +1,28 @@
 { self, ... }:
+let
+  username = "yuri";
+  users = self.lib.getUsers self.modules.users;
+  user = users.${username};
+in
 {
-  flake.modules.nixos.user-yuri-desktop =
+  flake.modules.users.yuri.profiles.desktop =
     {
       lib,
       pkgs,
       ...
     }:
     {
-      imports = with self.modules.nixos; [
+      imports = with self.modules.features; [
         wireshark
       ];
 
-      users.users.yuri = {
+      users.users.${username} = {
         extraGroups = [ "wireshark" ];
       };
 
-      home-manager.users.yuri = {
+      home-manager.users.${username} = {
         imports =
-          with self.lib.withPrefix "yuri" self.modules.homeManager;
-          [
+          (with user.home; [
             kanshi
             niri
             dms-shell
@@ -46,13 +50,9 @@
             gh-release-tracker
 
             rime-ice
-          ]
-          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
-            sectools
-          ]
-          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
-            librepods
-          ];
+          ])
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ sectools ])
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ librepods ]);
 
         home.isDesktopProfile = true;
         home.packages =

@@ -1,9 +1,9 @@
 { self, ... }:
 {
-  flake.modules.nixos.profile-desktop =
+  flake.modules.profiles.desktop =
     { pkgs, ... }:
     {
-      imports = with self.modules.nixos; [
+      imports = with self.modules.features; [
         niri
         dms-shell
         plymouth
@@ -32,18 +32,25 @@
 
       # sound
       security.rtkit.enable = true;
-      services.pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-        wireplumber.enable = true;
-      };
+      services = {
+        pipewire = {
+          enable = true;
+          alsa.enable = true;
+          alsa.support32Bit = true;
+          pulse.enable = true;
+          wireplumber.enable = true;
+        };
 
-      services.udev.extraRules = ''
-        # Allow the "wheel" group to write to the nvidia backlight file
-        ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_0", MODE="0664", GROUP="wheel"
-      '';
+        udev.extraRules = ''
+          # Allow the "wheel" group to write to the nvidia backlight file
+          ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="nvidia_0", MODE="0664", GROUP="wheel"
+        '';
+
+        printing.enable = true;
+        gvfs.enable = true;
+        ratbagd.enable = true;
+        udisks2.enable = true;
+      };
 
       security.polkit.extraConfig = ''
         // Wheel group's passwordless actions
@@ -65,20 +72,8 @@
 
       fonts.fontDir.enable = true;
 
-      # printing
-      services.printing.enable = true;
-
-      # GNOME virtual FS
-      services.gvfs.enable = true;
-
       # controller
       # hardware.xone.enable = true;
       hardware.xpadneo.enable = true;
-
-      # mouse config (piper)
-      services.ratbagd.enable = true;
-
-      # USB Mass Storage
-      services.udisks2.enable = true;
     };
 }

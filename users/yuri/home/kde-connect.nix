@@ -1,12 +1,9 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-kde-connect =
-    { ... }:
-    {
-      programs.niri.settings.spawn-at-startup = [
-        { sh = "kdeconnect-indicator &"; }
-      ];
+_: {
+  flake.modules.users.yuri.home.kde-connect = _: {
+    programs.niri.settings.spawn-at-startup = [
+      { sh = "kdeconnect-indicator &"; }
+    ];
 
-      services.kdeconnect.enable = false;
-    };
+    services.kdeconnect.enable = false;
+  };
 }

@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-helix-editor =
+_: {
+  flake.modules.users.yuri.home.helix-editor =
     { pkgs, ... }:
     {
       programs.helix.settings = {

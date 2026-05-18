@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-patch-xdg-open =
+_: {
+  flake.modules.users.yuri.home.patch-xdg-open =
     { pkgs, ... }:
     {
       home.packages = [

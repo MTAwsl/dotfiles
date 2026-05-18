@@ -1,6 +1,5 @@
-{ self, ... }:
-{
-  flake.modules.nixos.fonts =
+_: {
+  flake.modules.features.fonts =
     { pkgs, ... }:
     {
       fonts.packages = with pkgs; [

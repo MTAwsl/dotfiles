@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-helix-packages =
+_: {
+  flake.modules.users.yuri.home.helix-packages =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

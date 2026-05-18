@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-udiskie =
+_: {
+  flake.modules.users.yuri.home.udiskie =
     { pkgs, ... }:
     {
 

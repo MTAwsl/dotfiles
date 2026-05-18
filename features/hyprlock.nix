@@ -1,8 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.hyprlock =
-    { ... }:
-    {
-      programs.hyprlock.enable = true;
-    };
+_: {
+  flake.modules.features.hyprlock = _: {
+    programs.hyprlock.enable = true;
+  };
 }

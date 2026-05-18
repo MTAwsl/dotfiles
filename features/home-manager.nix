@@ -1,11 +1,10 @@
 {
   inputs,
-  config,
   ...
 }:
 let
   home-manager-config =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     {
       home-manager = {
         verbose = true;
@@ -36,7 +35,7 @@ let
     };
 in
 {
-  flake.modules.nixos.home-manager = {
+  flake.modules.features.home-manager = {
     imports = [
       inputs.home-manager.nixosModules.home-manager
       home-manager-config

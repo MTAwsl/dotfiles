@@ -1,4 +1,4 @@
-{ ... }:
+_:
 let
   serviceName = "onedrive-index";
   serviceUser = serviceName;
@@ -13,7 +13,7 @@ let
   nextBin = "${appDir}/node_modules/next/dist/bin/next";
 in
 {
-  flake.modules.nixos.onedrive-index =
+  flake.modules.features.onedrive-index =
     { config, pkgs, ... }:
     let
       launchScript = pkgs.writeShellApplication {

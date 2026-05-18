@@ -1,7 +1,7 @@
 { self, ... }:
 {
-  flake.modules.nixos.regreet =
-    { config, pkgs, ... }:
+  flake.modules.features.regreet =
+    { pkgs, ... }:
     let
       niriConfigKdl = pkgs.writeText "regreet-niri-conf.kdl" ''
         spawn-sh-at-startup "kanshi -c /home/${self.lib.meta.owner.username}/.config/kanshi/config"

@@ -1,6 +1,5 @@
 # FIX: Remove once https://github.com/anomalyco/opencode/pull/21056 is merged and packaged.
-{ ... }:
-{
+_: {
   perSystem =
     { pkgs, ... }:
     {

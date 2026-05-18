@@ -1,9 +1,9 @@
-<!-- Context: project-intelligence/decisions | Priority: high | Version: 1.4 | Updated: 2026-04-27 -->
+<!-- Context: project-intelligence/decisions | Priority: high | Version: 1.9 | Updated: 2026-05-18 -->
 
 # Decisions Log
 
 **Purpose**: Record high-impact architecture decisions and why they were made.  
-**Last Updated**: 2026-04-27
+**Last Updated**: 2026-05-18
 
 ## Quick Reference
 
@@ -42,18 +42,32 @@ References: file paths and issue links
 | 2026-04-27 | Keep Home Manager embedded in NixOS flake outputs | Decided | Single host build path and tighter host-user cohesion |
 | 2026-04-27 | Force `pkgs.niri` on qemu aarch64 host | Temporary | niri flake package availability mismatch across architectures |
 | 2026-04-27 | Apply openldap test-disable workaround for lutris/bottles | Temporary | Upstream nixpkgs issue blocks clean build path |
+| 2026-05-18 | Replace prefix-based module names with real nested namespaces | Decided | Keeps readable scope boundaries without overloaded prefixes or string-key namespace paths |
+| 2026-05-18 | Add `getHostUsers` host user selection over generic `getUsers` | Decided | Lets hosts support one or many users while declaring usernames once and keeping generic selection available outside hosts |
 
 ## Decision Notes
 
 ### D1: Dendritic module composition
 - **Context**: Repository has multiple module layers (hosts/profiles/features/users/home).
-- **Decision**: Prefix-scoped module exports + helper-based prefix stripping.
-- **Impact**: Clear import graph and lower accidental coupling.
-- **Trade-off**: Naming discipline is mandatory.
+- **Decision**: Export modules through real nested `flake.modules` namespaces such as `features.niri`, `profiles.desktop`, `hosts.lemonade`, `users.yuri.profiles.base`, and `users.yuri.home.firefox`.
+- **Impact**: Clear import graph, lower accidental coupling, and no overloaded `host-`/`profile-`/`user-*` prefixes.
+- **Trade-off**: The repo declares its own nested namespace options rather than using `flake-parts` `flakeModules.modules`, whose two-level class model does not fit this structure cleanly.
+
+### D1a: Raw namespace option declarations
+- **Context**: Nested `flake.modules` namespaces must preserve module functions during option merging.
+- **Decision**: Declare the relevant namespace options in `lib/moduleNamespaces.nix` using raw values, and keep `lib/lib.nix` limited to the existing generic `flake.lib` option.
+- **Impact**: Import call sites can consume grouped attrsets such as `self.modules.features`, while host user selections go through `self.lib.getHostUsers self.modules.users [ ... ]` without hard-coded usernames in lib option declarations.
+- **Trade-off**: New namespaces need explicit option declarations in `lib/`.
+
+### D1b: `getHostUsers` helper and explicit host identity
+- **Context**: User and host module references need stable namespace keys without coupling lib declarations to a specific user or tying host-specific layouts to machine hostnames.
+- **Decision**: Keep `flake.modules.users` generic in `lib/moduleNamespaces.nix`; hosts bind `users = self.lib.getHostUsers self.modules.users [ "yuri" ]; inherit (users) yuri;` or multi-user lists such as `[ "yuri" "alice" ]`, then import from each user's `profiles`, `homeModules`, and `kanshiLayouts`. Host modules use shorthand keys (`lemonade`, `qemu-aarch64`, `sherbet`) while `mkHost` receives the separate `hostname` value.
+- **Impact**: User-specific naming stays in `users/<username>/...` and explicit calls; host modules declare usernames once, support multi-user composition, and avoid direct `home-manager.users.<name>`, while user profile modules may define `username` once and set `home-manager.users.${username}` internally. `getUsers` remains available for lower-level generic namespace selection.
+- **Validation**: `nix flake show` plus hostname evals for `Yuri-Lemonade` and `Yuri-NixOS-QEMU-AARCH64` passed.
 
 ### D2: Embedded Home Manager strategy
 - **Context**: Need host-specific HM behavior without split build flows.
-- **Decision**: Use `home-manager.users.yuri` inside NixOS host composition.
+- **Decision**: Keep Home Manager embedded in NixOS composition through user profile modules; hosts import user wrappers rather than writing `home-manager.users.<name>` directly.
 - **Impact**: One primary build path per host.
 - **Trade-off**: Less separation than standalone HM output.
 
@@ -67,9 +81,10 @@ References: file paths and issue links
 
 **Decision Anchors**:
 - `flake.nix` - flake-parts/import-tree composition and overlay workarounds
+- `lib/moduleNamespaces.nix` - raw nested namespace option declarations and user selection helpers
+- `lib/lib.nix` - generic `flake.lib` option boundary
 - `hosts/qemu-aarch64.nix` - forced niri package override on aarch64 host
 - `features/home-manager.nix` - Home Manager module integration approach
-- `lib/withPrefix.nix` - prefix-based module wiring helper
 
 **Issue Links in Code Comments**:
 - `flake.nix` - nixpkgs openldap workaround TODO references

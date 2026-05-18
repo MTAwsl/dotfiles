@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-keepassxc =
+_: {
+  flake.modules.users.yuri.home.keepassxc =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

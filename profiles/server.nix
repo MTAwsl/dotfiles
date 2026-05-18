@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.profile-server = {
+_: {
+  flake.modules.profiles.server = {
     zramSwap.enable = true;
 
     services.journald.extraConfig = ''

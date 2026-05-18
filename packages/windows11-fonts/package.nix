@@ -19,7 +19,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   };
 
   sources = lib.mapAttrs (
-    name: lib.concatMapStringsSep " " (font: "Windows/Fonts/${font}")
+    _name: lib.concatMapStringsSep " " (font: "Windows/Fonts/${font}")
   ) languages;
   outputs = [ "out" ] ++ builtins.attrNames finalAttrs.sources;
 

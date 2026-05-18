@@ -1,13 +1,11 @@
 { self, ... }:
 {
-  flake.modules.homeManager.yuri-ai-tools =
-    { ... }:
-    {
-      imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-        # Vibe
-        opencode
-        oac-models
-        git-commit-helpers
-      ];
-    };
+  flake.modules.users.yuri.home.ai-tools = _: {
+    imports = with self.modules.users.yuri.home; [
+      # Vibe
+      opencode
+      oac-models
+      git-commit-helpers
+    ];
+  };
 }

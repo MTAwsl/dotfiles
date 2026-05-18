@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-pythonpkgs =
+_: {
+  flake.modules.users.yuri.home.pythonpkgs =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [

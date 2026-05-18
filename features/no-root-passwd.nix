@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.no-root-passwd = { ... }: {
+_: {
+  flake.modules.features.no-root-passwd = _: {
     users.users.root.hashedPassword = "!";
   };
 }

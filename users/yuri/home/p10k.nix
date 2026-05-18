@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  flake.modules.homeManager.yuri-p10k =
+  flake.modules.users.yuri.home.p10k =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [ zsh-powerlevel10k ];

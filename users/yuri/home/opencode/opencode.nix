@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.yuri-opencode =
+  flake.modules.users.yuri.home.opencode =
     { pkgs, ... }:
     {
       imports = [ inputs.oac-flake.homeManagerModules.oac ];
@@ -24,14 +24,11 @@
       programs.opencode = {
         enable = true;
         settings = {
+          lsp = true;
           plugin = [ "@mohak34/opencode-notifier@latest" ];
           permission = {
             external_directory = {
               "/*" = "ask";
-              "~/.config" = "deny";
-              "~/.config/**" = "deny";
-              "~/.config/opencode" = "allow";
-              "~/.config/opencode/**" = "allow";
               "/nix/store" = "allow";
               "/nix/store/**" = "allow";
             };
@@ -42,8 +39,6 @@
               "*.env.example" = "allow";
             };
             edit = {
-              "~/.config/opencode" = "ask";
-              "~/.config/opencode/**" = "ask";
               "/nix/store" = "deny";
               "/nix/store/**" = "deny";
             };

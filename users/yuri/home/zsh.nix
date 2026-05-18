@@ -1,7 +1,6 @@
-{ lib, ... }:
-{
+_: {
   # Credit: qiront/nixconf
-  flake.modules.homeManager.yuri-zsh =
+  flake.modules.users.yuri.home.zsh =
     {
       config,
       pkgs,

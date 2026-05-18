@@ -1,11 +1,8 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-kanshi =
-    { ... }:
-    {
-      services.kanshi = {
-        enable = true;
-        systemdTarget = "graphical-session.target";
-      };
+_: {
+  flake.modules.users.yuri.home.kanshi = _: {
+    services.kanshi = {
+      enable = true;
+      systemdTarget = "graphical-session.target";
     };
+  };
 }

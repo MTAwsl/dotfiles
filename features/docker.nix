@@ -1,10 +1,7 @@
-{ ... }:
-{
-  flake.modules.nixos.docker =
-    { ... }:
-    {
-      virtualisation = {
-        docker.enable = true;
-      };
+_: {
+  flake.modules.features.docker = _: {
+    virtualisation = {
+      docker.enable = true;
     };
+  };
 }

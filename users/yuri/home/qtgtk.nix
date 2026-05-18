@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-qtgtk =
+_: {
+  flake.modules.users.yuri.home.qtgtk =
     { config, pkgs, ... }:
     {
       home.packages = with pkgs; [

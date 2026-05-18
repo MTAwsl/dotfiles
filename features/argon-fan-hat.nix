@@ -10,7 +10,7 @@ let
     ;
 in
 {
-  flake.modules.nixos.argon-fan-hat =
+  flake.modules.features.argon-fan-hat =
     {
       config,
       pkgs,
@@ -20,13 +20,11 @@ in
       cfg = config.hardware.argonFanHat;
       sortedThresholds = sort (left: right: left.temperatureC < right.temperatureC) cfg.thresholds;
 
-      thresholdCases = concatMapStringsSep "\n" (
-        threshold: ''
-          if [ "$temp_c" -ge ${toString threshold.temperatureC} ]; then
-            target=${toString threshold.speedPercent}
-          fi
-        ''
-      ) sortedThresholds;
+      thresholdCases = concatMapStringsSep "\n" (threshold: ''
+        if [ "$temp_c" -ge ${toString threshold.temperatureC} ]; then
+          target=${toString threshold.speedPercent}
+        fi
+      '') sortedThresholds;
 
       fanController = pkgs.writeShellApplication {
         name = "argon-fan-hat-control";
@@ -162,19 +160,21 @@ in
         };
 
         thresholds = mkOption {
-          type = types.listOf (types.submodule {
-            options = {
-              temperatureC = mkOption {
-                type = types.ints.between 0 120;
-                description = "CPU temperature threshold in Celsius.";
-              };
+          type = types.listOf (
+            types.submodule {
+              options = {
+                temperatureC = mkOption {
+                  type = types.ints.between 0 120;
+                  description = "CPU temperature threshold in Celsius.";
+                };
 
-              speedPercent = mkOption {
-                type = types.ints.between 0 100;
-                description = "Fan speed percentage applied at or above the threshold.";
+                speedPercent = mkOption {
+                  type = types.ints.between 0 100;
+                  description = "Fan speed percentage applied at or above the threshold.";
+                };
               };
-            };
-          });
+            }
+          );
           default = [
             {
               temperatureC = 55;

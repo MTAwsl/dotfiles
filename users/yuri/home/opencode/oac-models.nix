@@ -1,6 +1,6 @@
-{ ... }:
-{
-  flake.modules.homeManager.yuri-oac-models = { ... }:
+_: {
+  flake.modules.users.yuri.home.oac-models =
+    _:
     let
       proReasoningModel = "openai/gpt-5.5-pro";
       reasoningModel = "openai/gpt-5.5";

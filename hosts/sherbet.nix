@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos."host-Yuri-Sherbet" =
+  flake.modules.hosts.sherbet =
     {
       config,
       lib,
@@ -13,10 +13,12 @@
       onedriveIndexHost = "drive.sherbet.lan";
       fireflyPublicRoot = "${config.services.firefly-iii.package}/public";
       fireflyPhpSocket = config.services.phpfpm.pools.firefly-iii.socket;
+      users = self.lib.getHostUsers self.modules.users [ "yuri" ];
+      inherit (users) yuri;
     in
     {
       imports =
-        (with self.modules.nixos; [
+        (with self.modules.features; [
           home-manager
           sshd
           network
@@ -30,21 +32,18 @@
           firefly-iii
           onedrive-index
         ])
-        ++ (with self.lib.withPrefix "profile" self.modules.nixos; [
+        ++ (with self.modules.profiles; [
           base
           server
         ])
-        ++ (with self.lib.withUserProfile "yuri"; [
+        ++ (with yuri.profiles; [
           base
-        ]);
-
-      # FIX: Temporary devtools installation override. Remove after build is stable.
-      home-manager.users.yuri = {
-        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
+        ])
+        ++ (with yuri.homeModules; [
+          # FIX: Temporary devtools installation override. Remove after build is stable.
           ai-tools
           devtools
-        ];
-      };
+        ]);
 
       networking.hostName = "Yuri-Sherbet";
 
@@ -66,66 +65,74 @@
       system.stateVersion = "26.05";
       nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
-      boot.loader.grub.enable = false;
-      boot.loader.generic-extlinux-compatible.enable = true;
-
-      fileSystems."/" = {
-        device = "/dev/disk/by-label/NIXOS_SD";
-        fsType = "ext4";
-        options = [ "noatime" ];
+      boot.loader = {
+        grub.enable = false;
+        generic-extlinux-compatible.enable = true;
       };
 
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-label/FIRMWARE";
-        fsType = "vfat";
-        options = [
-          "fmask=0077"
-          "dmask=0077"
-        ];
+      fileSystems = {
+        "/" = {
+          device = "/dev/disk/by-label/NIXOS_SD";
+          fsType = "ext4";
+          options = [ "noatime" ];
+        };
+
+        "/boot" = {
+          device = "/dev/disk/by-label/FIRMWARE";
+          fsType = "vfat";
+          options = [
+            "fmask=0077"
+            "dmask=0077"
+          ];
+        };
       };
 
       hardware.argonFanHat.enable = true;
 
       networking.firewall.allowedTCPPorts = [ 80 ];
 
-      services.home-assistant.config.http = {
-        use_x_forwarded_for = true;
-        trusted_proxies = [
-          "127.0.0.1"
-          "::1"
-        ];
-      };
-
-      services.firefly-iii.settings.APP_URL = "http://${fireflyHost}";
-
-      services.nginx.virtualHosts.${homeAssistantHost} = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8123";
-          proxyWebsockets = true;
+      services = {
+        home-assistant.config.http = {
+          use_x_forwarded_for = true;
+          trusted_proxies = [
+            "127.0.0.1"
+            "::1"
+          ];
         };
-      };
 
-      services.nginx.virtualHosts.${fireflyHost} = {
-        root = fireflyPublicRoot;
-        extraConfig = ''
-          index index.php;
-        '';
+        firefly-iii.settings.APP_URL = "http://${fireflyHost}";
 
-        locations."/".extraConfig = ''
-          try_files $uri $uri/ /index.php?$query_string;
-        '';
+        nginx.virtualHosts = {
+          ${homeAssistantHost} = {
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:8123";
+              proxyWebsockets = true;
+            };
+          };
 
-        locations."~ \\.php$".extraConfig = ''
-          include ${pkgs.nginx}/conf/fastcgi.conf;
-          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          fastcgi_pass unix:${fireflyPhpSocket};
-        '';
-      };
+          ${fireflyHost} = {
+            root = fireflyPublicRoot;
+            extraConfig = ''
+              index index.php;
+            '';
 
-      services.nginx.virtualHosts.${onedriveIndexHost} = {
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:3000";
-          proxyWebsockets = true;
+            locations."/".extraConfig = ''
+              try_files $uri $uri/ /index.php?$query_string;
+            '';
+
+            locations."~ \\.php$".extraConfig = ''
+              include ${pkgs.nginx}/conf/fastcgi.conf;
+              fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+              fastcgi_pass unix:${fireflyPhpSocket};
+            '';
+          };
+
+          ${onedriveIndexHost} = {
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:3000";
+              proxyWebsockets = true;
+            };
+          };
         };
       };
 

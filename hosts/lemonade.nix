@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos."host-Yuri-Lemonade" =
+  flake.modules.hosts.lemonade =
     {
       config,
       lib,
@@ -8,11 +8,15 @@
       modulesPath,
       ...
     }:
+    let
+      users = self.lib.getHostUsers self.modules.users [ "yuri" ];
+      inherit (users) yuri;
+    in
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
       ]
-      ++ (with self.modules.nixos; [
+      ++ (with self.modules.features; [
         # Home Manager
         home-manager
 
@@ -29,33 +33,24 @@
         network
       ])
       # Import host profiles.
-      ++ (with self.lib.withPrefix "profile" self.modules.nixos; [
+      ++ (with self.modules.profiles; [
         base
         desktop
       ])
       # Import user profiles.
-      ++ (with self.lib.withUserProfile "yuri"; [
+      ++ (with yuri.profiles; [
         base
         desktop
+      ])
+      # Import host-specific user layout modules.
+      ++ (with yuri.kanshiLayouts; [
+        lemonade
       ]);
 
       # Host specific settings.
 
       # Uncomment this to test for docker.
       # users.users.yuri.extraGroups = [ "docker" ];
-
-      home-manager.users.yuri = {
-        imports = with self.lib.withPrefix "yuri" self.modules.homeManager; [
-          kanshi-lemonade
-        ];
-      };
-
-      boot.initrd.luks.devices = {
-        luks-root = {
-          device = "/dev/disk/by-uuid/25a3784d-03b9-41c1-a156-cc0676ca9c85";
-          crypttabExtraOpts = [ "fido2-device=auto" ];
-        };
-      };
 
       environment.etc.crypttab.text = ''
         luks-data UUID=f24bb1b4-5204-4e57-ab7a-87a3ef751126 /root/data.key
@@ -82,34 +77,41 @@
         LC_TIME = "en_AU.UTF-8";
       };
 
-      boot.initrd = {
-        compressor = "zstd";
-        compressorArgs = [
-          "-19"
-          "-T0"
-        ];
-        availableKernelModules = [
-          "xhci_pci"
-          "ahci"
-          "nvme"
-          "usbhid"
-          "usb_storage"
-          "sd_mod"
-        ];
-        kernelModules = [
-          "thunderbolt"
-        ];
-      };
+      boot = {
+        initrd = {
+          luks.devices.luks-root = {
+            device = "/dev/disk/by-uuid/25a3784d-03b9-41c1-a156-cc0676ca9c85";
+            crypttabExtraOpts = [ "fido2-device=auto" ];
+          };
 
-      boot.kernelModules = [
-        "lenovo-legion-module"
-        "kvm-intel"
-      ];
-      boot.extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
-      boot.extraModprobeConfig = "options kvm_intel nested=1";
-      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
-      boot.kernelParams = [ ];
-      boot.loader.systemd-boot.configurationLimit = 3;
+          compressor = "zstd";
+          compressorArgs = [
+            "-19"
+            "-T0"
+          ];
+          availableKernelModules = [
+            "xhci_pci"
+            "ahci"
+            "nvme"
+            "usbhid"
+            "usb_storage"
+            "sd_mod"
+          ];
+          kernelModules = [
+            "thunderbolt"
+          ];
+        };
+
+        kernelModules = [
+          "lenovo-legion-module"
+          "kvm-intel"
+        ];
+        extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
+        extraModprobeConfig = "options kvm_intel nested=1";
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+        kernelParams = [ ];
+        loader.systemd-boot.configurationLimit = 3;
+      };
 
       # Hardware specific packages.
       environment.systemPackages = with pkgs; [
@@ -124,23 +126,25 @@
         HandleLidSwitchExternalPower = "ignore";
       };
 
-      fileSystems."/" = {
-        device = "/dev/mapper/luks-root";
-        fsType = "ext4";
-      };
+      fileSystems = {
+        "/" = {
+          device = "/dev/mapper/luks-root";
+          fsType = "ext4";
+        };
 
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/EB49-40F3";
-        fsType = "vfat";
-        options = [
-          "fmask=0077"
-          "dmask=0077"
-        ];
-      };
+        "/boot" = {
+          device = "/dev/disk/by-uuid/EB49-40F3";
+          fsType = "vfat";
+          options = [
+            "fmask=0077"
+            "dmask=0077"
+          ];
+        };
 
-      fileSystems."/mnt/data" = {
-        device = "/dev/mapper/luks-data";
-        fsType = "ext4";
+        "/mnt/data" = {
+          device = "/dev/mapper/luks-data";
+          fsType = "ext4";
+        };
       };
 
       swapDevices = [

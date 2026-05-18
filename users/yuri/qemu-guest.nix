@@ -2,18 +2,21 @@
   self,
   ...
 }:
+let
+  username = "yuri";
+in
 {
-  flake.modules.nixos.user-yuri-qemu-guest =
+  flake.modules.users.yuri.profiles.qemu-guest =
     {
       pkgs,
       ...
     }:
     {
-      imports = with self.modules.nixos; [
-        (self.lib.mkQemuShareBindFS pkgs "yuri")
+      imports = with self.modules.features; [
+        (self.lib.mkQemuShareBindFS pkgs username)
       ];
 
-      home-manager.users.yuri = {
+      home-manager.users.${username} = {
         home.packages = [
           pkgs.uniclip
         ];

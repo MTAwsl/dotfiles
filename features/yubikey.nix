@@ -2,7 +2,7 @@
 {
   # systemd-cryptenroll --fido2-device=auto /dev/<device>
   # systemd-cryptenroll --recovery-key /dev/<device>
-  flake.modules.nixos.yubikey =
+  flake.modules.features.yubikey =
     { pkgs, ... }:
     {
       security.pam.u2f = {

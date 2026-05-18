@@ -1,6 +1,5 @@
-{ self, ... }:
-{
-  flake.modules.homeManager.yuri-gh-release-tracker =
+_: {
+  flake.modules.users.yuri.home.gh-release-tracker =
     { pkgs, ... }:
     let
       script = pkgs.writeShellApplication {

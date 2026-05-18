@@ -1,6 +1,5 @@
-{ ... }:
-{
-  flake.modules.nixos.nginx = {
+_: {
+  flake.modules.features.nginx = {
     services.nginx = {
       enable = true;
       recommendedGzipSettings = true;
