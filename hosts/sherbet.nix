@@ -31,6 +31,12 @@
           redis
           firefly-iii
           onedrive-index
+
+          # Ram Optimisation
+          earlyoom
+          zram
+
+          ssh-agent-auth
         ])
         ++ (with self.modules.profiles; [
           base
@@ -136,8 +142,11 @@
         };
       };
 
-      # Phase 1 intentionally leaves hardware boot and filesystem wiring
-      # to a later host-specific step once the Raspberry Pi install layout
-      # is finalized.
+      nix = {
+        settings = {
+          max-jobs = 2;
+          cores = 2;
+        };
+      };
     };
 }

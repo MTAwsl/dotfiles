@@ -31,6 +31,10 @@
         docker
         qemu-host
         network
+
+        # Ram Optimisation
+        earlyoom
+        zram
       ])
       # Import host profiles.
       ++ (with self.modules.profiles; [
@@ -106,6 +110,7 @@
           "lenovo-legion-module"
           "kvm-intel"
         ];
+
         extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
         extraModprobeConfig = "options kvm_intel nested=1";
         kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
@@ -155,5 +160,12 @@
 
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
+
+      nix = {
+        settings = {
+          max-jobs = 8;
+          cores = 0; # Auto-detect
+        };
+      };
     };
 }

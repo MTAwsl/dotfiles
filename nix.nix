@@ -12,7 +12,9 @@ _: {
 
         sandbox = true;
 
-        trusted-users = [ "root" ];
+        trusted-users = [
+          "root"
+        ];
 
         substituters = [
           "https://cache.numtide.com"

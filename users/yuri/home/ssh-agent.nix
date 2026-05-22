@@ -12,16 +12,16 @@ _: {
       yubikeyAgentSocket = "${homeDirectory}/.ssh-agent.socket";
       yubikeyPrivateKeyFile = "${homeDirectory}/.ssh/id_ed25519_sk";
       commonSshSettings = {
-        forwardAgent = true;
-        addKeysToAgent = "no";
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+        ForwardAgent = true;
+        AddKeysToAgent = "no";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
       };
       bitwardenFallbackCheck = "test ! -S ${yubikeyAgentSocket} || ! SSH_AUTH_SOCK=${yubikeyAgentSocket} ${pkgs.openssh}/bin/ssh-add -L >/dev/null 2>&1";
       bitwardenMatchScript = pkgs.writeShellScript "ssh-bitwarden-match" ''
@@ -69,20 +69,20 @@ _: {
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        matchBlocks = {
+        settings = {
           bitwarden-fallback = lib.hm.dag.entryBefore [ "*" ] (
             commonSshSettings
             // {
-              match = ''exec "${bitwardenMatchScript}"'';
-              identityAgent = bitwardenAgentSocket;
-              identitiesOnly = false;
+              header = ''Match exec "${bitwardenMatchScript}"'';
+              IdentityAgent = bitwardenAgentSocket;
+              IdentitiesOnly = false;
             }
           );
           "*" = commonSshSettings // {
-            addKeysToAgent = "yes";
-            identityAgent = yubikeyAgentSocket;
-            identitiesOnly = true;
-            identityFile = yubikeyPrivateKeyFile;
+            AddKeysToAgent = "yes";
+            IdentityAgent = yubikeyAgentSocket;
+            IdentitiesOnly = true;
+            IdentityFile = yubikeyPrivateKeyFile;
           };
         };
       };
@@ -90,6 +90,8 @@ _: {
       systemd.user.services.ssh-agent-fido = {
         Unit = {
           Description = "OpenSSH agent for YubiKey-backed FIDO2 keys";
+          After = [ "graphical-session.target" ];
+          PartOf = [ "graphical-session.target" ];
         };
 
         Service = {
@@ -108,7 +110,7 @@ _: {
         };
 
         Install = {
-          WantedBy = [ "default.target" ];
+          WantedBy = [ "graphical-session.target" ];
         };
       };
     };

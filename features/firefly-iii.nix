@@ -1,15 +1,15 @@
-_:
+{ self, ... }:
 let
   fireflyDataDir = "/opt/firefly-iii";
   importerDataDir = "/opt/firefly-iii-data-importer";
 in
 {
   flake.modules.features.firefly-iii =
-    { config, ... }:
+    { config, lib, ... }:
     let
       hostName = config.networking.hostName;
-      fireflyUrl = "http://${hostName}";
-      siteOwner = config.flake.lib.meta.owner.email;
+      fireflyUrl = lib.mkDefault "http://${hostName}";
+      siteOwner = self.lib.meta.owner.email;
     in
     {
       assertions = [

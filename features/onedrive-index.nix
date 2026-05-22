@@ -45,7 +45,8 @@ in
           ln -sfn "$SITE_CONFIG_FILE" "$APP_DIR/config/site.config.js"
           ln -sfn "$API_CONFIG_FILE" "$APP_DIR/config/api.config.js"
 
-          export REDIS_URL="$(< "$REDIS_URL_FILE")"
+          REDIS_URL="$(< "$REDIS_URL_FILE")"
+          export REDIS_URL
           export NODE_ENV="production"
           export HOSTNAME="127.0.0.1"
           export PORT="3000"
