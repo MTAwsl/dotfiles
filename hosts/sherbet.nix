@@ -13,8 +13,11 @@
       onedriveIndexHost = "drive.sherbet.lan";
       fireflyPublicRoot = "${config.services.firefly-iii.package}/public";
       fireflyPhpSocket = config.services.phpfpm.pools.firefly-iii.socket;
-      users = self.lib.getHostUsers self.modules.users [ "yuri" ];
-      inherit (users) yuri;
+      users = self.lib.getHostUsers self.modules.users [
+        "yuri"
+        "deployer"
+      ];
+      inherit (users) yuri deployer;
     in
     {
       imports =
@@ -45,6 +48,9 @@
         ++ (with yuri.profiles; [
           base
         ])
+        ++ (with deployer.profiles; [
+          base
+        ])
         ++ (with yuri.homeModules; [
           # FIX: Temporary devtools installation override. Remove after build is stable.
           ai-tools
@@ -73,7 +79,10 @@
 
       boot.loader = {
         grub.enable = false;
-        generic-extlinux-compatible.enable = true;
+        generic-extlinux-compatible = {
+          enable = true;
+          configurationLimit = 3;
+        };
       };
 
       fileSystems = {
