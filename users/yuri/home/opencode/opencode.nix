@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.modules.users.yuri.home.opencode =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
       imports = [ inputs.oac-flake.homeManagerModules.oac ];
 
@@ -25,6 +25,7 @@
         enable = true;
         package = pkgs.llm-agents.opencode;
         settings = {
+          # FIX: Re-Enable after https://github.com/anomalyco/opencode/issues/27894 is closed.
           lsp = true;
           plugin = [ "@mohak34/opencode-notifier@latest" ];
           permission = {
@@ -32,19 +33,29 @@
               "/*" = "ask";
               "/nix/store" = "allow";
               "/nix/store/**" = "allow";
+              "~/.config/opencode" = "allow";
+              "~/.config/opencode/*" = "allow";
+              "${config.home.homeDirectory}/.config/opencode" = "allow";
+              "${config.home.homeDirectory}/.config/opencode/*" = "allow";
             };
             read = {
               "*" = "allow";
               "*.env" = "deny";
               "*.env.*" = "deny";
               "*.env.example" = "allow";
+              "~/.config/opencode/*" = "allow";
+              "${config.home.homeDirectory}/.config/opencode/*" = "allow";
             };
             edit = {
               "/nix/store" = "deny";
               "/nix/store/**" = "deny";
+              "~/.config/opencode/*" = "deny";
+              "${config.home.homeDirectory}/.config/opencode/*" = "deny";
             };
             bash = {
               "*" = "ask";
+              "~/.config/opencode/*" = "allow";
+              "${config.home.homeDirectory}/.config/opencode/*" = "allow";
               "pwd" = "allow";
               "ls" = "allow";
               "ls *" = "allow";

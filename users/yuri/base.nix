@@ -70,7 +70,6 @@ in
 
         imports = with user.home; [
           git
-          ssh-agent
           yazi
           helix
           zsh

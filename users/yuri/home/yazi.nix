@@ -14,21 +14,6 @@ _: {
         enableZshIntegration = true;
         shellWrapperName = "yy";
 
-        plugins = with pkgs.yaziPlugins; {
-          inherit vcs-files;
-        };
-
-        keymap.manager.prepend_keymap = [
-          {
-            on = [
-              "g"
-              "c"
-            ];
-            run = "plugin vcs-files";
-            desc = "Show Git file changes";
-          }
-        ];
-
         yaziPlugins = {
           enable = true;
           plugins = {
@@ -40,7 +25,10 @@ _: {
             starship.enable = true;
             chmod.enable = true;
             smart-enter.enable = true;
-            # vcs-files.enable = true; # Uncomment after https://github.com/lordkekz/nix-yazi-plugins/issues/37 added vcs.
+            vcs-files = {
+              enable = true;
+              package = pkgs.yaziPlugins.vcs-files;
+            };
             git.enable = true;
             full-border.enable = true;
           };

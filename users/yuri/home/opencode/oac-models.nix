@@ -5,7 +5,7 @@ _: {
       proReasoningModel = "openai/gpt-5.5-pro";
       reasoningModel = "openai/gpt-5.5";
       defaultModel = "openai/gpt-5.5-fast";
-      codingModel = "openai/gpt-5.3-codex";
+      codingModel = "openai/gpt-5.5";
       fastCodingModel = "openai/gpt-5.3-codex-spark";
       scoutModel = "openai/gpt-5.4-mini-fast";
       contentModel = "openai/gpt-5.4-fast";

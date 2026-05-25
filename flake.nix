@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,10 +68,6 @@
       flake = false;
     };
 
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-    };
-
     # binaryninja = {
     #   url = "github:jchv/nix-binary-ninja";
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -117,6 +115,8 @@
       url = "github:YuriNek0/oac-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
   };
 
   outputs =
@@ -161,22 +161,20 @@
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
               overlays = [
-                top.config.flake.overlays.default
-
                 # Niri-Flake's overlay.
                 inputs.niri.overlays.niri
 
                 # Plymouth theme
                 inputs.mac-style-plymouth.overlays.default
 
-                # CachyOS Kernel
-                inputs.nix-cachyos-kernel.overlays.pinned
-
                 # AI agent packages
                 inputs.llm-agents.overlays.default
 
                 # Binary Ninja
                 # inputs.binaryninja.overlays.default
+                #
+                # Local package overrides.
+                top.config.flake.overlays.default
               ];
               config = {
                 allowUnfree = true;

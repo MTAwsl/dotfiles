@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 {
   flake.modules.hosts.sherbet =
     {
@@ -20,42 +20,39 @@
       inherit (users) yuri deployer;
     in
     {
-      imports =
-        (with self.modules.features; [
-          home-manager
-          sshd
-          network
-          nginx
-          no-root-passwd
-          argon-fan-hat
-          msgraph-health-sentinel
-          anthropic-readings
-          postgresql
-          redis
-          firefly-iii
-          onedrive-index
+      imports = [
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
+      ]
+      ++ (with self.modules.features; [
+        home-manager
+        sshd
+        network
+        nginx
+        no-root-passwd
+        argon-fan-hat
+        msgraph-health-sentinel
+        anthropic-readings
+        postgresql
+        redis
+        firefly-iii
+        onedrive-index
 
-          # Ram Optimisation
-          earlyoom
-          zram
+        # Ram Optimisation
+        earlyoom
+        zram
 
-          ssh-agent-auth
-        ])
-        ++ (with self.modules.profiles; [
-          base
-          server
-        ])
-        ++ (with yuri.profiles; [
-          base
-        ])
-        ++ (with deployer.profiles; [
-          base
-        ])
-        ++ (with yuri.homeModules; [
-          # FIX: Temporary devtools installation override. Remove after build is stable.
-          ai-tools
-          devtools
-        ]);
+        ssh-agent-auth
+      ])
+      ++ (with self.modules.profiles; [
+        base
+        server
+      ])
+      ++ (with yuri.profiles; [
+        base
+      ])
+      ++ (with deployer.profiles; [
+        base
+      ]);
 
       networking.hostName = "Yuri-Sherbet";
 
@@ -82,6 +79,11 @@
         generic-extlinux-compatible = {
           enable = true;
           configurationLimit = 3;
+          # Raspberry Pi U-Boot reads extlinux from the root filesystem's
+          # /boot directory. Keep the firmware partition off /boot so
+          # nixos-rebuild updates the booted generation instead of the FAT
+          # firmware partition.
+          mirroredBoots = [ { path = "/boot"; } ];
         };
       };
 
@@ -92,7 +94,7 @@
           options = [ "noatime" ];
         };
 
-        "/boot" = {
+        "/boot/firmware" = {
           device = "/dev/disk/by-label/FIRMWARE";
           fsType = "vfat";
           options = [
@@ -102,7 +104,12 @@
         };
       };
 
-      hardware.argonFanHat.enable = true;
+      hardware.raspberry-pi."4".i2c1.enable = true;
+
+      hardware.argonFanHat = {
+        enable = true;
+        writeMethod = "raw";
+      };
 
       networking.firewall.allowedTCPPorts = [ 80 ];
 
@@ -157,5 +164,7 @@
           cores = 2;
         };
       };
+
+      security.lockKernelModules = true;
     };
 }

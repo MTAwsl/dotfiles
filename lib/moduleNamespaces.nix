@@ -25,7 +25,7 @@
       allUsers = self.lib.getUsers users;
     in
     builtins.listToAttrs (
-      builtins.map (username: {
+      map (username: {
         name = username;
         value = allUsers.${username};
       }) usernames

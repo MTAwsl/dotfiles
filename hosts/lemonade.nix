@@ -113,7 +113,7 @@
 
         extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
         extraModprobeConfig = "options kvm_intel nested=1";
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+        kernelPackages = pkgs.linuxPackages; # LTS
         kernelParams = [ ];
         loader.systemd-boot.configurationLimit = 3;
       };
@@ -167,5 +167,7 @@
           cores = 0; # Auto-detect
         };
       };
+
+      security.lockKernelModules = true;
     };
 }

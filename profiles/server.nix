@@ -1,6 +1,9 @@
-_: {
+{ self, ... }:
+{
   flake.modules.profiles.server = {
-    zramSwap.enable = true;
+    imports = with self.modules.features; [
+      zram
+    ];
 
     services.journald.extraConfig = ''
       SystemMaxUse=256M

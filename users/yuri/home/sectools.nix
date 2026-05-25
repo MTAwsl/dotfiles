@@ -92,7 +92,7 @@ _: {
           wordlists
 
           # Web
-          (burpsuite.override { proEdition = false; })
+          burpsuite
           sqlmap
           whatweb
 

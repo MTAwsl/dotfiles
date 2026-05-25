@@ -50,6 +50,7 @@ in
             gh-release-tracker
 
             rime-ice
+            ssh-agent
           ])
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ sectools ])
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ librepods ]);
@@ -85,7 +86,6 @@ in
             # ventoy-full
             vesktop
             vlc
-            zed-editor
             pear-desktop # YT Music
             zip
             unzip

@@ -4,7 +4,7 @@
     imports = with self.modules.users.yuri.home; [
       # Vibe
       opencode
-      oac-models
+      # oac-models
       git-commit-helpers
     ];
   };
