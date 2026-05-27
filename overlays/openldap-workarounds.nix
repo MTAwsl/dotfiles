@@ -1,3 +1,4 @@
+# FIX: Remove this file once https://github.com/nixos/nixpkgs/issues/513245 is closed
 _: {
   perSystem =
     { final, pkgs, ... }:
@@ -25,10 +26,7 @@ _: {
     in
     {
       overlayAttrs = {
-        # FIX: Remove once https://github.com/nixos/nixpkgs/issues/513245 is closed
         lutris = withOpenLdapNoCheck pkgs.lutris;
-
-        # FIX: Remove once https://github.com/nixos/nixpkgs/issues/513245 is closed
         bottles = withOpenLdapNoCheck pkgs.bottles;
       };
     };
