@@ -2,8 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -133,15 +131,28 @@
       let
         mkHost = hostKey: hostname: system: {
           flake.nixosConfigurations."${hostname}" = withSystem system (
-            { pkgs, system, ... }:
-            inputs.nixpkgs.lib.nixosSystem {
-              inherit pkgs system;
+            { mkPkgs, system, ... }:
+            let
+              inherit
+                (top.config.flake.lib.nixpkgs.${hostKey} or rec {
+                  nixpkgs = inputs.nixpkgs;
+                  nixosSystem = nixpkgs.lib.nixosSystem;
+                }
+                )
+                nixpkgs
+                nixosSystem
+                ;
+            in
+            nixosSystem {
+              inherit system;
+              pkgs = mkPkgs nixpkgs;
               modules = [
                 inputs.self.modules.features.nix
                 inputs.self.modules.hosts.${hostKey}
               ];
             }
           );
+
         };
       in
       {
@@ -155,30 +166,38 @@
             system,
             ...
           }:
+          let
+            mkPkgs =
+              nixpkgs:
+              import nixpkgs {
+                inherit system;
+                overlays = [
+                  # Niri-Flake's overlay.
+                  inputs.niri.overlays.niri
+
+                  # Plymouth theme
+                  inputs.mac-style-plymouth.overlays.default
+
+                  # AI agent packages
+                  inputs.llm-agents.overlays.default
+
+                  # Binary Ninja
+                  # inputs.binaryninja.overlays.default
+                  #
+                  # Local package overrides.
+                  top.config.flake.overlays.default
+                ];
+                config = {
+                  allowUnfree = true;
+                };
+              };
+          in
           {
             pkgsDirectory = ./packages;
             pkgsNameSeparator = "-";
-            _module.args.pkgs = import inputs.nixpkgs {
-              inherit system;
-              overlays = [
-                # Niri-Flake's overlay.
-                inputs.niri.overlays.niri
-
-                # Plymouth theme
-                inputs.mac-style-plymouth.overlays.default
-
-                # AI agent packages
-                inputs.llm-agents.overlays.default
-
-                # Binary Ninja
-                # inputs.binaryninja.overlays.default
-                #
-                # Local package overrides.
-                top.config.flake.overlays.default
-              ];
-              config = {
-                allowUnfree = true;
-              };
+            _module.args = {
+              inherit mkPkgs;
+              pkgs = mkPkgs inputs.nixpkgs;
             };
           };
 

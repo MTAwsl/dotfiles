@@ -20,39 +20,57 @@
       inherit (users) yuri deployer;
     in
     {
-      imports = [
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
-      ]
-      ++ (with self.modules.features; [
-        home-manager
-        sshd
-        network
-        nginx
-        no-root-passwd
-        argon-fan-hat
-        msgraph-health-sentinel
-        anthropic-readings
-        postgresql
-        redis
-        firefly-iii
-        onedrive-index
+      # Patches for nvmd/nixos-raspberrypi.
+      _module.args.nixos-raspberrypi = inputs.nixos-raspberrypi;
+      nixpkgs.hostPlatform = lib.mkForce "aarch64-linux";
+      nixpkgs.overlays = with inputs.nixos-raspberrypi.overlays; [
+        bootloader
+        vendor-kernel
+        vendor-firmware
+        kernel-and-firmware
+        vendor-pkgs
+      ];
 
-        # Ram Optimisation
-        earlyoom
-        zram
+      imports =
+        with inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4;
+        [
+          base
+          bluetooth
+          display-vc4
+          case-argonone
+        ]
+        ++ (with self.modules.features; [
+          home-manager
+          sshd
+          network
+          nginx
+          no-root-passwd
+          msgraph-health-sentinel
+          anthropic-readings
+          postgresql
+          redis
+          firefly-iii
+          onedrive-index
 
-        ssh-agent-auth
-      ])
-      ++ (with self.modules.profiles; [
-        base
-        server
-      ])
-      ++ (with yuri.profiles; [
-        base
-      ])
-      ++ (with deployer.profiles; [
-        base
-      ]);
+          # Ram Optimisation
+          earlyoom
+          zram
+
+          # I2C
+          i2c
+
+          ssh-agent-auth
+        ])
+        ++ (with self.modules.profiles; [
+          base
+          server
+        ])
+        ++ (with yuri.profiles; [
+          base
+        ])
+        ++ (with deployer.profiles; [
+          base
+        ]);
 
       networking.hostName = "Yuri-Sherbet";
 
@@ -72,7 +90,6 @@
       };
 
       system.stateVersion = "26.05";
-      nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 
       boot.loader = {
         grub.enable = false;
@@ -86,6 +103,9 @@
           mirroredBoots = [ { path = "/boot"; } ];
         };
       };
+
+      # NRF52840 USB-UART dongle (CDC ACM serial)
+      boot.kernelModules = [ "cdc_acm" ];
 
       fileSystems = {
         "/" = {
@@ -104,11 +124,24 @@
         };
       };
 
-      hardware.raspberry-pi."4".i2c1.enable = true;
-
-      hardware.argonFanHat = {
+      hardware.raspberry-pi.config.all.base-dt-params.i2c_arm = {
         enable = true;
-        writeMethod = "raw";
+        value = "on";
+      };
+
+      # argononed daemon defaults (fan curve: 10%@55°C, 55%@60°C, 100%@65°C, hysteresis 3°C)
+      services.argonone = {
+        enable = true;
+        logLevel = 4; # WARNING
+        settings = {
+          fanTemp0 = 55;
+          fanSpeed0 = 10;
+          fanTemp1 = 60;
+          fanSpeed1 = 55;
+          fanTemp2 = 65;
+          fanSpeed2 = 100;
+          hysteresis = 3;
+        };
       };
 
       networking.firewall.allowedTCPPorts = [ 80 ];
