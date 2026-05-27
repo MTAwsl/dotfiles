@@ -1,7 +1,7 @@
 {
+  lib,
   buildGo126Module,
   fetchFromGitHub,
-  ...
 }:
 let
   buildExec =
@@ -31,6 +31,14 @@ let
       postInstall = ''
         mv $out/bin/${exec} $out/bin/certdx-${exec};
       '';
+
+      meta = {
+        description = "Certificate transparency domain extraction ${exec}";
+        homepage = "https://github.com/ParaParty/certdx";
+        license = lib.licenses.mit;
+        platforms = lib.platforms.linux;
+        mainProgram = "certdx-${exec}";
+      };
     };
 in
 {

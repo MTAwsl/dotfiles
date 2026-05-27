@@ -62,9 +62,15 @@
 
             default-language-servers =
               let
-                upstreamLanguages = builtins.tryEval (builtins.fromTOML (
-                  builtins.readFile "${pkgs.helix-unwrapped.src}/languages.toml"
-                )).language;
+                languagesToml = "${pkgs.helix-unwrapped.src}/languages.toml";
+                upstreamLanguages =
+                  if builtins.pathExists languagesToml then
+                    builtins.tryEval (builtins.fromTOML (builtins.readFile languagesToml)).language
+                  else
+                    {
+                      success = false;
+                      value = null;
+                    };
               in
               if upstreamLanguages.success then
                 upstreamLanguages.value

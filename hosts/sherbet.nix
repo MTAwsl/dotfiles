@@ -129,6 +129,8 @@
         value = "on";
       };
 
+      hardware.deviceTree.filter = "bcm2711-rpi-4*.dtb";
+
       # argononed daemon defaults (fan curve: 10%@55°C, 55%@60°C, 100%@65°C, hysteresis 3°C)
       services.argonone = {
         enable = true;

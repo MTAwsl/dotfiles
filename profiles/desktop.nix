@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.modules.profiles.desktop =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     {
       imports = with self.modules.features; [
         niri
@@ -18,13 +18,16 @@
         # regreet
       ];
 
-      environment.systemPackages = with pkgs; [
-        # Pipewire
-        pwvucontrol
-        easyeffects
-
-        gsettings-desktop-schemas
-      ];
+      environment.systemPackages =
+        with pkgs;
+        [
+          # Pipewire
+          pwvucontrol
+          gsettings-desktop-schemas
+        ]
+        ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
+          easyeffects
+        ];
 
       environment.sessionVariables = {
         XDG_DATA_DIRS = [ "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/*" ];

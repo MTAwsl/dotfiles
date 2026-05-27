@@ -83,7 +83,7 @@
 
 ## Local Packages
 - Repo-local packages live in `packages/<name>/package.nix` and are consumed inside modules as `pkgs.local.<name>` because the overlay sets `local = config.packages`.
-- Desktop styling/fonts depend on local packages: `features/stylix.nix` uses `pkgs.local.monaspace`, and `features/fonts.nix` uses both `pkgs.local.monaspace` and `pkgs.local.windows11-fonts`.
+- Desktop styling/fonts depend on local packages: `features/stylix.nix` and `features/fonts.nix` are using `pkgs.local.monaspace`.
 - Flake package outputs are only generated for `aarch64-linux` because `systems = [ "aarch64-linux" ]`, even though `Yuri-Lemonade` is an `x86_64-linux` host. `nix flake show` exposing only `packages.aarch64-linux.*` is expected here.
 
 ## Verification

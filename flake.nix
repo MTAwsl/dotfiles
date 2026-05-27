@@ -104,6 +104,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    argononed = {
+      url = "github:yurinek0/argononed";
+      flake = false;
+    };
+
     onedrive-vercel-index = {
       url = "github:spencerwooo/onedrive-vercel-index";
       flake = false;
@@ -114,7 +119,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi/main";
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi/main";
+      inputs.argononed.follows = "argononed";
+    };
   };
 
   outputs =

@@ -24,15 +24,15 @@
     "argononed": {
       "flake": false,
       "locked": {
-        "lastModified": 1729566243,
-        "narHash": "sha256-DPNI0Dpk5aym3Baf5UbEe5GENDrSmmXVdriRSWE+rgk=",
-        "owner": "nvmd",
+        "lastModified": 1779920699,
+        "narHash": "sha256-D1nTXAbVBS9LdZXMmnaYU5ELpLLRugEww9nhxPDgm0c=",
+        "owner": "yurinek0",
         "repo": "argononed",
-        "rev": "16dbee54d49b66d5654d228d1061246b440ef7cf",
+        "rev": "4c23d6820953da8419746eea312f02a8b6b8ee97",
         "type": "github"
       },
       "original": {
-        "owner": "nvmd",
+        "owner": "yurinek0",
         "repo": "argononed",
         "type": "github"
       }
@@ -906,7 +906,9 @@
     },
     "nixos-raspberrypi": {
       "inputs": {
-        "argononed": "argononed",
+        "argononed": [
+          "argononed"
+        ],
         "flake-compat": "flake-compat_4",
         "nixos-images": "nixos-images",
         "nixpkgs": "nixpkgs_3"
@@ -1265,6 +1267,7 @@
     "root": {
       "inputs": {
         "anthropic-readings": "anthropic-readings",
+        "argononed": "argononed",
         "bloodhound-cli": "bloodhound-cli",
         "dms": "dms",
         "flake-parts": "flake-parts",
