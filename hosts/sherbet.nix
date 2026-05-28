@@ -10,7 +10,6 @@
     let
       homeAssistantHost = "ha.sherbet.lan";
       fireflyHost = "firefly.sherbet.lan";
-      onedriveIndexHost = "drive.sherbet.lan";
       fireflyPublicRoot = "${config.services.firefly-iii.package}/public";
       fireflyPhpSocket = config.services.phpfpm.pools.firefly-iii.socket;
       users = self.lib.getHostUsers self.modules.users [
@@ -50,7 +49,6 @@
           postgresql
           redis
           firefly-iii
-          onedrive-index
 
           # Ram Optimisation
           earlyoom
@@ -182,13 +180,6 @@
               fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
               fastcgi_pass unix:${fireflyPhpSocket};
             '';
-          };
-
-          ${onedriveIndexHost} = {
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:3000";
-              proxyWebsockets = true;
-            };
           };
         };
       };
