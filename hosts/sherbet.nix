@@ -59,7 +59,7 @@
           # I2C
           i2c
 
-          ssh-agent-auth
+          rssh
         ])
         ++ (with self.modules.profiles; [
           base

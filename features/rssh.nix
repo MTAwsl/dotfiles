@@ -1,10 +1,10 @@
 _: {
-  flake.modules.features.ssh-agent-auth = _: {
+  flake.modules.features.rssh = _: {
 
-    security.pam.sshAgentAuth.enable = true;
+    security.pam.rssh.enable = true;
 
     # Specifically enable it for the sudo service
-    security.pam.services.sudo.sshAgentAuth = true;
+    security.pam.services.sudo.rssh = true;
 
     # Ensure the SSH agent socket is preserved when switching to root
     security.sudo.extraConfig = ''

@@ -1,21 +1,57 @@
-_:
+{ inputs, ... }:
 let
   serviceName = "onedrive-index";
   serviceUser = serviceName;
   serviceGroup = serviceName;
-  serviceHome = "/opt/${serviceName}";
-  appDir = "${serviceHome}/app";
-  configDir = "${serviceHome}/config";
-  secretsDir = "${serviceHome}/secrets";
+  configDir = "/etc/${serviceName}";
+  secretsDir = "/var/lib/${serviceName}";
   redisUrlFile = "${secretsDir}/redis-url";
   siteConfigFile = "${configDir}/site.config.js";
   apiConfigFile = "${configDir}/api.config.js";
-  nextBin = "${appDir}/node_modules/next/dist/bin/next";
 in
 {
   flake.modules.features.onedrive-index =
     { config, pkgs, ... }:
     let
+      app = pkgs.buildNpmPackage (finalAttrs: {
+        pname = "onedrive-vercel-index";
+        version = "unstable-2023-06-23";
+
+        src = inputs.onedrive-vercel-index;
+
+        nativeBuildInputs = [ pkgs.pnpm_9 ];
+        npmConfigHook = pkgs.pnpmConfigHook;
+        npmDeps = finalAttrs.pnpmDeps;
+        nodejs = pkgs.nodejs_22;
+
+        pnpmDeps = pkgs.fetchPnpmDeps {
+          inherit (finalAttrs) pname version src;
+          fetcherVersion = 2;
+          pnpm = pkgs.pnpm_9;
+          hash = pkgs.lib.fakeHash;
+        };
+
+        env.NEXT_TELEMETRY_DISABLED = "1";
+
+        installPhase = ''
+          runHook preInstall
+
+          mkdir -p "$out"
+          cp -R \
+            .next \
+            config \
+            next-i18next.config.js \
+            next.config.js \
+            node_modules \
+            package.json \
+            public \
+            "$out"/
+
+          runHook postInstall
+        '';
+      });
+      appDir = "${app}";
+      nextBin = "${appDir}/node_modules/next/dist/bin/next";
       launchScript = pkgs.writeShellApplication {
         name = "onedrive-index-launch";
         runtimeInputs = with pkgs; [
@@ -41,10 +77,6 @@ in
           test -f "$REDIS_URL_FILE"
           test -x "$NEXT_BIN"
 
-          mkdir -p "$APP_DIR/config"
-          ln -sfn "$SITE_CONFIG_FILE" "$APP_DIR/config/site.config.js"
-          ln -sfn "$API_CONFIG_FILE" "$APP_DIR/config/api.config.js"
-
           REDIS_URL="$(< "$REDIS_URL_FILE")"
           export REDIS_URL
           export NODE_ENV="production"
@@ -69,19 +101,11 @@ in
       users.users.${serviceUser} = {
         isSystemUser = true;
         group = serviceGroup;
-        home = serviceHome;
-        createHome = true;
-        homeMode = "0700";
+        home = secretsDir;
         description = "OneDrive Index service user";
         hashedPassword = "!";
         shell = "${pkgs.shadow}/bin/nologin";
       };
-
-      systemd.tmpfiles.rules = [
-        "d ${appDir} 0750 ${serviceUser} ${serviceGroup} -"
-        "d ${configDir} 0700 ${serviceUser} ${serviceGroup} -"
-        "d ${secretsDir} 0700 ${serviceUser} ${serviceGroup} -"
-      ];
 
       systemd.services.onedrive-index = {
         description = "OneDrive Index";
@@ -97,6 +121,10 @@ in
           WorkingDirectory = appDir;
           ExecStartPre = "${pkgs.coreutils}/bin/test -f ${appDir}/package.json";
           ExecStart = "${launchScript}/bin/onedrive-index-launch";
+          ConfigurationDirectory = serviceName;
+          ConfigurationDirectoryMode = "0700";
+          StateDirectory = serviceName;
+          StateDirectoryMode = "0700";
           Restart = "on-failure";
           RestartSec = "10s";
           TimeoutStartSec = "120s";
@@ -107,8 +135,11 @@ in
           ProtectSystem = "strict";
           ProtectHome = true;
           ProtectProc = "invisible";
+          BindReadOnlyPaths = [
+            "${siteConfigFile}:${appDir}/config/site.config.js"
+            "${apiConfigFile}:${appDir}/config/api.config.js"
+          ];
           ReadWritePaths = [
-            appDir
             configDir
             secretsDir
           ];
