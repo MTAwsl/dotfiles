@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779693315,
-        "narHash": "sha256-f9lzaTEW8jtr6v4t+Xj5Ov/Ds+9+z7XbM4XgDyNIomw=",
+        "lastModified": 1779968203,
+        "narHash": "sha256-bLlN5RRt/dUqLNNXJD/Hc2jNTM2vInocrt22RSJOYKg=",
         "owner": "YuriNek0",
         "repo": "Anthropic-Readlist-Tracker",
-        "rev": "7f486d73c561d1eb8220177044c74af819590f44",
+        "rev": "6e21f51a8197946ca167f4d2a4be286cab63b55b",
         "type": "github"
       },
       "original": {
