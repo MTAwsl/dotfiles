@@ -26,9 +26,9 @@ in
 
         pnpmDeps = pkgs.fetchPnpmDeps {
           inherit (finalAttrs) pname version src;
-          fetcherVersion = 2;
+          fetcherVersion = 3;
           pnpm = pkgs.pnpm_9;
-          hash = pkgs.lib.fakeHash;
+          hash = "sha256-Avsr3I+0Cf3vOsqUDkOHk1eo/LzNxWPEU60Cn24LWYg=";
         };
 
         env.NEXT_TELEMETRY_DISABLED = "1";
