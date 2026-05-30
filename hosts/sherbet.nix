@@ -10,8 +10,11 @@
     let
       homeAssistantHost = "ha.sherbet.lan";
       fireflyHost = "firefly.sherbet.lan";
+      fireflyImporterHost = "firefly-importer.sherbet.lan";
       fireflyPublicRoot = "${config.services.firefly-iii.package}/public";
+      fireflyImporterPublicRoot = "${config.services.firefly-iii-data-importer.package}/public";
       fireflyPhpSocket = config.services.phpfpm.pools.firefly-iii.socket;
+      fireflyImporterPhpSocket = config.services.phpfpm.pools.firefly-iii-data-importer.socket;
       users = self.lib.getHostUsers self.modules.users [
         "yuri"
         "deployer"
@@ -49,6 +52,7 @@
           postgresql
           redis
           firefly-iii
+          home-assistant
 
           # Ram Optimisation
           earlyoom
@@ -57,7 +61,11 @@
           # I2C
           i2c
 
+          # Sudo Agent
           rssh
+
+          # Disable Wifi (Software)
+          disable-wifi
         ])
         ++ (with self.modules.profiles; [
           base
@@ -144,7 +152,18 @@
         };
       };
 
-      networking.firewall.allowedTCPPorts = [ 80 ];
+      networking.firewall.allowedTCPPorts = [
+        22
+        53
+        443
+        5353
+        5684
+      ];
+      networking.firewall.allowedUDPPorts = [
+        53
+        5353
+        5683
+      ];
 
       services = {
         home-assistant.config.http = {
@@ -158,21 +177,41 @@
         firefly-iii.settings.APP_URL = "http://${fireflyHost}";
 
         nginx.virtualHosts = {
-          ${homeAssistantHost} = {
+          _ = {
+            default = true;
+            onlySSL = true;
             locations."/" = {
               proxyPass = "http://127.0.0.1:8123";
               proxyWebsockets = true;
             };
+            sslCertificate = "/var/lib/secrets/nginx.crt";
+            sslCertificateKey = "/var/lib/secrets/nginx.key";
+          };
+
+          ${homeAssistantHost} = {
+            onlySSL = true;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:8123";
+              proxyWebsockets = true;
+            };
+            sslCertificate = "/var/lib/secrets/nginx.crt";
+            sslCertificateKey = "/var/lib/secrets/nginx.key";
           };
 
           ${fireflyHost} = {
             root = fireflyPublicRoot;
+            onlySSL = true;
             extraConfig = ''
               index index.php;
             '';
 
+            sslCertificate = "/var/lib/secrets/nginx.crt";
+            sslCertificateKey = "/var/lib/secrets/nginx.key";
+
             locations."/".extraConfig = ''
               try_files $uri $uri/ /index.php?$query_string;
+              index index.php;
+              sendfile off;
             '';
 
             locations."~ \\.php$".extraConfig = ''
@@ -181,6 +220,35 @@
               fastcgi_pass unix:${fireflyPhpSocket};
             '';
           };
+
+          ${fireflyImporterHost} = {
+            root = fireflyImporterPublicRoot;
+            onlySSL = true;
+            extraConfig = ''
+              index index.php;
+            '';
+
+            sslCertificate = "/var/lib/secrets/nginx.crt";
+            sslCertificateKey = "/var/lib/secrets/nginx.key";
+
+            locations."/".extraConfig = ''
+              try_files $uri $uri/ /index.php?$query_string;
+              index index.php;
+              sendfile off;
+            '';
+
+            locations."~ \\.php$".extraConfig = ''
+              include ${pkgs.nginx}/conf/fastcgi.conf;
+              fastcgi_param SCRIPT_FILENAME $request_filename;
+              fastcgi_param modHeadersAvailable true;
+              fastcgi_pass unix:${fireflyImporterPhpSocket};
+            '';
+          };
+        };
+
+        openthread-border-router = {
+          enable = true;
+          radio.device = "/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usbv2-0:1.4:1.0";
         };
       };
 

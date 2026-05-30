@@ -6,19 +6,21 @@ _: {
         nettools
       ];
       networking = {
-        enableIPv6 = true;
         networkmanager = {
           enable = true;
           dhcp = "internal";
           wifi = {
             backend = "iwd";
-            powersave = false;
+            powersave = false; # Fix most of driver issues
           };
-          settings = {
-            connection = {
-              "ipv6.method" = "auto";
-            };
-          };
+
+          # Temporarily disable IPV6 until my ISP finally thrilled to announce supports.
+          # enableIPv6 = false;
+          # settings = {
+          #   connection = {
+          #     "ipv6.method" = "auto";
+          #   };
+          # };
         };
       };
 

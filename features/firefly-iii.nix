@@ -48,7 +48,7 @@ in
         };
 
         firefly-iii-data-importer = {
-          enable = false;
+          enable = true;
           dataDir = importerDataDir;
           enableNginx = false;
           settings = {
@@ -58,5 +58,10 @@ in
           };
         };
       };
+
+      users.users.nginx.extraGroups = [
+        "firefly-iii"
+        "firefly-iii-data-importer"
+      ];
     };
 }

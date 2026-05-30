@@ -25,9 +25,9 @@
         enable = true;
         package = pkgs.llm-agents.opencode;
         settings = {
-          # FIX: Re-Enable after https://github.com/anomalyco/opencode/issues/27894 is closed.
           lsp = true;
           plugin = [ "@mohak34/opencode-notifier@latest" ];
+          default_agent = "OpenAgent";
           permission = {
             external_directory = {
               "/*" = "ask";

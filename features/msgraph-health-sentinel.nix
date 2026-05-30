@@ -34,12 +34,14 @@ in
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
         serviceConfig = {
-          Type = "oneshot";
+          Type = "simple";
           User = serviceUser;
           Group = serviceGroup;
+          Restart = "on-failure";
           WorkingDirectory = serviceHome;
           ExecStartPre = "${pkgs.coreutils}/bin/test -f ${configFile}";
-          ExecStart = "${package}/bin/msgraph-health-sentinel --once --config ${configFile}";
+          ExecStart = "${package}/bin/msgraph-health-sentinel --config ${configFile}";
+          RestartSec = "300s";
           NoNewPrivileges = true;
           PrivateTmp = true;
           ProtectSystem = "strict";
@@ -50,17 +52,6 @@ in
           ProtectControlGroups = true;
           LockPersonality = true;
           MemoryDenyWriteExecute = true;
-        };
-      };
-
-      systemd.timers.msgraph-health-sentinel = {
-        description = "Run MSGraph Health Sentinel every 10 to 20 minutes";
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = "10m";
-          OnUnitInactiveSec = "10m";
-          RandomizedDelaySec = "10m";
-          Unit = "msgraph-health-sentinel.service";
         };
       };
     };
