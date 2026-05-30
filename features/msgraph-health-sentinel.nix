@@ -32,12 +32,13 @@ in
       systemd.services.msgraph-health-sentinel = {
         description = "MSGraph Health Sentinel";
         after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        requires = [ "network-online.target" ];
+        wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "simple";
           User = serviceUser;
           Group = serviceGroup;
-          Restart = "on-failure";
+          Restart = "always";
           WorkingDirectory = serviceHome;
           ExecStartPre = "${pkgs.coreutils}/bin/test -f ${configFile}";
           ExecStart = "${package}/bin/msgraph-health-sentinel --config ${configFile}";
