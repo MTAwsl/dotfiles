@@ -139,21 +139,9 @@
       let
         mkHost = hostKey: hostname: system: {
           flake.nixosConfigurations."${hostname}" = withSystem system (
-            { mkPkgs, system, ... }:
-            let
-              inherit
-                (top.config.flake.lib.nixpkgs.${hostKey} or rec {
-                  nixpkgs = inputs.nixpkgs;
-                  nixosSystem = nixpkgs.lib.nixosSystem;
-                }
-                )
-                nixpkgs
-                nixosSystem
-                ;
-            in
-            nixosSystem {
-              inherit system;
-              pkgs = mkPkgs nixpkgs;
+            { system, pkgs, ... }:
+            inputs.nixpkgs.lib.nixosSystem {
+              inherit pkgs system;
               modules = [
                 inputs.self.modules.features.nix
                 inputs.self.modules.hosts.${hostKey}
@@ -174,10 +162,11 @@
             system,
             ...
           }:
-          let
-            mkPkgs =
-              nixpkgs:
-              import nixpkgs {
+          {
+            pkgsDirectory = ./packages;
+            pkgsNameSeparator = "-";
+            _module.args = {
+              pkgs = import inputs.nixpkgs {
                 inherit system;
                 overlays = [
                   # Niri-Flake's overlay.
@@ -199,13 +188,6 @@
                   allowUnfree = true;
                 };
               };
-          in
-          {
-            pkgsDirectory = ./packages;
-            pkgsNameSeparator = "-";
-            _module.args = {
-              inherit mkPkgs;
-              pkgs = mkPkgs inputs.nixpkgs;
             };
           };
 

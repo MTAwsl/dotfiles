@@ -8,11 +8,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780107485,
-        "narHash": "sha256-aHKbrC/K4hMRDG0F+pp5XAOxrYphoLimM7OBOedZkWA=",
+        "lastModified": 1780114283,
+        "narHash": "sha256-TvFni8yxnZ43xzR9pYWHpRlinIWJ4lXNyBRwjLGOD+0=",
         "owner": "YuriNek0",
         "repo": "Anthropic-Readlist-Tracker",
-        "rev": "7b21dda340b0040f18d303b7a1982b71d8e4c9e4",
+        "rev": "0a6d3a667aef574143cf4d132687aa2b1b8cac36",
         "type": "github"
       },
       "original": {
@@ -697,11 +697,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1780102864,
-        "narHash": "sha256-OCGIHq5NOglLvVPbUe9ASCHGHOfVjxPdPo+GHL0nOFw=",
+        "lastModified": 1780119579,
+        "narHash": "sha256-EnWR9fQzTfmIkyWD8ynYdAM573x3wzkOzZuMagrEosQ=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "e1d1790509643d37e66496668262b8a553b54b01",
+        "rev": "b8adcd1a8e45e6d84f511c1a3b12998634481204",
         "type": "github"
       },
       "original": {
@@ -1179,11 +1179,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1780101670,
-        "narHash": "sha256-5pAVLl4RUgXn2FKXXSnyo2pE9945woriO5GWlI/+EcU=",
+        "lastModified": 1780145432,
+        "narHash": "sha256-e5OC8qvDuezdb2M1wPxL5ASU7rm/v5hT2QbiODZvm30=",
         "owner": "pwndbg",
         "repo": "pwndbg",
-        "rev": "3aa42125790e5d741f33f3cd272470f443c1dc91",
+        "rev": "e2e209019a07eec27d343d91d343dc4b50c007f3",
         "type": "github"
       },
       "original": {

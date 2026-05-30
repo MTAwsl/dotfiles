@@ -50,9 +50,9 @@
           msgraph-health-sentinel
           anthropic-readings
           postgresql
-          redis
           firefly-iii
           home-assistant
+          otbr
 
           # Ram Optimisation
           earlyoom
@@ -156,13 +156,12 @@
         22
         53
         443
-        5353
-        5684
+
+        # Apple Homekit integration
+        21064
       ];
       networking.firewall.allowedUDPPorts = [
         53
-        5353
-        5683
       ];
 
       services = {
@@ -175,6 +174,11 @@
         };
 
         firefly-iii.settings.APP_URL = "http://${fireflyHost}";
+
+        openthread-border-router = {
+          radio.device = "/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usbv2-0:1.4:1.0";
+          backboneInterfaces = [ "end0" ];
+        };
 
         nginx.virtualHosts = {
           _ = {
@@ -244,11 +248,6 @@
               fastcgi_pass unix:${fireflyImporterPhpSocket};
             '';
           };
-        };
-
-        openthread-border-router = {
-          enable = true;
-          radio.device = "/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usbv2-0:1.4:1.0";
         };
       };
 
