@@ -109,11 +109,6 @@
       flake = false;
     };
 
-    onedrive-vercel-index = {
-      url = "github:spencerwooo/onedrive-vercel-index";
-      flake = false;
-    };
-
     oac-flake = {
       url = "github:YuriNek0/oac-flake";
       inputs.nixpkgs.follows = "nixpkgs";

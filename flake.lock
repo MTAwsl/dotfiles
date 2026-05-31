@@ -697,11 +697,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1780119579,
-        "narHash": "sha256-EnWR9fQzTfmIkyWD8ynYdAM573x3wzkOzZuMagrEosQ=",
+        "lastModified": 1780206800,
+        "narHash": "sha256-MeaRZmdyd9FaM1BY+GIp/OkhYdqqYd03kIAmoNWlz0E=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "b8adcd1a8e45e6d84f511c1a3b12998634481204",
+        "rev": "2296793afdc076c2fd495ac21b914c26a9f2bf0e",
         "type": "github"
       },
       "original": {
@@ -817,11 +817,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779604987,
-        "narHash": "sha256-ZQ5z+fVhxYKtIFwtqGp5O0PD84BM1riASvqDaN5Xs+s=",
+        "lastModified": 1780210899,
+        "narHash": "sha256-4axz3OBPTKa6LIkXV8n0lc63MQU+et2CB5DGobEAi6k=",
         "owner": "nix-community",
         "repo": "nix-index-database",
-        "rev": "8fba98c80b48fa013820e0163c5096922fea4ddd",
+        "rev": "97df9dc0b7c924344b793a15c1e8e4522ebb854e",
         "type": "github"
       },
       "original": {
@@ -992,11 +992,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1779955849,
-        "narHash": "sha256-31mhzm2HpzRr/rupWAFfWBmt9SUjzwr5+giv5Nmb/rA=",
+        "lastModified": 1780164493,
+        "narHash": "sha256-kAWygfPvwSp7fFkYABWDL002pb0HNzy6xIKtiwWWTsM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a2c6938835fca96e4a10c8561d461efd2f91d04f",
+        "rev": "01c8df74197a537d728921214ac2fd70e4ce1666",
         "type": "github"
       },
       "original": {
@@ -1117,22 +1117,6 @@
         "type": "github"
       }
     },
-    "onedrive-vercel-index": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1687557697,
-        "narHash": "sha256-O8FnTiQ+iv0lwFytin8+pF8Yrjb/4rc8C2h5OFFHfVc=",
-        "owner": "spencerwooo",
-        "repo": "onedrive-vercel-index",
-        "rev": "bc82aff86de69e1e717b94b600f8ccaba6c57369",
-        "type": "github"
-      },
-      "original": {
-        "owner": "spencerwooo",
-        "repo": "onedrive-vercel-index",
-        "type": "github"
-      }
-    },
     "pkgs-by-name-for-flake-parts": {
       "locked": {
         "lastModified": 1769286518,
@@ -1179,11 +1163,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1780145432,
-        "narHash": "sha256-e5OC8qvDuezdb2M1wPxL5ASU7rm/v5hT2QbiODZvm30=",
+        "lastModified": 1780187278,
+        "narHash": "sha256-vIC3RsPexOT2zcacHBcIQ5CPrPIisSLiMBS6tblGLDw=",
         "owner": "pwndbg",
         "repo": "pwndbg",
-        "rev": "e2e209019a07eec27d343d91d343dc4b50c007f3",
+        "rev": "07a27367b17e2b7172d6c7a2b891e4c5471275b6",
         "type": "github"
       },
       "original": {
@@ -1286,7 +1270,6 @@
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs_4",
         "oac-flake": "oac-flake",
-        "onedrive-vercel-index": "onedrive-vercel-index",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "pwndbg": "pwndbg",
         "stylix": "stylix",
