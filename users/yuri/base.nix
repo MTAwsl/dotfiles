@@ -71,7 +71,7 @@ in
         imports = with user.home; [
           git
           yazi
-          helix
+          helix-simple
           zsh
           starship
           clitools

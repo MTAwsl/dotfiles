@@ -51,6 +51,9 @@ in
 
             rime-ice
             ssh-agent
+
+            # Full Helix Config
+            helix
           ])
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ sectools ])
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ librepods ]);

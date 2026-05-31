@@ -1,11 +1,11 @@
 _: {
   flake.modules.features.home-assistant =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     {
       services.home-assistant = {
         enable = true;
         configDir = "/opt/home-assistant";
-        openFirewall = true;
+        openFirewall = false;
         extraComponents = [
           # normal UI integrations
           "adguard"
@@ -41,27 +41,13 @@ _: {
 
           "broadlink"
         ];
-        extraPackages = ps: with ps; [ ];
 
-        config = {
-          default_config = { };
-          recorder = {
-            commit_interval = 30;
-            purge_keep_days = 5;
-            auto_purge = true;
-            auto_repack = true;
-            exclude = {
-              domains = [
-                "automation"
-                "update"
-              ];
-              entities = [
-                "sensor.date"
-                "sensor.last_boot"
-              ];
-            };
-          };
-        };
+        extraPackages = ps: with ps; [
+          setuptools
+          packaging
+        ];
+
+        config = lib.mkForce null;
       };
     };
 }

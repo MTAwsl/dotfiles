@@ -20,8 +20,8 @@ _: {
       };
 
       networking.firewall = {
-        allowedTCPPorts = [ 5684 ];
-        allowedUDPPorts = [ 5683 ];
+        allowedTCPPorts = [ 5353 5683 5684 ];
+        allowedUDPPorts = [ 5353 5683 5684 ];
       };
 
       networking.networkmanager.unmanaged = [
