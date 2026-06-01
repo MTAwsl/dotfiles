@@ -49,5 +49,15 @@ _: {
 
         config = lib.mkForce null;
       };
+
+      networking.firewall = {
+         allowedUDPPortRanges = [
+           { from = 32768; to = 60999; }
+         ];
+    
+         allowedTCPPortRanges = [
+           { from = 32768; to = 60999; }
+         ];
+      };
     };
 }
