@@ -173,7 +173,11 @@
           ];
         };
 
-        firefly-iii.settings.APP_URL = "http://${fireflyHost}";
+        firefly-iii.settings.APP_URL = "https://${fireflyHost}";
+        firefly-iii-data-importer.settings = {
+          APP_URL = "https://${fireflyImporterHost}";
+          FIREFLY_III_URL = "http://127.0.0.1:8090"; # Internal use. Do not expose.
+        };
 
         openthread-border-router = {
           radio.device = "/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usbv2-0:1.4:1.0";
@@ -183,7 +187,7 @@
         nginx.virtualHosts = {
           _ = {
             default = true;
-            onlySSL = true;
+            addSSL = true;
             locations."/" = {
               proxyPass = "http://127.0.0.1:8123";
               proxyWebsockets = true;
@@ -193,7 +197,7 @@
           };
 
           ${homeAssistantHost} = {
-            onlySSL = true;
+            addSSL = true;
             locations."/" = {
               proxyPass = "http://127.0.0.1:8123";
               proxyWebsockets = true;
@@ -204,10 +208,15 @@
 
           ${fireflyHost} = {
             root = fireflyPublicRoot;
-            onlySSL = true;
+            addSSL = true;
             extraConfig = ''
               index index.php;
             '';
+
+            listen = [
+              { addr = "0.0.0.0"; port = 443; ssl = true; } 
+              { addr = "127.0.0.1"; port = 8090; extraParameters = [ "default_server" ]; } 
+            ];
 
             sslCertificate = "/var/lib/secrets/nginx.crt";
             sslCertificateKey = "/var/lib/secrets/nginx.key";
@@ -227,7 +236,7 @@
 
           ${fireflyImporterHost} = {
             root = fireflyImporterPublicRoot;
-            onlySSL = true;
+            addSSL = true;
             extraConfig = ''
               index index.php;
             '';

@@ -40,6 +40,8 @@ _: {
           "unifiprotect"
 
           "broadlink"
+
+          "firefly_iii"
         ];
 
         extraPackages = ps: with ps; [

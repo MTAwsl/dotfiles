@@ -10,6 +10,7 @@ in
       hostName = config.networking.hostName;
       fireflyUrl = lib.mkDefault "http://${hostName}";
       siteOwner = self.lib.meta.owner.email;
+      tlsCertPath = "/var/lib/secrets/nginx.crt";
     in
     {
       assertions = [
@@ -52,9 +53,10 @@ in
           dataDir = importerDataDir;
           enableNginx = false;
           settings = {
-            APP_URL = fireflyUrl;
-            FIREFLY_III_URL = fireflyUrl;
+            APP_URL = lib.mkDefault fireflyUrl;
+            FIREFLY_III_URL = lib.mkDefault config.services.firefly-iii.settings.APP_URL;
             FIREFLY_III_ACCESS_TOKEN_FILE = "${importerDataDir}/firefly-access-token";
+            VERIFY_TLS_SECURITY = lib.mkDefault tlsCertPath;
           };
         };
       };
