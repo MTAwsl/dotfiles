@@ -137,6 +137,13 @@ _: {
         };
 
         zig.symbol = " ";
+
+        env_var.proxy = {
+          symbol = "󰢩 ";
+          variable = "PROXY_STATUS";
+          style = "bold green";
+          format = "[$symbol$env_value]($style) ";
+        };
       };
     };
   };

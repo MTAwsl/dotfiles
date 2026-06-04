@@ -69,11 +69,7 @@ in
       home-manager.users.${username} = {
 
         imports = with user.home; [
-          git
-          yazi
-          helix-simple
-          zsh
-          starship
+          stylix
           clitools
           sys-update-prompt
         ];

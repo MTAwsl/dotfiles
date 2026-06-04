@@ -11,6 +11,7 @@ let
         useUserPackages = true;
         useGlobalPkgs = true;
         extraSpecialArgs = {
+          # FIX: Remove after all conditions in overlays/yazi-plugins.nix are satisfied.
           inherit (pkgs) yaziPluginsHomeModule;
         };
         backupFileExtension = "bak";

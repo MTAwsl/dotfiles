@@ -19,9 +19,23 @@ _: {
           echo $current_dir
         }
 
+        function set_title_override() {
+          local title=$1
+
+          ZELLIJ_TAB_TITLE_OVERRIDE=1
+          command nohup zellij action rename-tab $title >/dev/null 2>&1
+        }
+
+        function unset_title_override(){
+          ZELLIJ_TAB_TITLE_OVERRIDE=0
+        }
+
         function change_tab_title() {
           local title=$1
-          command nohup zellij action rename-tab $title >/dev/null 2>&1
+
+          if [[ -z $ZELLIJ_TAB_TITLE_OVERRIDE ]]; then
+            command nohup zellij action rename-tab $title >/dev/null 2>&1
+          fi
         }
 
         function set_tab_to_working_dir() {

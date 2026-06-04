@@ -26,7 +26,6 @@ in
             kanshi
             niri
             dms-shell
-            stylix
             qtgtk
 
             devtools

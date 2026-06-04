@@ -191,6 +191,7 @@
           ./nix.nix
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.pkgs-by-name-for-flake-parts.flakeModule
+          inputs.home-manager.flakeModules.home-manager
           (import-tree ./lib)
           (import-tree ./features)
           (import-tree ./overlays)
@@ -198,9 +199,11 @@
           (import-tree ./hosts)
           (import-tree ./users)
 
+          # Standalone Home Manager config for CLI workflows
+          ./home-manager.nix
+
           # Make hosts here.
-          (mkHost "qemu-aarch64" "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")
-          (mkHost "sherbet" "Yuri-Sherbet" "aarch64-linux")
+          (mkHost "qemu-aarch64" "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")          (mkHost "sherbet" "Yuri-Sherbet" "aarch64-linux")
           (mkHost "lemonade" "Yuri-Lemonade" "x86_64-linux")
         ];
       }

@@ -1,10 +1,19 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake.modules.users.yuri.home.clitools =
     { config, pkgs, ... }:
     {
 
-      imports = [ inputs.nix-index-database.homeModules.nix-index ];
+      imports = [
+        inputs.nix-index-database.homeModules.nix-index
+      ] ++ (with self.modules.users.yuri.home; [
+        git
+        yazi
+        helix
+        zsh
+        starship
+        ripgrep
+      ]);
 
       # Credit to my neighbour qiront:nixconf
       home.packages = with pkgs; [
@@ -70,7 +79,6 @@
         fd
         eza
         dua
-        ripgrep
         ast-grep
       ];
 
