@@ -9,12 +9,6 @@
     }:
     let
       homeAssistantHost = "ha.sherbet.lan";
-      fireflyHost = "firefly.sherbet.lan";
-      fireflyImporterHost = "firefly-importer.sherbet.lan";
-      fireflyPublicRoot = "${config.services.firefly-iii.package}/public";
-      fireflyImporterPublicRoot = "${config.services.firefly-iii-data-importer.package}/public";
-      fireflyPhpSocket = config.services.phpfpm.pools.firefly-iii.socket;
-      fireflyImporterPhpSocket = config.services.phpfpm.pools.firefly-iii-data-importer.socket;
       users = self.lib.getHostUsers self.modules.users [
         "yuri"
         "deployer"
@@ -49,8 +43,6 @@
           no-root-passwd
           msgraph-health-sentinel
           anthropic-readings
-          postgresql
-          firefly-iii
           home-assistant
           otbr
 
@@ -173,12 +165,6 @@
           ];
         };
 
-        firefly-iii.settings.APP_URL = "https://${fireflyHost}";
-        firefly-iii-data-importer.settings = {
-          APP_URL = "https://${fireflyImporterHost}";
-          FIREFLY_III_URL = "http://127.0.0.1:8090"; # Internal use. Do not expose.
-        };
-
         openthread-border-router = {
           radio.device = "/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usbv2-0:1.4:1.0";
           backboneInterfaces = [ "end0" ];
@@ -204,58 +190,6 @@
             };
             sslCertificate = "/var/lib/secrets/nginx.crt";
             sslCertificateKey = "/var/lib/secrets/nginx.key";
-          };
-
-          ${fireflyHost} = {
-            root = fireflyPublicRoot;
-            addSSL = true;
-            extraConfig = ''
-              index index.php;
-            '';
-
-            listen = [
-              { addr = "0.0.0.0"; port = 443; ssl = true; } 
-              { addr = "127.0.0.1"; port = 8090; extraParameters = [ "default_server" ]; } 
-            ];
-
-            sslCertificate = "/var/lib/secrets/nginx.crt";
-            sslCertificateKey = "/var/lib/secrets/nginx.key";
-
-            locations."/".extraConfig = ''
-              try_files $uri $uri/ /index.php?$query_string;
-              index index.php;
-              sendfile off;
-            '';
-
-            locations."~ \\.php$".extraConfig = ''
-              include ${pkgs.nginx}/conf/fastcgi.conf;
-              fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-              fastcgi_pass unix:${fireflyPhpSocket};
-            '';
-          };
-
-          ${fireflyImporterHost} = {
-            root = fireflyImporterPublicRoot;
-            addSSL = true;
-            extraConfig = ''
-              index index.php;
-            '';
-
-            sslCertificate = "/var/lib/secrets/nginx.crt";
-            sslCertificateKey = "/var/lib/secrets/nginx.key";
-
-            locations."/".extraConfig = ''
-              try_files $uri $uri/ /index.php?$query_string;
-              index index.php;
-              sendfile off;
-            '';
-
-            locations."~ \\.php$".extraConfig = ''
-              include ${pkgs.nginx}/conf/fastcgi.conf;
-              fastcgi_param SCRIPT_FILENAME $request_filename;
-              fastcgi_param modHeadersAvailable true;
-              fastcgi_pass unix:${fireflyImporterPhpSocket};
-            '';
           };
         };
       };
