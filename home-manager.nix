@@ -2,6 +2,7 @@
   inputs,
   self,
   withSystem,
+  lib,
   ...
 }:
 {
@@ -13,7 +14,6 @@
           {
             system,
             pkgs,
-            lib,
             ...
           }:
           let
@@ -30,18 +30,12 @@
               self.modules.features.nix-hm
             ]
             # Import user profiles.
-            ++ lib.optional (!isFull) (
-              with yuri.profiles;
-              [
-                hm-cli-workflow
-              ]
-            )
-            ++ lib.optional isFull (
-              with yuri.profiles;
-              [
-                hm-cli-workflow-full
-              ]
-            );
+            ++ lib.optionals (!isFull) (with yuri.profiles; [
+              hm-cli-workflow
+            ])
+            ++ lib.optionals isFull (with yuri.profiles; [
+              hm-cli-workflow-full
+            ]);
           })
         );
     in

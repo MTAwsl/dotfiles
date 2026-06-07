@@ -5,6 +5,7 @@ _: {
     { pkgs, ... }:
     {
       boot.kernelModules = [
+        "tun"
         "ip6_tables"
         "ip6table_filter"
         "ip6table_mangle"
