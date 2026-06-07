@@ -13,7 +13,8 @@
           fonts.enable = false;
         };
         vscode.enable = false;
-        qt.enable = false;
+        qt.enable = true;
+        gtk.enable = true;
         fzf.enable = false;
         opencode.enable = false;
         dank-material-shell.enable = false;

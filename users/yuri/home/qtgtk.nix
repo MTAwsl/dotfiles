@@ -1,6 +1,11 @@
 _: {
   flake.modules.users.yuri.home.qtgtk =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     {
       home.packages = with pkgs; [
         papirus-icon-theme
@@ -8,19 +13,15 @@ _: {
 
       gtk = {
         enable = true;
-        gtk4.theme = config.gtk.theme;
         iconTheme = {
-          package = pkgs.papirus-icon-theme;
-          name = "Papirus-Dark";
+          package = lib.mkForce pkgs.papirus-icon-theme;
+          name = lib.mkForce "Papirus-Dark";
         };
       };
 
       qt = {
         enable = true;
-        platformTheme.name = "gtk3";
-        style = {
-          name = "Fusion";
-        };
+        platformTheme.name = lib.mkForce "gtk3";
       };
     };
 }

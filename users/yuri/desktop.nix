@@ -26,6 +26,9 @@ in
             kanshi
             niri
             dms-shell
+
+            # Theme
+            stylix
             qtgtk
 
             devtools
@@ -72,7 +75,8 @@ in
           ++ [
             # apps
             audacity
-            bitwarden-desktop # This is unstable. For now do not lock the vault, see https://github.com/bitwarden/clients/issues/18463
+            bitwarden-desktop
+            thunderbird
             filezilla
             swayimg
             # gale

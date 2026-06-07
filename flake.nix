@@ -181,9 +181,14 @@
                 ];
                 config = {
                   allowUnfree = true;
+
+                  # FIX: Remove this after https://github.com/bitwarden/clients/pull/20448 is merged, and
+                  # https://github.com/nixos/nixpkgs/issues/526914 is closed.
+                  permittedInsecurePackages = [ "electron-39.8.10" ];
                 };
               };
             };
+
           };
 
         imports = [
