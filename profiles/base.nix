@@ -1,7 +1,11 @@
-_: {
+{ self, ... }: {
   flake.modules.profiles.base =
     { pkgs, ... }:
     {
+      imports = with self.modules.features; [
+        stylix
+      ];
+
       environment.systemPackages = with pkgs; [
         file
         vim

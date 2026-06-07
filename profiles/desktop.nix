@@ -7,15 +7,8 @@
         niri
         dms-shell
         plymouth
-        stylix
         fonts
-
-        # polkit-agent # Use DMS's Polkit agent.
-
-        # Switch back to dms-greeter once it supports YubiKey.
         dms-greeter
-        # tuigreet
-        # regreet
       ];
 
       environment.systemPackages =

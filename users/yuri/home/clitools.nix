@@ -6,10 +6,11 @@
 
       imports = [
         inputs.nix-index-database.homeModules.nix-index
-      ] ++ (with self.modules.users.yuri.home; [
+      ]
+      ++ (with self.modules.users.yuri.home; [
         git
         yazi
-        helix
+        helix-simple
         zsh
         starship
         ripgrep

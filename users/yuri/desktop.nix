@@ -25,6 +25,7 @@ in
           (with user.home; [
             kanshi
             niri
+            helix # Load Full Configuration
             dms-shell
 
             # Theme
