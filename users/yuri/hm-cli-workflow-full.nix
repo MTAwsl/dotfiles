@@ -15,9 +15,13 @@ in
       ...
     }:
     {
-      imports = [
-        user.profiles.hm-cli-workflow
-        user.home.helix
-      ];
+      imports =
+        with user.profiles;
+        [
+          hm-cli-workflow
+        ]
+        ++ (with user.home; [
+          helix
+        ]);
     };
 }
