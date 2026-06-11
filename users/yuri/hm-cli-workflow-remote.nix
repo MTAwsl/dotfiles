@@ -10,7 +10,7 @@ let
   user = users.${username};
 in
 {
-  flake.modules.users.yuri.profiles.hm-cli-workflow =
+  flake.modules.users.yuri.profiles.hm-cli-workflow-remote =
     {
       ...
     }:
@@ -20,9 +20,6 @@ in
         [
           hm-cli-workflow-shared
         ]
-        ++ (with user.home; [
-          zellij
-          helix
-        ]);
+        ++ (with user.home; [ ]);
     };
 }
