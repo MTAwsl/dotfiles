@@ -8,12 +8,17 @@
         inputs.nix-index-database.homeModules.nix-index
       ]
       ++ (with self.modules.users.yuri.home; [
+        # CLI workflow tools
         git
         yazi
         helix-simple
         zsh
         starship
         ripgrep
+
+        # FIX: Adapt to Zellij after https://github.com/zellij-org/zellij/issues/3237
+        # feature is implemented.
+        tmux
       ]);
 
       # Credit to my neighbour qiront:nixconf
@@ -25,6 +30,7 @@
         jq
         yj
 
+        # Profilers
         fastfetch
         htop
         btop

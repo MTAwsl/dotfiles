@@ -20,7 +20,10 @@ in
     }:
     {
       imports = with user.home; [
+        # Theme adaptor when stylix is not available.
         helix-theme
+
+        # Workflow CLI environment
         clitools
       ];
 
