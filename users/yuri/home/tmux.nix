@@ -24,6 +24,9 @@ _: {
         unbind %
         bind = split-window -h
         bind - split-window -v
+
+        # Load Nix Shell
+        set-option -g default-command "env -u __ETC_PROFILE_NIX_SOURCED $SHELL"
       '';
     };
   };
