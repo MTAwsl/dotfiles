@@ -16,24 +16,12 @@
       inherit (users) yuri deployer;
     in
     {
-      # Patches for nvmd/nixos-raspberrypi.
-      _module.args.nixos-raspberrypi = inputs.nixos-raspberrypi;
       nixpkgs.hostPlatform = lib.mkForce "aarch64-linux";
-      nixpkgs.overlays = with inputs.nixos-raspberrypi.overlays; [
-        bootloader
-        vendor-kernel
-        vendor-firmware
-        kernel-and-firmware
-        vendor-pkgs
-      ];
 
       imports =
-        with inputs.nixos-raspberrypi.nixosModules.raspberry-pi-4;
         [
-          base
-          bluetooth
-          display-vc4
-          case-argonone
+          inputs.nixos-hardware.nixosModules.raspberry-pi-4
+          (inputs.argononed + "/OS/nixos")
         ]
         ++ (with self.modules.features; [
           home-manager
@@ -122,10 +110,13 @@
         };
       };
 
-      hardware.raspberry-pi.config.all.base-dt-params.i2c_arm = {
-        enable = true;
-        value = "on";
+      hardware.raspberry-pi."4" = {
+        bluetooth.enable = true;
+        fkms-3d.enable = true;
+        apply-overlays-dtmerge.enable = true;
       };
+
+      hardware.raspberry-pi.configtxt.settings.all.dtparam = lib.mkAfter [ "i2c_arm=on" ];
 
       hardware.deviceTree.filter = "bcm2711-rpi-4*.dtb";
 

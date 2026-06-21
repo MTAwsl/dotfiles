@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ lib, ... }:
 {
-  flake.lib.infuse = (import (inputs.infuse + "/default.nix") { inherit lib; }).v1.infuse;
+  flake.lib.infuse = (import ../packages/infuse-nix/infuse.nix { inherit lib; }).v1.infuse;
 }

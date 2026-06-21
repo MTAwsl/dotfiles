@@ -13,12 +13,13 @@
         sushi.enable = true;
       };
 
+      # Do not use extra binary caches.
+      niri-flake.cache.enable = false;
+
       programs = {
         niri = {
           enable = true;
-
-          # Switch back to stable once https://github.com/sodiboo/niri-flake/pull/1548 is closed.
-          package = pkgs.niri-unstable;
+          package = pkgs.niri;
         };
 
         xwayland.enable = true;

@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -12,8 +12,13 @@
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
 
+    stylix = {
+      url = "github:nix-community/stylix/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     import-tree = {
-      url = "github:vic/import-tree";
+      url = "github:denful/import-tree/v0.2.0";
     };
 
     uniclip = {
@@ -43,7 +48,7 @@
     };
 
     pkgs-by-name-for-flake-parts = {
-      url = "github:drupol/pkgs-by-name-for-flake-parts";
+      url = "github:drupol/pkgs-by-name-for-flake-parts/7ba1cd4a9a72c9c6c272018a63f090f2c912a171";
     };
 
     lanzaboote = {
@@ -52,37 +57,12 @@
     };
 
     mac-style-plymouth = {
-      url = "github:SergioRibera/s4rchiso-plymouth-theme";
+      url = "github:SergioRibera/s4rchiso-plymouth-theme/2f782f4b68ce1c00cef3fde6970d7b4241bb97d4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    infuse = {
-      url = "git+https://codeberg.org/amjoseph/infuse.nix";
-      flake = false;
-    };
-
-    # binaryninja = {
-    #   url = "github:jchv/nix-binary-ninja";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     pwndbg = {
       url = "github:pwndbg/pwndbg";
-    };
-
-    nix-yazi-plugins = {
-      url = "github:lordkekz/nix-yazi-plugins";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nix-librepods-bin = {
-      url = "github:YuriNek0/nix-librepods-bin";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     bloodhound-cli = {
@@ -90,8 +70,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix";
+    opencode-bin = {
+      url = "github:YuriNek0/nix-opencode-bin";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     msgraph-health-sentinel = {
@@ -114,10 +95,25 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-raspberrypi = {
-      url = "github:nvmd/nixos-raspberrypi/main";
-      inputs.argononed.follows = "argononed";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # binaryninja = {
+    #   url = "github:jchv/nix-binary-ninja";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    # nix-librepods-bin = {
+    #   url = "github:YuriNek0/nix-librepods-bin";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    # nix-yazi-plugins = {
+    #   url = "github:lordkekz/nix-yazi-plugins";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs =
@@ -164,18 +160,12 @@
               pkgs = import inputs.nixpkgs {
                 inherit system;
                 overlays = [
-                  # Niri-Flake's overlay.
-                  inputs.niri.overlays.niri
-
                   # Plymouth theme
                   inputs.mac-style-plymouth.overlays.default
 
-                  # AI agent packages
-                  inputs.llm-agents.overlays.default
-
                   # Binary Ninja
                   # inputs.binaryninja.overlays.default
-                  #
+
                   # Local package overrides.
                   top.config.flake.overlays.default
                 ];
@@ -208,7 +198,8 @@
           ./home-manager.nix
 
           # Make hosts here.
-          (mkHost "qemu-aarch64" "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")          (mkHost "sherbet" "Yuri-Sherbet" "aarch64-linux")
+          (mkHost "qemu-aarch64" "Yuri-NixOS-QEMU-AARCH64" "aarch64-linux")
+          (mkHost "sherbet" "Yuri-Sherbet" "aarch64-linux")
           (mkHost "lemonade" "Yuri-Lemonade" "x86_64-linux")
         ];
       }

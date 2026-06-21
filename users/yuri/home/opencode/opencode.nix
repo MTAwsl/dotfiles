@@ -23,7 +23,7 @@
 
       programs.opencode = {
         enable = true;
-        package = pkgs.llm-agents.opencode;
+        package = pkgs.opencode;
         settings = {
           lsp = true;
           plugin = [ "@mohak34/opencode-notifier@latest" ];

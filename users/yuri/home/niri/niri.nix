@@ -15,30 +15,10 @@
         # Screenshot
         flameshot
         libnotify
-
-        # KDE Connect is an overkill for clipboard sharing.
-        # kde-connect
       ];
 
       programs = {
-
-        # Update after refactor: https://github.com/sodiboo/niri-flake/pull/1548
-        # Waiting for https://github.com/sodiboo/niri-flake/issues/1446 is closed
-        # niri.config = with inputs.niri.lib.kdl; [
-        #   (node "recent-windows" "highlight" [
-        #     (leaf "corner-radius" 12)
-        #     (leaf "active-color" "#124a73")
-        #     (leaf "urgent-color" "#ffb4ab")
-        #   ])
-        # ];
-
         niri.settings = {
-          # nvidia fix, remove once either
-          # https://github.com/YaLTeR/niri/issues/2030
-          # https://github.com/YaLTeR/niri/issues/2477
-          # is closed
-          # debug.wait-for-frame-completion-before-queueing = [ ];
-
           hotkey-overlay.skip-at-startup = true;
           prefer-no-csd = true;
 

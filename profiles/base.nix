@@ -42,10 +42,6 @@
           enable = true;
         };
 
-        yazi = {
-          enable = true;
-        };
-
         nix-ld.enable = true;
         bat.enable = true;
         zsh = {

@@ -57,8 +57,7 @@ in
             # Full Helix Config
             helix
           ])
-          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ sectools ])
-          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ librepods ]);
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ sectools ]);
 
         home.isDesktopProfile = true;
         home.packages =

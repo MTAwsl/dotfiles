@@ -53,7 +53,7 @@ _: {
           }
           {
             criteria = "HDMI-A-1";
-            position = "disable";
+            status = "disable";
           }
         ];
       }

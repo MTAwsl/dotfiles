@@ -10,7 +10,7 @@
       ++ (with self.modules.users.yuri.home; [
         # CLI workflow tools
         git
-        yazi
+        nnn
         helix-simple
         zsh
         starship
@@ -118,13 +118,6 @@
         direnv = {
           enable = true;
           nix-direnv.enable = true;
-        };
-
-        # file explorer
-        yazi = {
-          enable = true;
-          enableBashIntegration = true;
-          enableZshIntegration = true;
         };
 
         nix-index.enable = true; # command-not-found

@@ -33,10 +33,6 @@
           in
           inputs.home-manager.lib.homeManagerConfiguration (rec {
             inherit pkgs;
-            extraSpecialArgs = {
-              # FIX: Remove after all conditions in overlays/yazi-plugins.nix are satisfied.
-              inherit (pkgs) yaziPluginsHomeModule;
-            };
             modules = [
               self.modules.features.nix-hm
             ]

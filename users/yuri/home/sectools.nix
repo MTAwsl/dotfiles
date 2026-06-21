@@ -75,6 +75,7 @@ _: {
 
           # Network
           nmap
+          dig
           rustscan
           nmap-formatter
           putty
