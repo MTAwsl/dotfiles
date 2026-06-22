@@ -7,12 +7,39 @@
       pkgs,
       ...
     }:
-    let
-      homeAssistantHost = "ha.sherbet.lan";
-      users = self.lib.getHostUsers self.modules.users [
-        "yuri"
-        "deployer"
-      ];
+      let
+        homeAssistantHost = "ha.sherbet.lan";
+        argononeLogLevel = 4; # WARNING
+        argononeSettings = {
+          fanTemp0 = 55;
+          fanSpeed0 = 10;
+          fanTemp1 = 60;
+          fanSpeed1 = 55;
+          fanTemp2 = 65;
+          fanSpeed2 = 100;
+          hysteresis = 3;
+        };
+        argononePackage = pkgs.callPackage (inputs.argononed + "/OS/nixos/pkg.nix") {
+          logLevel = argononeLogLevel;
+        };
+        argononeFanConfig = lib.concatStringsSep " " (
+          map toString (
+            with argononeSettings;
+            [
+              fanSpeed0
+              fanSpeed1
+              fanSpeed2
+              fanTemp0
+              fanTemp1
+              fanTemp2
+              hysteresis
+            ]
+          )
+        );
+        users = self.lib.getHostUsers self.modules.users [
+          "yuri"
+          "deployer"
+        ];
       inherit (users) yuri deployer;
     in
     {
@@ -21,7 +48,6 @@
       imports =
         [
           inputs.nixos-hardware.nixosModules.raspberry-pi-4
-          (inputs.argononed + "/OS/nixos")
         ]
         ++ (with self.modules.features; [
           home-manager
@@ -121,18 +147,58 @@
       hardware.deviceTree.filter = "bcm2711-rpi-4*.dtb";
 
       # argononed daemon defaults (fan curve: 10%@55°C, 55%@60°C, 100%@65°C, hysteresis 3°C)
-      services.argonone = {
-        enable = true;
-        logLevel = 4; # WARNING
-        settings = {
-          fanTemp0 = 55;
-          fanSpeed0 = 10;
-          fanTemp1 = 60;
-          fanSpeed1 = 55;
-          fanTemp2 = 65;
-          fanSpeed2 = 100;
-          hysteresis = 3;
+      environment.systemPackages = [ argononePackage ];
+
+      hardware.deviceTree.overlays = [
+        {
+          name = "argonone";
+          dtboFile = "${argononePackage}/share/argonone/boot/overlays/argonone.dtbo";
+        }
+        {
+          name = "argonone-enable-overlay";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
+            / {
+              compatible = "brcm,bcm2711";
+              fragment@0 {
+                target-path = "/argonone";
+                __overlay__ {
+                  argonone-cfg = /bits/ 8 <${argononeFanConfig}>;
+                };
+              };
+            };
+          '';
+        }
+      ];
+
+      systemd = {
+        services.argononed = {
+          enable = true;
+          after = [ "multi-user.target" ];
+          wantedBy = [ "multi-user.target" ];
+          description = "Argon ONE Fan and Button Daemon Service";
+
+          serviceConfig = {
+            Type = "forking";
+            ExecStart = "${argononePackage}/sbin/argononed";
+            PIDFile = "/run/argononed.pid";
+            Restart = "on-failure";
+          };
         };
+
+        shutdown.argonone = "${argononePackage}/lib/systemd/system-shutdown/argonone-shutdown";
+      };
+
+      services.logrotate.settings.argononed = {
+        files = toString /var/log/argononed.log;
+        rotate = 2;
+        frequency = "daily";
+        create = "660 root root";
+        missingok = true;
+        notifempty = true;
+        compress = true;
+        delaycompress = true;
       };
 
       networking.firewall.allowedTCPPorts = [
