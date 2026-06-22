@@ -65,6 +65,11 @@
       url = "github:pwndbg/pwndbg";
     };
 
+    nix-yazi-plugins = {
+      url = "github:yurinek0/nix-yazi-plugins/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     bloodhound-cli = {
       url = "github:yurinek0/nix-bloodhound-cli";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -130,9 +135,17 @@
       let
         mkHost = hostKey: hostname: system: {
           flake.nixosConfigurations."${hostname}" = withSystem system (
-            { system, pkgs, ... }:
+            {
+              system,
+              pkgs,
+              inputs',
+              ...
+            }:
             inputs.nixpkgs.lib.nixosSystem {
               inherit pkgs system;
+              specialArgs = {
+                inherit inputs inputs';
+              };
               modules = [
                 inputs.self.modules.features.nix
                 inputs.self.modules.hosts.${hostKey}

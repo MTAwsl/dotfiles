@@ -1,9 +1,10 @@
-_: {
+_:
+{
   flake.modules.users.yuri.home.yazi =
-    { pkgs, yaziPluginsHomeModule, ... }:
+    { inputs', pkgs, ... }:
     {
       imports = [
-        yaziPluginsHomeModule
+        inputs'.nix-yazi-plugins.legacyPackages.homeManagerModules.default
       ];
 
       home.packages = with pkgs; [ ];
@@ -25,10 +26,7 @@ _: {
             starship.enable = true;
             chmod.enable = true;
             smart-enter.enable = true;
-            vcs-files = {
-              enable = true;
-              package = pkgs.yaziPlugins.vcs-files;
-            };
+            vcs-files.enable = true;
             git.enable = true;
             full-border.enable = true;
           };

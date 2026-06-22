@@ -10,6 +10,7 @@
       ++ (with self.modules.users.yuri.home; [
         # CLI workflow tools
         git
+        yazi
         nnn
         helix-simple
         zsh

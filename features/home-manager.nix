@@ -1,15 +1,18 @@
 {
   inputs,
   ...
-}:
+  }:
 let
   home-manager-config =
-    { pkgs, ... }:
+    { inputs, inputs', ... }:
     {
       home-manager = {
         verbose = true;
         useUserPackages = true;
         useGlobalPkgs = true;
+        extraSpecialArgs = {
+          inherit inputs inputs';
+        };
         backupFileExtension = "bak";
         backupCommand = "rm";
         overwriteBackup = true;
