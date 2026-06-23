@@ -1,5 +1,5 @@
 _: {
-  flake.modules.users.yuri.home.helix-editor = _: {
+  flake.modules.users.yuri.home.helix-editor = { pkgs, ... }: {
     programs.helix.settings = {
       # theme = "monokai"; # Managed by stylix
       editor = {
@@ -31,10 +31,52 @@ _: {
         ];
       };
 
-      # hmmmm.....u sure?
       keys.normal.space = {
         # replace file explorer with nnn
-        e = ":open %sh{hx-nnn-picker '%{buffer_name}'}";
+        # e = ":open %sh{hx-nnn-picker '%{buffer_name}'}";
+        # replace file explorer with yazi
+        e =
+          let
+            yazi-wrapper = pkgs.writeShellScript "yazi-wrapper" ''
+              if [[ -n $ZELLIJ ]]; then
+                YAZI_TMP=$(mktemp -d)
+
+                mkfifo "$YAZI_TMP/fifo"
+
+                zellij run -fc --width 90% --height 90% -x 5% -y 5% -- \
+                  sh -c "${pkgs.yazi}/bin/yazi \"$1\" --chooser-file=\"$YAZI_TMP/out\" | tee \"$YAZI_TMP/fifo\"" > /dev/null
+
+                cat < "$YAZI_TMP/fifo" > /dev/null
+
+                cat "$YAZI_TMP/out"
+                rm -rf "$YAZI_TMP"
+              else
+                # use the system stty if possible to fix permission issue
+                # on macos
+                STTY=stty
+                if [ -f /bin/stty ]; then
+                  STTY=/bin/stty
+                fi
+
+                # save and restore tty settings
+                # the "official" version fixes settings by using stuff like
+                # `x1b[?1049h]`, which is not what helix uses exactly.
+                # this script just save and restores it instead.
+                SAVED_TTY=$($STTY -g < /dev/tty)
+                $STTY sane < /dev/tty
+
+                ${pkgs.yazi}/bin/yazi "$1" --chooser-file=/dev/stdout < /dev/tty
+
+                $STTY "$SAVED_TTY" < /dev/tty
+              fi
+            '';
+          in
+          [
+            ":set mouse false"
+            ":open %sh{${yazi-wrapper} '%{buffer_name}'}"
+            ":redraw"
+            ":set mouse true"
+          ];
       };
     };
   };

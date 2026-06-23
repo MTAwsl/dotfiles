@@ -55,7 +55,7 @@ in
             ssh-agent
 
             # Full Helix Config
-            helix
+            helix-full-ext
           ])
           ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 (with user.home; [ sectools ]);
 

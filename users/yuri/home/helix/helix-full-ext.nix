@@ -1,9 +1,8 @@
 { self, ... }:
 {
-  flake.modules.users.yuri.home.helix = _: {
+  flake.modules.users.yuri.home.helix-full-ext = _: {
     imports = with self.modules.users.yuri.home; [
       helix-packages
-      helix-editor
       helix-languages
     ];
 
