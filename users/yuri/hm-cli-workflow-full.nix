@@ -21,7 +21,7 @@ in
           hm-cli-workflow
         ]
         ++ (with user.home; [
-          helix
+          helix-full-ext
         ]);
     };
 }

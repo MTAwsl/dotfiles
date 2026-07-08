@@ -13,6 +13,7 @@
         withSystem system (
           {
             system,
+            inputs',
             pkgs,
             ...
           }:
@@ -33,6 +34,9 @@
           in
           inputs.home-manager.lib.homeManagerConfiguration (rec {
             inherit pkgs;
+            extraSpecialArgs = {
+              inherit inputs inputs';
+            };
             modules = [
               self.modules.features.nix-hm
             ]

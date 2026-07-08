@@ -22,7 +22,6 @@ in
         ]
         ++ (with user.home; [
           zellij
-          helix
         ]);
     };
 }

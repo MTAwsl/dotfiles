@@ -35,6 +35,9 @@
         # Ram Optimisation
         earlyoom
         zram
+
+        # Controller
+        xpad
       ])
       # Import host profiles.
       ++ (with self.modules.profiles; [
