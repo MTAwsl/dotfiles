@@ -57,9 +57,10 @@ in
         description = "Sayuri Nekomiya";
         shell = pkgs.zsh;
         extraGroups = [
-          "networkmanager" # Risk accepted.
+          "networkmanager"
           "plugdev"
           "wheel"
+          "fuse"
         ];
         openssh.authorizedKeys.keys = [
           "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIPm8fm2GbPerlhMI4jwfjyg3HGIyql/n2XaMNHwHn8nTAAAABHNzaDo= Sayuri Nekomiya's YubiKey 5"

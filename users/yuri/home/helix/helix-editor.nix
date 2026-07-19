@@ -29,6 +29,31 @@ _: {
           "collapse_selection"
           "keep_primary_selection"
         ];
+
+        # Zellij owns these Alt bindings for pane/tab navigation and resizing.
+        "A-a" = "no_op";
+        "A-b" = "no_op";
+        "A-e" = "no_op";
+        "A-i" = "no_op";
+        "A-down" = "no_op";
+        "A-n" = "no_op";
+        "A-right" = "no_op";
+        "A-o" = "no_op";
+        "A-up" = "no_op";
+        "A-p" = "no_op";
+        "A-left" = "no_op";
+        "A-minus" = "no_op";
+
+        m = {
+          h = "select_prev_sibling";
+          j = "shrink_selection";
+          k = "expand_selection";
+          l = "select_next_sibling";
+          b = "move_parent_node_start";
+          e = "move_parent_node_end";
+          c = "select_all_children";
+          x = "select_all_siblings";
+        };
       };
 
       keys.normal.space = {

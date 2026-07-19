@@ -31,6 +31,7 @@
         docker
         qemu-host
         network
+        veracrypt
 
         # Ram Optimisation
         earlyoom
