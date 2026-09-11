@@ -83,7 +83,6 @@
 
 ## Local Packages
 - Repo-local packages live in `packages/<name>/package.nix` and are consumed inside modules as `pkgs.local.<name>` because the overlay sets `local = config.packages`.
-- Desktop styling/fonts depend on local packages: `features/stylix.nix` and `features/fonts.nix` are using `pkgs.local.monaspace`.
 - Flake package outputs are only generated for `aarch64-linux` because `systems = [ "aarch64-linux" ]`, even though `Yuri-Lemonade` is an `x86_64-linux` host. `nix flake show` exposing only `packages.aarch64-linux.*` is expected here.
 
 ## Verification
@@ -91,7 +90,6 @@
 - For a quick host eval, use `nix eval --raw .#nixosConfigurations.Yuri-Lemonade.config.networking.hostName` or `nix eval --raw .#nixosConfigurations.Yuri-NixOS-QEMU-AARCH64.config.networking.hostName`.
 - For real host verification, build the affected system directly: `nix build .#nixosConfigurations.<host>.config.system.build.toplevel`.
 - For Home Manager changes, verify through the owning NixOS host build; this repo does not expose a separate HM build target.
-- For local packages, build the exact flake package attr, e.g. `nix build .#packages.aarch64-linux.monaspace`.
 - `nix flake check --no-build` evaluates every host, so it is broader than a focused host/package check.
 - During building and verification, avoid accessing files outside this repository when the answer can be derived from tracked Nix files here.
 - If generated Nix outputs must be inspected, prefer `/nix/store` before asking for approval to access other external paths.

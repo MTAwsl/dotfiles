@@ -139,10 +139,6 @@ This repository uses a flake-based, dendritic module architecture with real nest
 - `lib/moduleNamespaces.nix` - raw nested namespace option declarations and user selection helpers
 - `lib/lib.nix` - existing generic `flake.lib` option boundary
 
-**Packages / Build**:
-- `packages/monaspace/package.nix` - local package pattern
-- `packages/windows11-fonts/package.nix` - custom package organization
-
 ## Reference Links
 
 - Dendritic pattern: https://github.com/mightyiam/dendritic

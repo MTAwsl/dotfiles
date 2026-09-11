@@ -33,12 +33,16 @@
         network
         veracrypt
 
+        # Printer & Scanner
+        printer
+
         # Ram Optimisation
         earlyoom
         zram
 
-        # Controller
+        # USB
         xpad
+        usb
       ])
       # Import host profiles.
       ++ (with self.modules.profiles; [
@@ -115,6 +119,18 @@
           "kvm-intel"
         ];
 
+        supportedFilesystems = [
+          "ext2"
+          "ext3"
+          "ext4"
+          "btrfs"
+          "exfat"
+          "ntfs"
+          "xfs"
+          "vfat"
+          "fat32"
+          "f2fs"
+        ];
         extraModulePackages = with config.boot.kernelPackages; [ lenovo-legion-module ];
         extraModprobeConfig = "options kvm_intel nested=1";
         kernelPackages = pkgs.linuxPackages; # LTS

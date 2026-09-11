@@ -20,6 +20,12 @@ _: {
           radare2
           rizin
           frida-tools
+          netexec
+          username-anarchy
+          mimikatz
+          kerbrute
+          hash-identifier
+          hashid
         ]
         ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
           apktool
@@ -28,6 +34,9 @@ _: {
           binaryninja-free # Update this after licensed
         ]
         ++ [
+          # Remote Desktop
+          freerdp
+          tigervnc
 
           # Credential
           trufflehog
@@ -96,6 +105,7 @@ _: {
           burpsuite
           sqlmap
           whatweb
+          wpscan
 
           # Pentest
           rlwrap
@@ -104,6 +114,7 @@ _: {
           minicom
           picocom
           socat
+          pwncat
           goreplay
           tcpdump
           netsniff-ng
@@ -117,6 +128,9 @@ _: {
           smbscan
           penelope
           python3Packages.impacket
+          python3Packages.pypykatz
+          certipy
+          kerbrute
 
           # Tunnel
           sshuttle

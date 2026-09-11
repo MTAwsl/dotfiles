@@ -32,7 +32,7 @@ _: {
 
         fira-code
         fira-code-symbols
-        local.monaspace
+        monaspace
         nerd-fonts.fira-code
       ];
     };

@@ -82,6 +82,11 @@
                 "text/html" = [ "firefox-devedition.desktop" ];
                 "application/pdf" = [ "firefox-devedition.desktop" ];
               }
+
+              # Nautilus
+              {
+                "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
+              }
             ];
 
         };
